@@ -1,0 +1,32 @@
+@startuml
+
+left to right direction
+
+actor Admin
+actor User
+
+rectangle "Deadlock France Community Platform" {
+    
+    (Add Patch Note) as add_patch_note
+    (Edit Patch Note) as edit_patch_note
+    (Delete Patch Note) as delete_patch_note
+    (View Patch Notes) as view_patch_notes
+    (Search Patch Notes) as search_patch_notes
+    (View Statistics) as view_statistics
+    (Modify Site Settings) as modify_site_settings
+    (Access Support Link) as access_support_link
+    (User Authentication) as user_auth
+
+    Admin --> user_auth
+    Admin --> add_patch_note
+    Admin --> edit_patch_note
+    Admin --> delete_patch_note
+    Admin --> view_statistics
+    Admin --> modify_site_settings
+    
+    User --> view_patch_notes
+    User --> search_patch_notes
+    User --> access_support_link
+}
+
+@enduml

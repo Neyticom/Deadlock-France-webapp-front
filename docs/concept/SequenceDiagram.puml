@@ -1,0 +1,60 @@
+@startuml
+
+actor Admin
+actor User
+boundary Interface
+control PatchNoteController
+control StatisticsController
+control SettingsController
+control AuthController
+database Database
+
+== Authentification ==
+Admin -> AuthController : Demande d'authentification (2FA)
+AuthController -> Database : Vérifie les informations d'identification
+Database --> AuthController : Retourne succès ou échec
+AuthController --> Admin : Résultat de l'authentification
+
+== Gestion des Patch Notes ==
+Admin -> PatchNoteController : Ajouter une nouvelle patch note
+PatchNoteController -> Database : Enregistre la nouvelle patch note
+Database --> PatchNoteController : Confirmation d'enregistrement
+PatchNoteController --> Admin : Patch note ajoutée
+
+Admin -> PatchNoteController : Modifier une patch note existante
+PatchNoteController -> Database : Met à jour la patch note
+Database --> PatchNoteController : Confirmation de mise à jour
+PatchNoteController --> Admin : Patch note modifiée
+
+Admin -> PatchNoteController : Supprimer une patch note
+PatchNoteController -> Database : Supprime la patch note
+Database --> PatchNoteController : Confirmation de suppression
+PatchNoteController --> Admin : Patch note supprimée
+
+User -> PatchNoteController : Consulter les patch notes
+PatchNoteController -> Database : Récupère la liste des patch notes
+Database --> PatchNoteController : Liste des patch notes
+PatchNoteController --> User : Affiche les patch notes
+
+User -> PatchNoteController : Rechercher une patch note par mot-clé
+PatchNoteController -> Database : Recherche les patch notes correspondantes
+Database --> PatchNoteController : Résultats de la recherche
+PatchNoteController --> User : Affiche les résultats
+
+== Consultation des Statistiques ==
+Admin -> StatisticsController : Consulter les statistiques de vues
+StatisticsController -> Database : Récupère les données de statistiques
+Database --> StatisticsController : Données de statistiques
+StatisticsController --> Admin : Affiche les statistiques
+
+== Modification des Paramètres du Site ==
+Admin -> SettingsController : Modifier les paramètres du site
+SettingsController -> Database : Met à jour les paramètres
+Database --> SettingsController : Confirmation de mise à jour
+SettingsController --> Admin : Paramètres modifiés
+
+== Gestion du Bouton de Soutien ==
+User -> Interface : Cliquer sur "Soutenir Deadlock France"
+Interface --> User : Redirection vers le site de dons
+
+@enduml

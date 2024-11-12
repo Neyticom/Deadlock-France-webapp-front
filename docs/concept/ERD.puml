@@ -1,0 +1,46 @@
+@startuml
+
+entity "User" as user {
+  * user_id : INT [PK]
+  --
+  username : VARCHAR
+  password : VARCHAR
+  role : VARCHAR // admin or user
+}
+
+entity "PatchNote" as patch_note {
+  * patch_note_id : INT [PK]
+  --
+  title : VARCHAR
+  content : TEXT
+  date_published : DATE
+  user_id : INT [FK]
+}
+
+entity "Statistics" as statistics {
+  * statistics_id : INT [PK]
+  --
+  page_name : VARCHAR
+  views_count : INT
+  date : DATE
+}
+
+entity "SiteSettings" as site_settings {
+  * settings_id : INT [PK]
+  --
+  background_theme : VARCHAR
+  social_links : JSON
+}
+
+entity "SupportLink" as support_link {
+  * support_link_id : INT [PK]
+  --
+  url : VARCHAR
+  description : TEXT
+}
+
+user ||--o{ patch_note : "user_id"
+site_settings ||--|| user : "managed_by" // Settings managed by admin
+user ||--o{ statistics : "accessed_by"
+
+@enduml
