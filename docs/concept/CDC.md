@@ -38,7 +38,7 @@ Application Web desktop et mobile pour la communauté Deadlock France, pour cent
 
 ### Évolutions
 
-> *à compléter une fois le MVP terminé*
+> *TODO : à compléter une fois le MVP terminé*
 
 ## 3 - Contraintes techniques
 
@@ -66,7 +66,7 @@ L'accès à l'espace administrateur se fait par une connexion avec Login + Passw
 
 Session administrateur avec l'utilisation du token JWT (stockage cookie).
 
-(**durée de vie du token à définir**)
+> *TODO : durée de vie du token à définir*
 
 ### Compatibilité
 
@@ -97,8 +97,4 @@ Trello nous servira d'outil pour backloguer et organiser les sprints, les rôles
 
 Une réunion hebdomadaire permet d'échanger sur les problématiques rencontrées, de faire le point sur l'avancement et de faire des ajustements si besoin.
 
-Le **journal de bord**
-
-(**lien à rajouter**)
-
-permet de résumer le déroulement de l'ensemble des sprints du projet.
+Le **[journal de bord](./devlog.md)** permet de résumer le déroulement de l'ensemble des sprints du projet.
