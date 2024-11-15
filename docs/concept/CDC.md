@@ -97,4 +97,4 @@ Trello nous servira d'outil pour backloguer et organiser les sprints, les rôles
 
 Une réunion hebdomadaire permet d'échanger sur les problématiques rencontrées, de faire le point sur l'avancement et de faire des ajustements si besoin.
 
-Le **[journal de bord](./devlog.md)** permet de résumer le déroulement de l'ensemble des sprints du projet.
+Le **[journal de bord](../devlogs.md)** permet de résumer le déroulement de l'ensemble des sprints du projet.
