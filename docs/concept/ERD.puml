@@ -1,46 +1,77 @@
 @startuml
-
 entity "User" as user {
-  * user_id : INT [PK]
+  * id : INT [PK]
   --
-  username : VARCHAR
-  password : VARCHAR
-  role : VARCHAR // admin or user
+  login : VARCHAR(32) NOT NULL UNIQUE
+  password : VARCHAR(80) NOT NULL UNIQUE
+  role_id : INT NOT NULL [FK]
+  2fa : BOOLEAN
 }
 
-entity "PatchNote" as patch_note {
-  * patch_note_id : INT [PK]
+entity "UserDetails" as user_details {
+  * user_id : INT [PK, FK]
   --
-  title : VARCHAR
+  firstname : VARCHAR(50) NOT NULL
+  lastname : VARCHAR(100) NOT NULL
+  nickname : VARCHAR(32) NOT NULL UNIQUE
+  email : VARCHAR(320) NOT NULL UNIQUE  
+}
+
+entity "Role" as role {
+  * id : INT [PK]
+  --
+  name : VARCHAR(32) NOT NULL UNIQUE
+  weight : INT NOT NULL UNIQUE
+}
+
+entity "Patchnote" as patchnote {
+  * id : INT [PK]
+  --
+  version : VARCHAR(20) NOT NULL UNIQUE 
+  title : VARCHAR(80) NOT NULL
+  date : TIMESTAMP NOT NULL UNIQUE
   content : TEXT
-  date_published : DATE
-  user_id : INT [FK]
+  state : ENUM('DRAFT','PUBLISHED','ARCHIVED') NOT NULL
 }
 
-entity "Statistics" as statistics {
-  * statistics_id : INT [PK]
+entity "PatchnoteAuthors" as patchnote_authors {
+  * id : INT [PK]
   --
-  page_name : VARCHAR
-  views_count : INT
-  date : DATE
+  user_id : INT NOT NULL [FK]
+  patchnote_id : INT NOT NULL [FK]
 }
 
-entity "SiteSettings" as site_settings {
-  * settings_id : INT [PK]
+entity "Statistic" as statistic {
+  * id : INT [PK]
   --
-  background_theme : VARCHAR
-  social_links : JSON
+  origin : VARCHAR(32) NOT NULL
+  count : INT NOT NULL
+  date : TIMESTAMP NOT NULL UNIQUE
+  type : ENUM('VIEW','CLICK') NOT NULL
 }
 
-entity "SupportLink" as support_link {
-  * support_link_id : INT [PK]
+entity "Setting" as setting {
+  * id : INT [PK]
   --
-  url : VARCHAR
-  description : TEXT
+  key : VARCHAR(32) NOT NULL UNIQUE
+  value : TEXT
+  type : ENUM('URL','PATH','TEXT') NOT NULL
 }
 
-user ||--o{ patch_note : "user_id"
-site_settings ||--|| user : "managed_by" // Settings managed by admin
-user ||--o{ statistics : "accessed_by"
+entity "Log" as log {
+  * id : INT [PK]
+  --
+  action : ENUM('LOGIN','CREATE','DELETE','EDIT') NOT NULL
+  context : TEXT
+  user_id : INT NOT NULL [FK]
+  ip : VARCHAR(15) NOT NULL
+}
 
+role ||--o{ user
+user ||--o{ log
+user ||--|| user_details
+patchnote_authors }o--o{ patchnote
+patchnote_authors }o--o{ user
 @enduml
+
+Entity Relationship Diagram : [https://www.plantuml.com/plantuml/duml/ZLHHRvim47xdLrXzIJSrKjUfqhIdqiHPK0d926IJgYcom4si4XpPHxkewN_VWHLYbC3w0kUxp_w-xtnmfu4fA3QPmtCGi2CNiURgWZ1D2Wp8cqF8Po9IyfruGKGUPmz_CDFluoEJAv5ZVk66Wx4RNdwz-KI2QKI2sFT977W_OugeBTFwLQhK0dwxFWTKCkFBcgYkFuugnfidXfNxwTIdRk2yEmsvGmvCPBfMlKnDmgWtATl25HaTRJm9fI5d6suflBKKbaxP2UBBTHEIY-JPWhJtWszGMGDrsWr2R8SXDgQofZ3ekf0FyRzoiLg3sNrIjbXd399rBi5GRm-hBluNhhIGzaYSyuP0PCXuoq1WEMLGLYDlGkUHEvcTSP78751fYQA_8qneC9je44ykUyFG7KMzgzuillUz-PWECIwvl0M65jSvlsu1Qwbqq_QIcMoNVJDcBGDi7TK2iRJCqOpG899AX3wikiYb4krVOzMm8hTl_UEjXjtssDY5HtzXBmU-DtXeQUIS0uXyPQIRk4luCz_zTsPVM5Rm-gwRYkBGBo_QZSRuAW4jidnf96MoKmvBm8omETsV_l22qd18tOXYCAG-hG8wz6ogmqp-jMQoUo34rlwTt3PLLv_wVj_loxVg6ATy719euRZUxnk_FETqPDzbjQikj48CqntFqsAJ_GC0]
