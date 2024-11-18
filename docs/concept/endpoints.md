@@ -1,6 +1,6 @@
 # Endpoints (Routes backend) - Deadlock France
 
-## Patchnotes -> patchnotesController (CRUD)
+## Patchnotes -> patchnotesController
 
 | Méthode | Chemin | Request Body (JSON) | Response Body (JSON) | Status code (OK) | Description |
 | ------- | ------ | --------------- | ---------------- | ---------------- | ----------- |
@@ -11,15 +11,17 @@
 | DELETE | /patchnotes/:id | - | - | 204 | Supprimer une patchnote par son id |
 | GET | /patchnotes/search | Liste de mots clés | Tableau de patchnotes | 200 | Rechercher une patchnote par mot clés |
 
-## Authentication -> authenticationController (login / 2FA)
+## Authentication - authenticationController (login / 2FA)
 
 | Méthode | Chemin | Request Body (JSON) | Response Body (JSON) | Status code (OK) | Description |
 | ------- | ------ | --------------- | ---------------- | ---------------- | ----------- |
 | POST | /auth/login | Login + Password | - | 200 | Premier facteur d'authentification (Login/Password) |
 | POST | /auth/2fa | Google Auth Code | - | 200 | Second facteur d'authentification (2FA: Google Auth) |
+| POST | /auth/2fa-reset:id | - | Données de l'utilisateur mis à jour | 200 | Repasser un accès administrateur sur false en 2fa |
+| POST | /auth/recovery | Email + Identifiant | - | 200 | Envoyer une demande de réinitialisation du mot de passe |
 | GET | /auth/logout | - | - | 200 | Déconnexion |
 
-## Users -> usersController
+## Users - usersController
 
 | Méthode | Chemin | Request Body (JSON) | Response Body (JSON) | Status code (OK) | Description |
 | ------- | ------ | --------------- | ---------------- | ---------------- | ----------- |
@@ -29,61 +31,26 @@
 | PUT | /users/:id  | Données modifiées d'un user | Données du user mis à jour | 200 | Modifier un utilisateur par son id |
 | DELETE | /users/:id | - | - | 204 | Supprimer un utilisateur par son id |
 
-## Logs -> logsController 
+## Logs - logsController 
 
-| Méthode | Chemin | Request Content | Response Content | Status code (OK) | Description |
+| Méthode | Chemin | Request Body (JSON) | Response Body (JSON) | Status code (OK) | Description |
 | ------- | ------ | --------------- | ---------------- | ---------------- | ----------- |
 | GET | /logs | - | Tableau de logs | 200 | Consulter tous les logs |
 | GET | /logs/:userId | - | Tableau de logs concernant l'user cible | 200 | Consulter les logs d'un utilisateur par son id |
 | POST | /logs | Données d'un log | Données du log créé | 201 | Ajouter une entrée aux logs |
 
-## Stats -> statisticsController (POST : View + Interractions | GET : all)
+## Stats - statisticsController
 
-| Méthode | Chemin | Request Content | Response Content | Status code (OK) | Description |
+| Méthode | Chemin | Request Body (JSON) | Response Body (JSON) | Status code (OK) | Description |
 | ------- | ------ | --------------- | ---------------- | ---------------- | ----------- |
-| GET | /stats/views | - | Tableau de statistiques JSON | 200 | Récupèrer les vues des différentes pages du site |
-| GET | /stats/clicks | - | Tableau de statistiques JSON | 200 | Récupèrer les interactions avec les différents boutons/icones du site |
-| POST | /stats/views |  |  | 201 | Enregistrer une vue pour une page du site |
-| POST | /stats/clicks |  |  | 201 |  | Enregistrer une interaction sur un bouton/icone du site |
+| GET | /stats/views | - | Tableau de statistiques | 200 | Récupèrer les vues des différentes pages du site |
+| GET | /stats/clicks | - | Tableau de statistiques | 200 | Récupèrer les interactions avec les différents boutons/icones du site |
+| PUT + POST (findOrCreate) | /stats/views | count + 1 | Données de l'interraction mise à jour | 201 | Incrémenter le compteur de vues pour l'heure actuelle sur une page du site |
+| PUT + POST (findOrCreate) | /stats/clicks | count + 1  | Données de l'interraction mise à jour | 201 | Incrémenter le compteur d'interractions sur un bouton/icone pour l'heure actuelle sur une page du site |
 
-## Settings -> settingsController (contenu, liens)
+## Settings - settingsController
 
-| Méthode | Chemin | Request Content | Response Content | Status code (OK) | Description |
+| Méthode | Chemin | Request Body (JSON) | Response Body (JSON) | Status code (OK) | Description |
 | ------- | ------ | --------------- | ---------------- | ---------------- | ----------- |
-| GET | /settings |  |  | 200 | Récupérer les paramètres du site |
-| PUT | /settings |  |  | 200 | Modifier les paramètres du site |
-| GET | /settings/links |  |  | 200 | Récupérer les liens sociaux |
-| PUT | /settings/links |  |  | 200 | Modifier les liens sociaux |
-
-<!-- Databases -->
-
-Users
------
-id
-login
-password
-firtname
-lastname
-nickname
-email
-role_id -> Table "Roles"
-
-Roles
-------
-id
-name
-level
-
-Logs
------
-id
-action/type -> Table "Action"
-context -> patchnote_id / user_id
-date + heure (timestamp)
-user_id -> "Table "User"
-ip
-
-Action
-------
-id
-name (CONNEXION : admin, DELETE: patchnotes & accès, CREATE: accès, EDIT: accès)
+| GET | /settings | - | Tableau de paramètres du site | 200 | Récupérer les paramètres du site |
+| PUT | /settings:key | Données modifiées d'un paramètre | Données du paramètre modifié | 200 | Modifier les paramètres du site |
