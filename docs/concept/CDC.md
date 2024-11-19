@@ -7,7 +7,7 @@ Application Web desktop et mobile pour la communauté Deadlock France, pour cent
 ### Objectifs (MVP)
 
 - Un espace de référence pour la communauté Deadlock francophone
-- Relayer les informations officielless (communiqués, devlogs, ...)
+- Relayer les informations officielles (communiqués, devlogs, ...)
 - Soutenir Deadlock France (donations/engagement)
 
 ### Objectifs (Évolutions)
@@ -22,7 +22,7 @@ Application Web desktop et mobile pour la communauté Deadlock France, pour cent
 
 - Visiteurs :
   
-  - Background animé sur le thème deadlock (boucle vidéo) OU image fixe pour les mauvaises connexions/ les petits écrans
+  - Background animé sur le thème deadlock (boucle vidéo) OU image fixe pour les mauvaises connexions / les petits écrans
   - Navigation commune aux pages publiques (Accueil/Patchnotes)
   - Bouton de donation redirigeant vers un site spécialisé
   - Icones de réseaux cliquables
