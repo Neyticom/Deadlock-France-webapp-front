@@ -58,7 +58,7 @@ Application Web desktop et mobile pour la communauté Deadlock France, pour cent
 
 ### Hébergement et sécurité
 
-Le frontend, le backend ainsi que la BDD de l'application seront hébergés sur le VPS/dédié d'une communauté partenaire par l'intermédiaire de Romain (Neyticom). L'infrastructure est déjà sécurisée (firewall, antiDDOS, fail2ban, double authentification, dockerisation, ...)
+Le frontend, le backend ainsi que la BDD de l'application seront hébergés sur le VPS dédié d'une communauté partenaire par l'intermédiaire de Romain (Neyticom). L'infrastructure est déjà sécurisée (firewall, antiDDOS, fail2ban, double authentification, dockerisation, ...)
 
 Pas de connexion ni de formulaires pour les visiteurs sur le MVP (low risk XSS).
 
@@ -70,7 +70,7 @@ Session administrateur avec l'utilisation du token JWT (stockage cookie).
 
 ### Compatibilité
 
-L'application web doit être compatible avec les derniers navigateurs à jours, fonctionner sur un appareil mobile comme sur un ordinateur. Les utilisateurs seront principalement "desktop".
+L'application web doit être compatible avec les derniers navigateurs à jour, fonctionner sur un appareil mobile comme sur un ordinateur. Les utilisateurs seront principalement "desktop".
 
 ## 4 - Design
 
@@ -91,9 +91,9 @@ Le projet sera divisé en deux organisations :
 - Frontend : Nils et Romain
 - Backend : Zack et Romain
 
-La méthodologie choisie pour le projet est l'agile avec **Srum**, chaque sprint est planifié et débriefé en équipe.
+La méthodologie choisie pour le projet est l'agile avec **Scrum**, chaque sprint est planifié et débriefé en équipe.
 
-Trello nous servira d'outil pour backloguer et organiser les sprints, les rôles sont assignés par organisation (frontend/bakckend) et par étape (backlog/sprint/review/done)
+Trello nous servira d'outil pour backloguer et organiser les sprints, les rôles sont assignés par organisation (frontend/bakckend) et par étape (backlog/sprint/review/done).
 
 Une réunion hebdomadaire permet d'échanger sur les problématiques rencontrées, de faire le point sur l'avancement et de faire des ajustements si besoin.
 

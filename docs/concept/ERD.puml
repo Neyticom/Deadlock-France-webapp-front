@@ -3,18 +3,13 @@ entity "User" as user {
   * id : INT [PK]
   --
   login : VARCHAR(32) NOT NULL UNIQUE
-  password : VARCHAR(80) NOT NULL UNIQUE
+  password : VARCHAR(96) NOT NULL UNIQUE
   role_id : INT NOT NULL [FK]
-  2fa : BOOLEAN
-}
-
-entity "UserDetails" as user_details {
-  * user_id : INT [PK, FK]
-  --
-  firstname : VARCHAR(50) NOT NULL
-  lastname : VARCHAR(100) NOT NULL
-  nickname : VARCHAR(32) NOT NULL UNIQUE
+  firstname : VARCHAR(64) NOT NULL
+  lastname : VARCHAR(64) NOT NULL
+  nickname : VARCHAR(64) NOT NULL UNIQUE
   email : VARCHAR(320) NOT NULL UNIQUE  
+  2fa : BOOLEAN
 }
 
 entity "Role" as role {
@@ -28,23 +23,23 @@ entity "Patchnote" as patchnote {
   * id : INT [PK]
   --
   version : VARCHAR(20) NOT NULL UNIQUE 
-  title : VARCHAR(80) NOT NULL
+  title : VARCHAR(96) NOT NULL
   date : TIMESTAMP NOT NULL UNIQUE
+  author : VARCHAR(64)
   content : TEXT
   state : ENUM('DRAFT','PUBLISHED','ARCHIVED') NOT NULL
 }
 
-entity "PatchnoteAuthors" as patchnote_authors {
-  * id : INT [PK]
-  --
+entity "PatchnotePublishers" as patchnote_publishers {
   user_id : INT NOT NULL [FK]
+  --
   patchnote_id : INT NOT NULL [FK]
 }
 
 entity "Statistic" as statistic {
   * id : INT [PK]
   --
-  origin : VARCHAR(32) NOT NULL
+  origin : VARCHAR(96) NOT NULL
   count : INT NOT NULL
   date : TIMESTAMP NOT NULL UNIQUE
   type : ENUM('VIEW','CLICK') NOT NULL
@@ -53,7 +48,7 @@ entity "Statistic" as statistic {
 entity "Setting" as setting {
   * id : INT [PK]
   --
-  key : VARCHAR(32) NOT NULL UNIQUE
+  key : VARCHAR(64) NOT NULL UNIQUE
   value : TEXT
   type : ENUM('URL','PATH','TEXT') NOT NULL
 }
@@ -69,9 +64,8 @@ entity "Log" as log {
 
 role ||--o{ user
 user ||--o{ log
-user ||--|| user_details
-patchnote_authors }o--o{ patchnote
-patchnote_authors }o--o{ user
+patchnote_publishers }o--|| patchnote
+patchnote_publishers }o--|| user
 @enduml
 
-Entity Relationship Diagram : [https://www.plantuml.com/plantuml/duml/ZLHHRvim47xdLrXzIJSrKjUfqhIdqiHPK0d926IJgYcom4si4XpPHxkewN_VWHLYbC3w0kUxp_w-xtnmfu4fA3QPmtCGi2CNiURgWZ1D2Wp8cqF8Po9IyfruGKGUPmz_CDFluoEJAv5ZVk66Wx4RNdwz-KI2QKI2sFT977W_OugeBTFwLQhK0dwxFWTKCkFBcgYkFuugnfidXfNxwTIdRk2yEmsvGmvCPBfMlKnDmgWtATl25HaTRJm9fI5d6suflBKKbaxP2UBBTHEIY-JPWhJtWszGMGDrsWr2R8SXDgQofZ3ekf0FyRzoiLg3sNrIjbXd399rBi5GRm-hBluNhhIGzaYSyuP0PCXuoq1WEMLGLYDlGkUHEvcTSP78751fYQA_8qneC9je44ykUyFG7KMzgzuillUz-PWECIwvl0M65jSvlsu1Qwbqq_QIcMoNVJDcBGDi7TK2iRJCqOpG899AX3wikiYb4krVOzMm8hTl_UEjXjtssDY5HtzXBmU-DtXeQUIS0uXyPQIRk4luCz_zTsPVM5Rm-gwRYkBGBo_QZSRuAW4jidnf96MoKmvBm8omETsV_l22qd18tOXYCAG-hG8wz6ogmqp-jMQoUo34rlwTt3PLLv_wVj_loxVg6ATy719euRZUxnk_FETqPDzbjQikj48CqntFqsAJ_GC0]
+Entity Relationship Diagram : [https://www.plantuml.com/plantuml/duml/bLDHRvim47xdLrXzIJSDQUksIjjJQU8kg8Gm0jcaQgeyuYPM7HjXqovg-jzt1X63HeZsaXo-ptVVzztvIcbIw7BB7IeqqpjqbYfQd26YK0a1Ud4GUelO2dr5VfYWk-Zs5vouBlnmkMO2pfTUF9vwyVd7YpSed2SeJ8C0fQ7_FSM0oebIpx9OjO1VBlk0XUJqlcbaytStLSS7LYWjo9Qswbn-idKC7t8A8LZsE82mNEYMCDwHzluV6480l7WW0BkUpmFiXSwhSt0n1ZMLYqRMa8kMpu29pvIjDzfQqqwtkqP4PniXTTqwRxw6-Z_HGZ7PdcEVLW121qwFJ17IAw9DDl5dU95uiwX71IdrHXPTy-4uaqA307CP_qpWGEcw5WxJsVbe4ditoUZTA4gl0tynnHE8pNr_2Q6bq6j3LFxcJ6r0OjUG-_oGCDvKgzwxUzOdUxSVr-w_005CQPPLNLNpDJG6MJ1uJSVjpMGfx0ByZ-jwbripbpx-0VwD0tzyUyIy1TMQYNLDlOw7Y3_ItSddz4HuIUryEupIE333zP8f_1d04Lg1h2bnEKY7P9f9SQWUpB_veH4SOo_144nmWAi0J_nsgsOF_zWzFB4LB6_f_l2voxfwzVkzwygNgenZVfe3aE3qhkAhTDtztgxQ8AegUqN5gjpolm00]

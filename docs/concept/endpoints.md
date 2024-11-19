@@ -6,7 +6,7 @@
 | ------- | ------ | --------------- | ---------------- | ---------------- | ----------- |
 | GET | /patchnotes | - | Tableau de patchnotes | 200 | Récupérer toutes les patchnotes |
 | GET | /patchnotes/:id | - | Données d'une patchnote | 200 | Récupérer une patchnote par son id |
-| POST | /patchnotes | Données d'une patchnote | Données de la patchnote créée | 201 | Créer une nouvele patchnote |
+| POST | /patchnotes | Données d'une patchnote | Données de la patchnote créée | 201 | Créer une nouvelle patchnote |
 | PUT | /patchnotes/:id | Données modifiées d'une patchnote | Données de la patchnote mise à jour | 200 | Modifier une patchnote existante par son id |
 | DELETE | /patchnotes/:id | - | - | 204 | Supprimer une patchnote par son id |
 | GET | /patchnotes/search | Liste de mots clés | Tableau de patchnotes | 200 | Rechercher une patchnote par mot clés |
