@@ -1,0 +1,43 @@
+{
+  "width": 611,
+  "height": 305,
+  "cx": [
+    [ "SETTING", 42 ],
+    [ "MANAGES", 145 ],
+    [ "USER", 255 ],
+    [ "PUBLISHES", 365 ],
+    [ "PATCHNOTE", 482 ],
+    [ "LOG", 42 ],
+    [ "RECORDS", 145 ],
+    [ "ANALYZES", 255 ],
+    [ "STATISTIC", 365 ],
+    [ "ASSIGNS", 482 ],
+    [ "ROLE", 576 ]
+  ],
+  "cy": [
+    [ "SETTING", 94 ],
+    [ "MANAGES", 94 ],
+    [ "USER", 94 ],
+    [ "PUBLISHES", 94 ],
+    [ "PATCHNOTE", 94 ],
+    [ "LOG", 237 ],
+    [ "RECORDS", 237 ],
+    [ "ANALYZES", 237 ],
+    [ "STATISTIC", 237 ],
+    [ "ASSIGNS", 237 ],
+    [ "ROLE", 237 ]
+  ],
+  "shift": [
+    [ "MANAGES,USER,0", 0 ],
+    [ "MANAGES,SETTING,0", 0 ],
+    [ "PUBLISHES,USER,0", 0 ],
+    [ "PUBLISHES,PATCHNOTE,0", 0 ],
+    [ "RECORDS,USER,0", 0 ],
+    [ "RECORDS,LOG,0", 0 ],
+    [ "ANALYZES,USER,0", 0 ],
+    [ "ANALYZES,STATISTIC,0", 0 ],
+    [ "ASSIGNS,USER,0", 0 ],
+    [ "ASSIGNS,ROLE,0", 0 ]
+  ],
+  "ratio": []
+}
