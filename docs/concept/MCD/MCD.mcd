@@ -1,0 +1,13 @@
+SETTING: id, key, value, type
+MANAGES, 0N USER, 11 SETTING
+USER: id, login, password, firstname, lastname, nickname, email, 2fa
+PUBLISHES, 0N USER, 0N PATCHNOTE
+PATCHNOTE: id, version, title, date, author, content, state
+:
+
+LOG: id, action, context, ip
+RECORDS, 1N USER, 1N LOG
+ANALYZES, 0N USER, 11 STATISTIC
+STATISTIC: id, origin, count, date, type
+ASSIGNS, 1N USER, 11 ROLE
+ROLE: id, name, weight
