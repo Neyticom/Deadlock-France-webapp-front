@@ -6,27 +6,25 @@ actor Admin
 actor User
 
 rectangle "Deadlock France Community Platform" {
-    
-    (Add Patch Note) as add_patch_note
-    (Edit Patch Note) as edit_patch_note
-    (Delete Patch Note) as delete_patch_note
-    (View Patch Notes) as view_patch_notes
-    (Search Patch Notes) as search_patch_notes
-    (View Statistics) as view_statistics
-    (Modify Site Settings) as modify_site_settings
-    (Access Support Link) as access_support_link
-    (User Authentication) as user_auth
 
-    Admin --> user_auth
-    Admin --> add_patch_note
-    Admin --> edit_patch_note
-    Admin --> delete_patch_note
-    Admin --> view_statistics
-    Admin --> modify_site_settings
-    
-    User --> view_patch_notes
-    User --> search_patch_notes
-    User --> access_support_link
+    Admin --> (User Authentication)
+    Admin --> (2FA Authentication)
+    Admin --> (Create Patchnote)
+    Admin --> (Edit Patchnote)
+    Admin --> (Delete Patchnote)
+    Admin --> (View Statistics)
+    Admin --> (Modify Settings)
+    Admin --> (Access Logs)
+    Admin --> (Log Actions)
+
+    User --> (User Authentication)
+    User --> (Recover Password)
+    User --> (View Patchnotes)
+    User --> (Search Patchnotes)
+    User --> (Increment Stats)
+
 }
 
 @enduml
+
+Use Case : [http://www.plantuml.com/plantuml/uml/XP3FIiD04CRl-nH3JthenGUGXjQ2e50CUXzc9ydW_e7PYQM8xsuIXK8YyRRixxUpytsxOgZMn-1SuCR0CgYqdO4NPJB9oJaaomgLZv9-pw-5rRbHmDG6Xis1qOTCxt1KJCImpp7sIUm2fu3MP8qR-7GE07xcm7Px3pVZ6AXwwpYP48w_tSwTksFrdx9NHcCueL6Nil52UF1YA_Z0WLVVlmcVeJOqAIPK5lmvUsakKBEPf7R9Ao8k1Pxo7souX6egUc0Jd5fPx-Ugl33b3rOuOIddh7x6fzMloSeSrunAtOhmc4WvSh8f_u3TbtCxJhwFuHi0]
