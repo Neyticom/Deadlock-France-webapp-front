@@ -22,7 +22,7 @@ entity "Role" as role {
 entity "Patchnote" as patchnote {
   * id : INT [PK]
   --
-  version : VARCHAR(20) NOT NULL UNIQUE 
+  version : VARCHAR(20) NOT NULL UNIQUE
   title : VARCHAR(96) NOT NULL
   date : TIMESTAMP NOT NULL UNIQUE
   author : VARCHAR(64)
@@ -36,26 +36,66 @@ entity "Hero" as hero {
   name : VARCHAR(64) NOT NULL UNIQUE
   resume : VARCHAR(96) NOT NULL UNIQUE
   description : TEXT NOT NULL UNIQUE
-  img_pass : VARCHAR(128) UNIQUE
-  video_pass : VARCHAR(128) UNIQUE
+  img_path : VARCHAR(128) UNIQUE
+  video_path : VARCHAR(128) UNIQUE
 }
 
 entity "Item" as item {
   * id : INT [PK]
   --
-  
+  category : ENUM('WEAPON','VITALITY','SPIRIT') NOT NULL
+  name : VARCHAR(64) NOT NULL UNIQUE
+  cost : INT NOT NULL
+  common_bonus : INT NOT NULL
+  active_description : TEXT UNIQUE
+  active_duration : INT NOT NULL DEFAULT(0)
+  passive_description : TEXT UNIQUE
+  passive_duration : INT NOT NULL DEFAULT(0)
+  child_id : INT [FK]
+  icon_path : VARCHAR(128) UNIQUE
 }
 
-entity "Ability" as ability {
+entity "Item Effect" as item_effect {
   * id : INT [PK]
   --
-  
+  item_id : INT NOT NULL [FK]
+  type : ENUM('COMMON','ACTIVE','PASSIVE') NOT NULL
+  effect : VARCHAR(192) NOT NULL
+}
+
+entity "Spell" as spell {
+  * id : INT [PK]
+  --
+  hero_id : INT NOT NULL [FK]
+  order : INT NOT NULL
+  name : VARCHAR(64) NOT NULL UNIQUE
+  description : TEXT NOT NULL UNIQUE
+  passive : BOOLEAN NOT NULL
+  charge : BOOLEAN NOT NULL
+  charge-count : INT NOT NULL DEFAULT(0)
+  charge-time : INT NOT NULL DEFAULT(0)
+  charge-interval : INT NOT NULL DEFAULT(0)
+  cooldown : INT NOT NULL
+  distance : VARCHAR(96)
+  first_upgrade : VARCHAR(192)
+  second_upgrade : VARCHAR(192)
+  third_upgrade : VARCHAR(192)
+  icon_path : VARCHAR(128) UNIQUE
+  demo_path : VARCHAR(128) UNIQUE
+}
+
+entity "Spell Effect" as spell_effect {
+  * id : INT [PK]
+  --
+  spell_id : INT NOT NULL [FK]
+  order : INT NOT NULL
+  effect : VARCHAR(192) NOT NULL
 }
 
 entity "Keyword" as keyword {
   * id : INT [PK]
   --
-  entity_type : ENUM('HERO','ITEM','ABILITY') NOT NULL
+  entity_type : ENUM('HERO','ITEM','SPELL') NOT NULL
   entity_id : INT NOT NULL [FK]
   keyword : VARCHAR(64) NOT NULL UNIQUE
 }
@@ -71,7 +111,7 @@ entity "Statistic" as statistic {
   --
   origin : VARCHAR(96) NOT NULL
   count : INT NOT NULL
-  date : TIMESTAMP NOT NULL UNIQUE
+  date : TIMESTAMP NOT NULL
   type : ENUM('VIEW','CLICK') NOT NULL
 }
 
@@ -94,8 +134,14 @@ entity "Log" as log {
 
 role ||--o{ user
 user ||--o{ log
+hero ||--o{ spell
+hero ||--o{ keyword
+item ||--o{ keyword
+item ||--o{ item_effect
+spell ||--o{ spell_effect
+spell ||--o{ keyword
 patchnote_publishers }o--|| patchnote
 patchnote_publishers }o--|| user
 @enduml
 
-Entity Relationship Diagram : [https://www.plantuml.com/plantuml/duml/bLNVJzim47xlNs7n0aohjB4DRNiYKBDQf6cN9cmJcYgJcjOYZQlOWI7A_xwpes17ImnxII_sTp--k_lI4wbegQfDFc25uke1xQMIbNk8IbI1WHu72Br1V8c-8X8bw6fsyHjEXaDuv6B52pY_3EApSH0VV3WwHD4qGL4QXYYDoFSK0sfBfRmNvT81VZdk0fOYPuicaRs_EZSPRtWfLK4tp8bp_D76qVNGbn05psuz25iBsr2UjwYz-mU6402FRYZ0JgVJ40VHu6dmtCKOs9WkQbg-BjfwF4syPtorLcvhxBMRTKPLjYw4gbDlcpTV_ZjMIYxSENPn1I1ao5dF5E5wIPM-JSW4pvDWCkjWGIkr5cMx-N2SYK810UsCVoPm85KT2qVfv61_50VdoVxR_Lbw6fBv68_0rlxa4anRWjk6CIk5wS0Q31_vLor3oMHbOFxzNJAPbNohJ3CDbGuGtwmMMX5EjFT7dmyju8ulcV1179f4iOsXoS7mqNITWckUWs7yQ6s_rlM2FMWb6zVRslQvrcuBzR2rmnpZU0hp8mcUw36Uaf0alvmfMhVUBq6JsJ-sBb7CgkkSIzW9sPR7OljyOVZe3rz_ViFD-dRZtFnpHHMNYcScgspUVAqJ9L_nebzicQWALVlzfmPRqxWa-0UCuImaPnSzKfepfNYngaklRL_XC9mNzNH7yufPjRSgIkDGIpr8nl2Z0JrbXQ8kAHVUScXcvDX43wVVIAG9npX8C1WZ769Zu15nKpLVfJ_ArkdV2hvrzVgfNRNv3zZjXaFnQC8CzACv00g3pbLy4iFXRcTNpOioOKzOiQms-Ly0]
+Entity Relationship Diagram : [https://www.plantuml.com/plantuml/duml/bLPVRzis47_tfo3wacIOWIxRYdLFLMrc5YB_cIsd6uh1O2L68YgH0aab2vf-zvseAPHaYLLVx1Fln-Fz-TsHxvGcKfTvDgDSC_s4NXqLbQyGKQW40NsP8VG3OZ7w7VcR47tStVu3A_Cv_6GYOHpMxxpzOkNjBt--laARROWsno10nut_vn43gY1AFGePju1ltmm1fSZegJd8wZ_Uc1FlcLIQavosxBpvnTgf_27VGd0MVNOWh2yq9ophXFRw38OG0A_l2S3URxS1zZQphxENBEuX6fD52O8hYzOVHn8VAKjINU_kgzkdxeYEKYvqVNJHVBdEVw1ICT6kuq2iW8C3CZfIH537H5VQq5_ZG-YjTmCMIAbJ8RkvX-L8S0t-LvlnNo4iA5tRmflZ-l9YkVTkmeiVBtR7zu5_ME4boDL-_mv4wq8x2oigXKb02e8hzabSa5IL1kQcRqnL95cXJIvDA0CWbYSdg4hQilRJzMzN5l30OYfSa5QOlgQv2PE1u0ep8fecGZwzvFG3zdRR3IJopW-zm0__1l6my_T-sCxenFn4GlMPQLRpNF3J9y5BTQubaMOFz7IUiyQiXPII67sF-qjyuns3yFBrrVypnctFOYOPZ5AMnNOOcHdKopp2z_SqqYy5E57pxQg3WOrEEFrKMDOljkkrgP2t287f5V-zmm6aRe7gCzjKUNizt1E7WcQPSLPLaiDDqpNZRWePKsbrawWolKTieUnOxT0g9J9nwkQHABbsLxS6QfRJAJZ6DPKF97DZXSXYySZFCnCpfGcFUXEakT9EPP584jDU3K6jQ2HuFAxNAPCEDOFTxbaJqrou47tsj1blI3I1yWRttMIQJkjR-bGzBenFdslPvKwzxTHfjHNURw6__12lpHZ4GT1hChDfD8ZcN0VxnsxfNVafOogbKdNlwrFnegYYCI-nqVDDP7Rl6AvTJKqqKvf5TIcRBrVYX6G9u-FN_r3JkLu5_Nbtv-CFaFr5u2zkHsxr0zMQyQJskPPT7aDLlZcFeAbBQXyU7O-E-y1CtN05VnLWnAr0r2vbmkaEYSpKQwm7sp_yJHNm7diX1c690sm4lEpVmkQ1zA-sVhhfm8fsu_pQzTgyHf-VvtFnnPYPLJ_D0eGmguP_yssQjxtIK7rMtMIEjVQ5E3DMEYO7DDRCO1Dy5VFvyxCbkHDbudf7ULpcsNy0]
