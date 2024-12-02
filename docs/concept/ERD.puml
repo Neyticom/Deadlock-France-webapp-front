@@ -52,6 +52,7 @@ entity "Item" as item {
   passive_description : TEXT UNIQUE
   passive_duration : INT NOT NULL DEFAULT(0)
   child_id : INT [FK]
+  icon_path : VARCHAR(128) UNIQUE
 }
 
 entity "Item Effect" as item_effect {
