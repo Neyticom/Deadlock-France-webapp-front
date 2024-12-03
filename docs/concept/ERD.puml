@@ -34,8 +34,8 @@ entity "Hero" as hero {
   * id : INT [PK]
   --
   name : VARCHAR(64) NOT NULL UNIQUE
-  resume : VARCHAR(96) NOT NULL UNIQUE
-  description : TEXT NOT NULL UNIQUE
+  resume : VARCHAR(96) NOT NULL
+  description : TEXT NOT NULL
   img_path : VARCHAR(128) UNIQUE
   video_path : VARCHAR(128) UNIQUE
 }
@@ -47,12 +47,11 @@ entity "Item" as item {
   name : VARCHAR(64) NOT NULL UNIQUE
   cost : INT NOT NULL
   common_bonus : INT NOT NULL
-  active_description : TEXT UNIQUE
+  active_description : TEXT
   active_duration : INT NOT NULL DEFAULT(0)
-  passive_description : TEXT UNIQUE
+  passive_description : TEXT
   passive_duration : INT NOT NULL DEFAULT(0)
   child_id : INT [FK]
-  icon_path : VARCHAR(128) UNIQUE
 }
 
 entity "Item Effect" as item_effect {
@@ -69,7 +68,7 @@ entity "Spell" as spell {
   hero_id : INT NOT NULL [FK]
   order : INT NOT NULL
   name : VARCHAR(64) NOT NULL UNIQUE
-  description : TEXT NOT NULL UNIQUE
+  description : TEXT NOT NULL
   passive : BOOLEAN NOT NULL
   charge : BOOLEAN NOT NULL
   charge-count : INT NOT NULL DEFAULT(0)
@@ -97,7 +96,7 @@ entity "Keyword" as keyword {
   --
   entity_type : ENUM('HERO','ITEM','SPELL') NOT NULL
   entity_id : INT NOT NULL [FK]
-  keyword : VARCHAR(64) NOT NULL UNIQUE
+  value : VARCHAR(64) NOT NULL UNIQUE
 }
 
 entity "PatchnotePublishers" as patchnote_publishers {
@@ -144,4 +143,4 @@ patchnote_publishers }o--|| patchnote
 patchnote_publishers }o--|| user
 @enduml
 
-Entity Relationship Diagram : [https://www.plantuml.com/plantuml/duml/bLPVRzis47_tfo3wacIOWIxRYdLFLMrc5YB_cIsd6uh1O2L68YgH0aab2vf-zvseAPHaYLLVx1Fln-Fz-TsHxvGcKfTvDgDSC_s4NXqLbQyGKQW40NsP8VG3OZ7w7VcR47tStVu3A_Cv_6GYOHpMxxpzOkNjBt--laARROWsno10nut_vn43gY1AFGePju1ltmm1fSZegJd8wZ_Uc1FlcLIQavosxBpvnTgf_27VGd0MVNOWh2yq9ophXFRw38OG0A_l2S3URxS1zZQphxENBEuX6fD52O8hYzOVHn8VAKjINU_kgzkdxeYEKYvqVNJHVBdEVw1ICT6kuq2iW8C3CZfIH537H5VQq5_ZG-YjTmCMIAbJ8RkvX-L8S0t-LvlnNo4iA5tRmflZ-l9YkVTkmeiVBtR7zu5_ME4boDL-_mv4wq8x2oigXKb02e8hzabSa5IL1kQcRqnL95cXJIvDA0CWbYSdg4hQilRJzMzN5l30OYfSa5QOlgQv2PE1u0ep8fecGZwzvFG3zdRR3IJopW-zm0__1l6my_T-sCxenFn4GlMPQLRpNF3J9y5BTQubaMOFz7IUiyQiXPII67sF-qjyuns3yFBrrVypnctFOYOPZ5AMnNOOcHdKopp2z_SqqYy5E57pxQg3WOrEEFrKMDOljkkrgP2t287f5V-zmm6aRe7gCzjKUNizt1E7WcQPSLPLaiDDqpNZRWePKsbrawWolKTieUnOxT0g9J9nwkQHABbsLxS6QfRJAJZ6DPKF97DZXSXYySZFCnCpfGcFUXEakT9EPP584jDU3K6jQ2HuFAxNAPCEDOFTxbaJqrou47tsj1blI3I1yWRttMIQJkjR-bGzBenFdslPvKwzxTHfjHNURw6__12lpHZ4GT1hChDfD8ZcN0VxnsxfNVafOogbKdNlwrFnegYYCI-nqVDDP7Rl6AvTJKqqKvf5TIcRBrVYX6G9u-FN_r3JkLu5_Nbtv-CFaFr5u2zkHsxr0zMQyQJskPPT7aDLlZcFeAbBQXyU7O-E-y1CtN05VnLWnAr0r2vbmkaEYSpKQwm7sp_yJHNm7diX1c690sm4lEpVmkQ1zA-sVhhfm8fsu_pQzTgyHf-VvtFnnPYPLJ_D0eGmguP_yssQjxtIK7rMtMIEjVQ5E3DMEYO7DDRCO1Dy5VFvyxCbkHDbudf7ULpcsNy0]
+Entity Relationship Diagram : [https://www.plantuml.com/plantuml/duml/bLPVR-Cs37_Ffn3kfUsm0BTkE-psTBv4NOmwVvOulGs78T3PQYoSBGMItAwuzBkFffTOTc8jUsbfaQB87tyayy5OfcrPv0CkhR0lvCtQSFs6C4DA4CYt0I7V4P6INqauYyddnVrVS38SmfzSROM4yuTWEPe4o-iVRs_8R1wJsJgAo7eM_hwcOBLZnZmhdJg6xz-TCzGgvvl3Gut-yns--2YqiP8LtF7pxgV6JnKF-oyBAPAl7eic5bumaRTIUtjYHWWOtZuoCFiudqSqc0rU1qSKbv1DXIAcvKEnYSS3uZCNsypMjxjgzzK5iqacbQsVtXs-VEy_SMs4Skju9bUmWmTotbD4KAVCLjeudD9L74mNPpomqcPAjx67uqH92_5Nb-aVCHmOM_kYi_Nq-cgy3ExYg--l5kkFKRYQq378rVtm0SGc11U52TSA0SX0yEL-4HSqDsNXovoRH8kTHH0n1rShYkq6wf0vzt-u_UMcSVyaKguy9cvYeUK59YP0y2MMCCktIhySKVn4WyLy1j0zX74GXV6V8AuMuJACNGmlH2HHfij5F2qA9JTVb2pDgPObLZpnpIbOZgxK31KTce_fNR2EukktD_-Eapv7gBpOKvA9F6q63iwP3jQ4FZxon1uXtt3yzY2FPlrJpBxi6cQFvjCfrYGOnS3cYkF1QWLIkoJrcouvtj-Uv_rgn_CSWpMLv0aJEwC_JALJhXlTvUJmjqDJeMPcjXYKCRtrweQ9AgNrbxKsjABWbzW9QRb-OhdVLgayLS_o599K6CjaqXaFXtsrANTRpLBUAHwe3K-KJFlrDXFQenPmspzMKbuedqMNDYxLaJqNS1tjBcVH_-RpFNzv1YSOqzTQzeLJNzkqUcn2btDeh32cKvnuD8ewtOMN-fC0QfHUqlSiu4Nv9HScuzgqL_5cTrHWBgNXklTrpAkvssVdrj8oAumLILt8mvSFDgN5LiZ-_NRQSlw5tnrp3o7z1DYFed1qtxEmLznQ8RTrpBNiYnYuuAz8KpSSGDs8rii8XsqyWN-LGKzOaQf3ofKl75nVIXwzH_FVmbcLy986CGLXJ2EA0Xrtrot-zldRDd7wwI1sRjlyt8uQVsZkzyEX-ePk1jMVmm6aCAXc_k4RMzSzEJJOe5fWlZDd3mxGIyjbIzDrSxO9NjLmkDyt9FTQOLuVk4pB8ly7]
