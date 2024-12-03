@@ -1,13 +1,26 @@
-SETTING: id, key, value, type
-MANAGES, 0N USER, 11 SETTING
-USER: id, login, password, firstname, lastname, nickname, email, 2fa
-PUBLISHES, 0N USER, 0N PATCHNOTE
-PATCHNOTE: id, version, title, date, author, content, state
-:
+ItemEffect: Type, Effect
+HasSpellEffect, 1N Spell, 0N SpellEffect
+Spell: Order, Name, Description, Passive, Charge, ChargeCount, ChargeTime, ChargeInterval, Cooldown, Distance, FirstUpgrade, SecondUpgrade, ThirdUpgrade, IconPath, DemoPath
+Casts, 1N Hero, 0N Spell
+Patchnote: Version, Title, Date, Author, Content, State
+Records, 1N User, 1N Log
+Log: Action, Context, Ip
+Setting: Key, Value, Type
 
-LOG: id, action, context, ip
-RECORDS, 1N USER, 1N LOG
-ANALYZES, 0N USER, 11 STATISTIC
-STATISTIC: id, origin, count, date, type
-ASSIGNS, 1N USER, 11 ROLE
-ROLE: id, name, weight
+HasEffect, 1N Item, 0N ItemEffect
+SpellEffect: Effect, Order
+HasKeywordSpell, 0N Spell, 1N Keyword
+Hero: Name, Resume, Description, ImgPath, VideoPath
+Publishes, 0N User, 0N Patchnote
+User: Login, Password, Firstname, Lastname, Nickname, Email, 2Fa
+Assigns, 1N User, 11 Role
+Statistic: Origin, Count, Date, Type
+
+Item: Category, Name, Cost, CommonBonus, Description, ActiveDuration, PassiveDuration, ChildId
+HasKeywordItem, 0N Item, 1N Keyword
+Keyword: Value
+HasKeywordHero, 0N Hero, 1N Keyword
+:
+:
+Role: Name, Weight
+:
