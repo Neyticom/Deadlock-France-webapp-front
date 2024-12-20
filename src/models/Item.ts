@@ -9,11 +9,11 @@ interface ItemAttributes {
   category: string;
   cost: number;
   common_bonus: number;
-  active_description?: string;
+  active_description: string;
   active_duration: number;
-  passive_description?: string;
+  passive_description: string;
   passive_duration: number;
-  child_id?: number;
+  child_id: number | null;
 }
 
 class Item extends Model {}
@@ -56,7 +56,8 @@ Item.init(
     },
     active_description: {
       type: DataTypes.TEXT,
-      allowNull: true,
+      allowNull: false,
+      defaultValue: '',
     },
     active_duration: {
       type: DataTypes.INTEGER,
@@ -65,7 +66,8 @@ Item.init(
     },
     passive_description: {
       type: DataTypes.TEXT,
-      allowNull: true,
+      allowNull: false,
+      defaultValue: '',
     },
     passive_duration: {
       type: DataTypes.INTEGER,

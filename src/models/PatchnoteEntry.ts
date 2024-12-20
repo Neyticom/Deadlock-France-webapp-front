@@ -1,43 +1,67 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/database';
 import Patchnote from './Patchnote';
-import User from './User';
+import Ressource from './Ressource';
 
-interface PatchnotePublisherAttributes {
-  user_id: number;
+interface PatchnoteEntryAttributes {
+  id: number;
   patchnote_id: number;
+  ressource_id: number;
+  category: string;
+  position: number;
+  description: string;
 }
 
-class PatchnotePublisher extends Model {}
+class PatchnoteEntry extends Model {}
 
-PatchnotePublisher.init(
+PatchnoteEntry.init(
   {
-    user_id: {
+    id: {
       type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
-      references: {
-        model: User,
-        key: 'id',
-      },
-      onDelete: 'CASCADE',
     },
     patchnote_id: {
       type: DataTypes.INTEGER,
-      primaryKey: true,
+      allowNull: false,
       references: {
         model: Patchnote,
         key: 'id',
       },
       onDelete: 'CASCADE',
     },
+    ressource_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: Ressource,
+        key: 'id',
+      },
+      onDelete: 'CASCADE',
+    },
+    category: {
+      type: DataTypes.STRING(20),
+      allowNull: false,
+      validate: {
+        isIn: [['BUFF', 'NERF', 'CHANGE', 'FIX']],
+      },
+    },
+    position: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
   },
   {
     sequelize,
-    tableName: 'patchnote_publishers',
-    modelName: 'PatchnotePublisher',
+    tableName: 'patchnote_entry',
+    modelName: 'PatchnoteEntry',
     timestamps: false,
   }
 );
 
-export default PatchnotePublisher;
-export type { PatchnotePublisherAttributes };
+export default PatchnoteEntry;
+export type { PatchnoteEntryAttributes };

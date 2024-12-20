@@ -1,26 +1,28 @@
-import express from 'express';
-import type { Request, Response } from 'express';
-import router from './routes/router';
-import sequelize from './config/database';
+import express from "express";
+import type { Request, Response } from "express";
+import router from "./routes/router";
+import db from "./models/index";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use('/api', router);
+app.use("/api", router);
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Deadlock France API');
+app.get("/", (req: Request, res: Response) => {
+	res.send("Deadlock France API");
 });
 
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log('Database connected...');
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
-    });
-  })
-  .catch((err) => {
-    console.error('Unable to connect to the database:', err);
-  });
+// Synchronisation de la base de données Sequelize
+db.sequelize
+	.sync({ alter: true })
+	.then(() => {
+		console.log("✅ Database synced successfully...");
+		app.listen(PORT, () => {
+			console.log(`🚀 Server is running on port ${PORT}`);
+		});
+	})
+	.catch((err) => {
+		console.error("❌ Database synchronization failed:", err.message);
+		process.exit(1);
+	});
