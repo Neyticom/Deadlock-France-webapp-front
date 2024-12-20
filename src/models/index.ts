@@ -8,8 +8,10 @@ import Item from './Item';
 import ItemEffect from './ItemEffect';
 import Keyword from './Keyword';
 import Patchnote from './Patchnote';
-import User from './User';
+import PatchnoteEntry from './PatchnoteEntry';
 import PatchnotePublisher from './PatchnotePublisher';
+import User from './User';
+import Role from './Role';
 import Log from './Log';
 import Statistic from './Statistic';
 import Setting from './Setting';
@@ -27,6 +29,9 @@ Item.belongsTo(Ressource, { foreignKey: 'ressource_id' });
 Ressource.hasMany(Keyword, { foreignKey: 'ressource_id', onDelete: 'CASCADE' });
 Keyword.belongsTo(Ressource, { foreignKey: 'ressource_id' });
 
+Ressource.hasMany(PatchnoteEntry, { foreignKey: 'ressource_id', onDelete: 'CASCADE' });
+PatchnoteEntry.belongsTo(Ressource, { foreignKey: 'ressource_id' });
+
 // Hero to Spell
 Hero.hasMany(Spell, { foreignKey: 'hero_id', onDelete: 'CASCADE' });
 Spell.belongsTo(Hero, { foreignKey: 'hero_id' });
@@ -41,6 +46,14 @@ ItemEffect.belongsTo(Item, { foreignKey: 'item_id' });
 
 // Item auto-relation (child_id)
 Item.hasOne(Item, { foreignKey: 'child_id', onDelete: 'SET NULL', as: 'ChildItem' });
+
+// Patchnote associations
+Patchnote.hasMany(PatchnoteEntry, { foreignKey: 'patchnote_id', onDelete: 'CASCADE' });
+PatchnoteEntry.belongsTo(Patchnote, { foreignKey: 'patchnote_id' });
+
+// Role to User
+Role.hasMany(User, { foreignKey: 'role_id', onDelete: 'CASCADE' });
+User.belongsTo(Role, { foreignKey: 'role_id' });
 
 // User to Patchnote through PatchnotePublisher
 User.belongsToMany(Patchnote, {
@@ -70,8 +83,10 @@ const db = {
   ItemEffect,
   Keyword,
   Patchnote,
-  User,
+  PatchnoteEntry,
   PatchnotePublisher,
+  User,
+  Role,
   Log,
   Statistic,
   Setting,
