@@ -11,7 +11,7 @@ interface PatchnoteAttributes {
   state: string;
 }
 
-class Patchnote extends Model<PatchnoteAttributes> {}
+class Patchnote extends Model {}
 
 Patchnote.init(
   {
