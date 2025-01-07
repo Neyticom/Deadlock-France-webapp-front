@@ -8,12 +8,12 @@ import ItemEffect from './ItemEffect';
 import Keyword from './Keyword';
 import Patchnote from './Patchnote';
 import PatchnoteEntry from './PatchnoteEntry';
-import PatchnotePublisher from './PatchnotePublisher';
 import User from './User';
 import Role from './Role';
 import Log from './Log';
 import Statistic from './Statistic';
 import Setting from './Setting';
+import UserHasRole from './UserHasRole';
 
 // Hero to Spell
 Hero.hasMany(Spell, {
@@ -66,29 +66,18 @@ PatchnoteEntry.belongsTo(Patchnote, {
 });
 
 // Role to User
-Role.hasMany(User, {
+Role.belongsToMany(User, {
   foreignKey: 'role_id',
-  as: 'users'
-});
-
-User.belongsTo(Role, {
-  foreignKey: 'role_id',
-  as: 'role'
-});
-
-// User to Patchnote through PatchnotePublisher
-User.belongsToMany(Patchnote, {
-  through: PatchnotePublisher,
-  foreignKey: 'user_id',
-  otherKey: 'patchnote_id',
-  as: 'patchnotes'
-});
-
-Patchnote.belongsToMany(User, {
-  through: PatchnotePublisher,
-  foreignKey: 'patchnote_id',
   otherKey: 'user_id',
+  through: UserHasRole,
   as: 'users'
+});
+
+User.belongsToMany(Role, {
+  foreignKey: 'user_id',
+  otherKey: 'role_id',
+  through: UserHasRole,
+  as: 'roles'
 });
 
 // User to Log
@@ -112,7 +101,6 @@ const database = {
   Keyword,
   Patchnote,
   PatchnoteEntry,
-  PatchnotePublisher,
   User,
   Role,
   Log,

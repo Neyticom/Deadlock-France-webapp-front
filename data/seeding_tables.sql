@@ -4,17 +4,17 @@ INSERT INTO "role" ("name", "weight") VALUES
 ('Admin', 100),
 ('User', 10);
 
-INSERT INTO "user" ("login", "password", "role_id", "firstname", "lastname", "nickname", "email", "2fa") VALUES
-('admin', 'password_hash_1', 1, 'Admin', 'User', 'Admin123', 'admin@example.com', TRUE),
-('johndoe', 'password_hash_3', 2, 'John', 'Doe', 'Johnny', 'john.doe@example.com', FALSE);
+INSERT INTO "user" ("login", "password", "firstname", "lastname", "nickname", "email", "2fa") VALUES
+('admin', 'password_hash_1', 'Admin', 'User', 'Admin123', 'admin@example.com', TRUE),
+('johndoe', 'password_hash_3', 'John', 'Doe', 'Johnny', 'john.doe@example.com', FALSE);
+
+INSERT INTO "user_has_role" ("user_id", "role_id") VALUES
+(1, 1),
+(2, 2);
 
 INSERT INTO "patchnote" ("version", "title", "date", "author", "content", "state") VALUES
 ('1.0.0', 'Initial Release', NOW(), 'Admin123', 'First release notes content.', 'PUBLISHED'),
 ('1.1.0', 'Update Patch', NOW() - INTERVAL '1 DAY', 'Johnny', 'Bug fixes and performance improvements.', 'DRAFT');
-
-INSERT INTO "patchnote_publisher" ("user_id", "patchnote_id") VALUES
-(1, 1),
-(1, 2);
 
 INSERT INTO "hero" ("name", "resume", "description", "img_path", "video_path") VALUES
 ('Hero 1', 'Hero 1 resume', 'Description of Hero 1.', '/images/hero1.png', '/videos/hero1.mp4'),
