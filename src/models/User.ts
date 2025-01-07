@@ -1,6 +1,5 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/database';
-import Role from './Role';
 
 interface UserAttributes {
   login: string;
@@ -10,7 +9,6 @@ interface UserAttributes {
   nickname: string;
   email: string;
   twoFactor: boolean;
-  role_id: number;
 }
 
 class User extends Model {}
@@ -49,14 +47,6 @@ User.init(
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false
-    },
-    role_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: Role,
-        key: 'id'
-      }
     }
   },
   {
