@@ -1,7 +1,7 @@
 import express from "express";
 import type { Request, Response } from "express";
 import router from "./routes/router";
-import db from "./models/index";
+import database from "./models/index";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,7 +14,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 // Synchronisation de la base de données Sequelize
-db.sequelize
+database.sequelize
 	.sync({ alter: true })
 	.then(() => {
 		console.log("✅ Database synced successfully...");

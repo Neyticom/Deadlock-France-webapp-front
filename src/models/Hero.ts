@@ -1,10 +1,8 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/database';
-import Ressource from './Ressource';
 
 interface HeroAttributes {
-  id: number;
-  ressource_id: number;
+  name: string;
   resume: string;
   description: string;
   img_path: string;
@@ -15,19 +13,10 @@ class Hero extends Model {}
 
 Hero.init(
   {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    ressource_id: {
-      type: DataTypes.INTEGER,
+    name: {
+      type: DataTypes.STRING(64),
       allowNull: false,
-      references: {
-        model: Ressource,
-        key: 'id',
-      },
-      onDelete: 'CASCADE',
+      unique: true
     },
     resume: {
       type: DataTypes.STRING(96),
@@ -39,20 +28,17 @@ Hero.init(
     },
     img_path: {
       type: DataTypes.STRING(128),
-      allowNull: true,
-      defaultValue: '',
+      unique: true
     },
     video_path: {
       type: DataTypes.STRING(128),
-      allowNull: true,
-      defaultValue: '',
+      unique: true
     },
   },
   {
     sequelize,
     tableName: 'hero',
-    modelName: 'Hero',
-    timestamps: true,
+    modelName: 'Hero'
   }
 );
 

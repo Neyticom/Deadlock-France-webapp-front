@@ -27,7 +27,7 @@ PatchnotePublisher.init(
   },
   {
     sequelize,
-    tableName: 'patchnote_publishers',
+    tableName: 'patchnote_publisher',
     modelName: 'PatchnotePublisher',
     timestamps: false,
   }

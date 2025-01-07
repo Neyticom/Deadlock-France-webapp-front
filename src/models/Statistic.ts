@@ -2,7 +2,6 @@ import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/database';
 
 interface StatisticAttributes {
-  id: number;
   origin: string;
   count: number;
   date: Date;
@@ -13,11 +12,6 @@ class Statistic extends Model {}
 
 Statistic.init(
   {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
     origin: {
       type: DataTypes.STRING(96),
       allowNull: false,
@@ -29,17 +23,17 @@ Statistic.init(
     date: {
       type: DataTypes.DATE,
       allowNull: false,
+      defaultValue: new Date(Date.now()).setMinutes(0, 0, 0)
     },
     type: {
       type: DataTypes.ENUM('VIEW', 'CLICK'),
-      allowNull: false,
+      allowNull: false
     },
   },
   {
     sequelize,
     tableName: 'statistic',
-    modelName: 'Statistic',
-    timestamps: false,
+    modelName: 'Statistic'
   }
 );
 

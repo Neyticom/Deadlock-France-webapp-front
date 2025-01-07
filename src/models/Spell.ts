@@ -1,11 +1,8 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/database';
 import Hero from './Hero';
-import Ressource from './Ressource';
 
 interface SpellAttributes {
-  id: number;
-  ressource_id: number;
   hero_id: number;
   name: string;
   order: number;
@@ -28,98 +25,78 @@ class Spell extends Model {}
 
 Spell.init(
   {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    ressource_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: Ressource,
-        key: 'id',
-      },
-      onDelete: 'CASCADE',
-    },
     hero_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: Hero,
-        key: 'id',
+        key: 'id'
       },
-      onDelete: 'CASCADE',
+      onDelete: 'CASCADE'
     },
     name: {
       type: DataTypes.STRING(64),
       allowNull: false,
+      unique: true
     },
     order: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: false
     },
     description: {
       type: DataTypes.TEXT,
-      allowNull: false,
+      allowNull: false
     },
     passive: {
       type: DataTypes.BOOLEAN,
-      allowNull: false,
+      allowNull: false
     },
     charge: {
       type: DataTypes.BOOLEAN,
-      allowNull: false,
+      allowNull: false
     },
     charge_count: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 0,
+      defaultValue: 0
     },
     charge_time: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 0,
+      defaultValue: 0
     },
     charge_interval: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 0,
+      defaultValue: 0
     },
     cooldown: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: false
     },
     distance: {
-      type: DataTypes.STRING(96),
-      allowNull: true,
+      type: DataTypes.STRING(96)
     },
     first_upgrade: {
-      type: DataTypes.STRING(192),
-      allowNull: true,
+      type: DataTypes.STRING(192)
     },
     second_upgrade: {
-      type: DataTypes.STRING(192),
-      allowNull: true,
+      type: DataTypes.STRING(192)
     },
     third_upgrade: {
-      type: DataTypes.STRING(192),
-      allowNull: true,
+      type: DataTypes.STRING(192)
     },
     icon_path: {
-      type: DataTypes.STRING(128),
-      allowNull: true,
+      type: DataTypes.STRING(128)
     },
     demo_path: {
-      type: DataTypes.STRING(128),
-      allowNull: true,
+      type: DataTypes.STRING(128)
     },
   },
   {
     sequelize,
     tableName: 'spell',
-    modelName: 'Spell',
-    timestamps: false,
+    modelName: 'Spell'
   }
 );
 
