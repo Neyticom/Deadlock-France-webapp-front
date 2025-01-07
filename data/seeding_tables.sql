@@ -12,7 +12,7 @@ INSERT INTO "patchnote" ("version", "title", "date", "author", "content", "state
 ('1.0.0', 'Initial Release', NOW(), 'Admin123', 'First release notes content.', 'PUBLISHED'),
 ('1.1.0', 'Update Patch', NOW() - INTERVAL '1 DAY', 'Johnny', 'Bug fixes and performance improvements.', 'DRAFT');
 
-INSERT INTO "patchnote_publishers" ("user_id", "patchnote_id") VALUES
+INSERT INTO "patchnote_publisher" ("user_id", "patchnote_id") VALUES
 (1, 1),
 (1, 2);
 

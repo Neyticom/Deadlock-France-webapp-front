@@ -1,6 +1,6 @@
 BEGIN;
 
-DROP TABLE IF EXISTS "role", "user", "patchnote", "patchnote_publishers", "hero", "spell", "spell_effect", "item", "item_effect", "keyword", "log", "statistic", "setting", "patchnote_entry";
+DROP TABLE IF EXISTS "role", "user", "patchnote", "patchnote_publisher", "hero", "spell", "spell_effect", "item", "item_effect", "keyword", "log", "statistic", "setting", "patchnote_entry";
 DROP TYPE IF EXISTS "patchnote_state", "item_category", "patchnote_entry_category", "effect_type", "log_action", "statistic_type", "setting_type", "ressource_type";
 
 CREATE TABLE "role" (
@@ -33,7 +33,7 @@ CREATE TABLE "patchnote" (
     "state" patchnote_state NOT NULL
 );
 
-CREATE TABLE "patchnote_publishers" (
+CREATE TABLE "patchnote_publisher" (
     "user_id" INTEGER NOT NULL REFERENCES "user"(id) ON DELETE CASCADE,
     "patchnote_id" INTEGER NOT NULL REFERENCES "patchnote"(id) ON DELETE CASCADE,
     PRIMARY KEY ("user_id", "patchnote_id")
@@ -44,8 +44,8 @@ CREATE TABLE "hero" (
     "name" VARCHAR(64) NOT NULL UNIQUE,
     "resume" VARCHAR(96) NOT NULL,
     "description" TEXT NOT NULL,
-    "img_path" VARCHAR(128),
-    "video_path" VARCHAR(128)
+    "img_path" VARCHAR(128) UNIQUE,
+    "video_path" VARCHAR(128) UNIQUE
 );
 
 CREATE TABLE "spell" (

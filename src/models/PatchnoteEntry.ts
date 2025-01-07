@@ -1,13 +1,12 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/database';
 import Patchnote from './Patchnote';
-import Ressource from './Ressource';
 
 interface PatchnoteEntryAttributes {
-  id: number;
   patchnote_id: number;
-  ressource_id: number;
   category: string;
+  ressource_type: 'HERO' | 'ITEM' | 'SPELL';
+  ressource_id: number;
   position: number;
   description: string;
 }
@@ -16,50 +15,40 @@ class PatchnoteEntry extends Model {}
 
 PatchnoteEntry.init(
   {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
     patchnote_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: Patchnote,
-        key: 'id',
+        key: 'id'
       },
-      onDelete: 'CASCADE',
+      onDelete: 'CASCADE'
+    },
+    ressource_type: {
+      type: DataTypes.ENUM('HERO', 'ITEM', 'SPELL'),
+      allowNull: false
     },
     ressource_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: Ressource,
-        key: 'id',
-      },
-      onDelete: 'CASCADE',
+      allowNull: false
     },
     category: {
-      type: DataTypes.STRING(20),
-      allowNull: false,
-      validate: {
-        isIn: [['BUFF', 'NERF', 'CHANGE', 'FIX']],
-      },
+      type: DataTypes.ENUM('BUFF', 'NERF', 'CHANGE', 'FIX'),
+      allowNull: false
     },
     position: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: false
     },
     description: {
       type: DataTypes.TEXT,
-      allowNull: false,
-    },
+      allowNull: false
+    }
   },
   {
     sequelize,
     tableName: 'patchnote_entry',
-    modelName: 'PatchnoteEntry',
-    timestamps: false,
+    modelName: 'PatchnoteEntry'
   }
 );
 
