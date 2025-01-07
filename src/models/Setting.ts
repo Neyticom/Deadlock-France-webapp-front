@@ -2,9 +2,8 @@ import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/database';
 
 interface SettingAttributes {
-  id: number;
   key: string;
-  value: string | null;
+  value: string;
   type: 'URL' | 'PATH' | 'TEXT';
 }
 
@@ -12,29 +11,22 @@ class Setting extends Model {}
 
 Setting.init(
   {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
     key: {
       type: DataTypes.STRING(64),
-      allowNull: false,
+      allowNull: false
     },
     value: {
-      type: DataTypes.TEXT,
-      allowNull: true,
+      type: DataTypes.TEXT
     },
     type: {
       type: DataTypes.ENUM('URL', 'PATH', 'TEXT'),
-      allowNull: false,
-    },
+      allowNull: false
+    }
   },
   {
     sequelize,
     tableName: 'setting',
-    modelName: 'Setting',
-    timestamps: false,
+    modelName: 'Setting'
   }
 );
 

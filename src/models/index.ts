@@ -1,6 +1,5 @@
 import sequelize from '../config/database';
 
-import Ressource from './Ressource';
 import Hero from './Hero';
 import Spell from './Spell';
 import SpellEffect from './SpellEffect';
@@ -16,66 +15,95 @@ import Log from './Log';
 import Statistic from './Statistic';
 import Setting from './Setting';
 
-// Ressource associations
-Ressource.hasOne(Hero, { foreignKey: 'ressource_id', onDelete: 'CASCADE' });
-Hero.belongsTo(Ressource, { foreignKey: 'ressource_id' });
-
-Ressource.hasOne(Spell, { foreignKey: 'ressource_id', onDelete: 'CASCADE' });
-Spell.belongsTo(Ressource, { foreignKey: 'ressource_id' });
-
-Ressource.hasOne(Item, { foreignKey: 'ressource_id', onDelete: 'CASCADE' });
-Item.belongsTo(Ressource, { foreignKey: 'ressource_id' });
-
-Ressource.hasMany(Keyword, { foreignKey: 'ressource_id', onDelete: 'CASCADE' });
-Keyword.belongsTo(Ressource, { foreignKey: 'ressource_id' });
-
-Ressource.hasMany(PatchnoteEntry, { foreignKey: 'ressource_id', onDelete: 'CASCADE' });
-PatchnoteEntry.belongsTo(Ressource, { foreignKey: 'ressource_id' });
-
 // Hero to Spell
-Hero.hasMany(Spell, { foreignKey: 'hero_id', onDelete: 'CASCADE' });
-Spell.belongsTo(Hero, { foreignKey: 'hero_id' });
+Hero.hasMany(Spell, {
+  foreignKey: 'hero_id',
+  as: 'spells'
+});
+
+Spell.belongsTo(Hero, {
+  foreignKey: 'hero_id',
+  as: 'hero'
+});
 
 // Spell to SpellEffect
-Spell.hasMany(SpellEffect, { foreignKey: 'spell_id', onDelete: 'CASCADE' });
-SpellEffect.belongsTo(Spell, { foreignKey: 'spell_id' });
+Spell.hasMany(SpellEffect, {
+  foreignKey: 'spell_id',
+  as: 'spell_effects'
+});
+
+SpellEffect.belongsTo(Spell, {
+  foreignKey: 'spell_id',
+  as: 'spell'
+});
 
 // Item to ItemEffect
-Item.hasMany(ItemEffect, { foreignKey: 'item_id', onDelete: 'CASCADE' });
-ItemEffect.belongsTo(Item, { foreignKey: 'item_id' });
+Item.hasMany(ItemEffect, {
+  foreignKey: 'item_id',
+  as: 'itemeffects'
+});
 
-// Item auto-relation (child_id)
-Item.hasOne(Item, { foreignKey: 'child_id', onDelete: 'SET NULL', as: 'ChildItem' });
+ItemEffect.belongsTo(Item, {
+  foreignKey: 'item_id',
+  as: 'item'
+});
 
-// Patchnote associations
-Patchnote.hasMany(PatchnoteEntry, { foreignKey: 'patchnote_id', onDelete: 'CASCADE' });
-PatchnoteEntry.belongsTo(Patchnote, { foreignKey: 'patchnote_id' });
+// Item parent-child
+Item.hasOne(Item, {
+  foreignKey: 'parent_id',
+  as: 'parent'
+});
+
+// Patchnote to PatchnoteEntry
+Patchnote.hasMany(PatchnoteEntry, {
+  foreignKey: 'patchnote_id',
+  as: 'patchnote_entries'
+});
+
+PatchnoteEntry.belongsTo(Patchnote, {
+  foreignKey: 'patchnote_id',
+  as: 'patchnote'
+});
 
 // Role to User
-Role.hasMany(User, { foreignKey: 'role_id', onDelete: 'CASCADE' });
-User.belongsTo(Role, { foreignKey: 'role_id' });
+Role.hasMany(User, {
+  foreignKey: 'role_id',
+  as: 'users'
+});
+
+User.belongsTo(Role, {
+  foreignKey: 'role_id',
+  as: 'role'
+});
 
 // User to Patchnote through PatchnotePublisher
 User.belongsToMany(Patchnote, {
   through: PatchnotePublisher,
   foreignKey: 'user_id',
   otherKey: 'patchnote_id',
-  onDelete: 'CASCADE',
+  as: 'patchnotes'
 });
+
 Patchnote.belongsToMany(User, {
   through: PatchnotePublisher,
   foreignKey: 'patchnote_id',
   otherKey: 'user_id',
-  onDelete: 'CASCADE',
+  as: 'users'
 });
 
 // User to Log
-User.hasMany(Log, { foreignKey: 'user_id', onDelete: 'CASCADE' });
-Log.belongsTo(User, { foreignKey: 'user_id' });
+User.hasMany(Log, {
+  foreignKey: 'user_id',
+  as: 'logs'
+});
 
-const db = {
+Log.belongsTo(User, {
+  foreignKey: 'user_id',
+  as: 'user'
+});
+
+const database = {
   sequelize,
-  Ressource,
   Hero,
   Spell,
   SpellEffect,
@@ -92,4 +120,4 @@ const db = {
   Setting,
 };
 
-export default db;
+export default database;

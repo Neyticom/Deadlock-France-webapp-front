@@ -2,61 +2,47 @@ import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/database';
 
 interface PatchnoteAttributes {
-  id: number;
   version: string;
   title: string;
   date: Date;
-  author: string | null;
-  content: string | null;
-  state: string;
+  author: string;
+  content: string;
+  state: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
 }
 
 class Patchnote extends Model {}
 
 Patchnote.init(
   {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
     version: {
       type: DataTypes.STRING(20),
       allowNull: false,
-      unique: true,
+      unique: true
     },
     title: {
       type: DataTypes.STRING(96),
-      allowNull: false,
+      allowNull: false
     },
     date: {
       type: DataTypes.DATE,
       allowNull: false,
-      unique: true,
+      unique: true
     },
     author: {
       type: DataTypes.STRING(64),
-      allowNull: true,
-      defaultValue: null,
     },
     content: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-      defaultValue: null,
+      type: DataTypes.TEXT
     },
     state: {
-      type: DataTypes.STRING(20),
-      allowNull: false,
-      validate: {
-        isIn: [['DRAFT', 'PUBLISHED', 'ARCHIVED']],
-      },
+      type: DataTypes.ENUM('DRAFT', 'PUBLISHED', 'ARCHIVED'),
+      allowNull: false
     },
   },
   {
     sequelize,
     tableName: 'patchnote',
-    modelName: 'Patchnote',
-    timestamps: false,
+    modelName: 'Patchnote'
   }
 );
 

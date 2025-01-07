@@ -3,7 +3,6 @@ import sequelize from '../config/database';
 import Spell from './Spell';
 
 interface SpellEffectAttributes {
-  id: number;
   spell_id: number;
   order: number;
   effect: string;
@@ -13,11 +12,6 @@ class SpellEffect extends Model {}
 
 SpellEffect.init(
   {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
     spell_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -39,8 +33,7 @@ SpellEffect.init(
   {
     sequelize,
     tableName: 'spell_effect',
-    modelName: 'SpellEffect',
-    timestamps: false,
+    modelName: 'SpellEffect'
   }
 );
 

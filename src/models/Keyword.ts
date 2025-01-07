@@ -1,9 +1,8 @@
 import { Model, DataTypes } from "sequelize";
 import sequelize from "../config/database";
-import Ressource from "./Ressource";
 
 interface KeywordAttributes {
-	id: number;
+	ressource_type: 'HERO' | 'ITEM' | 'SPELL';
 	ressource_id: number;
 	value: string;
 }
@@ -12,19 +11,13 @@ class Keyword extends Model {}
 
 Keyword.init(
 	{
-		id: {
-			type: DataTypes.INTEGER,
-			autoIncrement: true,
-			primaryKey: true,
+		ressource_type: {
+			type: DataTypes.ENUM('HERO', 'ITEM', 'SPELL'),
+			allowNull: false
 		},
 		ressource_id: {
 			type: DataTypes.INTEGER,
-			allowNull: false,
-			references: {
-				model: Ressource,
-				key: "id",
-			},
-			onDelete: "CASCADE",
+			allowNull: false
 		},
 		value: {
 			type: DataTypes.STRING(64),
@@ -35,8 +28,7 @@ Keyword.init(
 	{
 		sequelize,
 		tableName: "keyword",
-		modelName: "Keyword",
-		timestamps: false,
+		modelName: "Keyword"
 	},
 );
 
