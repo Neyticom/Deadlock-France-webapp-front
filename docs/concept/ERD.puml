@@ -4,7 +4,6 @@ entity "User" as user {
   --
   login : VARCHAR(32) NOT NULL UNIQUE
   password : VARCHAR(96) NOT NULL UNIQUE
-  role_id : INT NOT NULL [FK]
   firstname : VARCHAR(64) NOT NULL
   lastname : VARCHAR(64) NOT NULL
   nickname : VARCHAR(64) NOT NULL UNIQUE
@@ -17,6 +16,12 @@ entity "Role" as role {
   --
   name : VARCHAR(32) NOT NULL UNIQUE
   weight : INT NOT NULL UNIQUE
+}
+
+entity "UserHasRole" as user_has_role {
+  user_id : INT NOT NULL [FK]
+  --
+  role_id : INT NOT NULL [FK]
 }
 
 entity "Patchnote" as patchnote {
@@ -35,7 +40,8 @@ entity "Patchnote Entry" as patchnote_entry {
   --
   patchnote_id : INT NOT NULL [FK]
   category : ENUM('BUFF', 'NERF', 'CHANGE', 'FIX') NOT NULL
-  ressource_id : INT [FK]
+  ressource_type : ENUM('HERO','ITEM','SPELL') NOT NULL
+  ressource_id : INT NOT NULL
   position: INT NOT NULL
   description : TEXT NOT NULL
 }
@@ -43,7 +49,7 @@ entity "Patchnote Entry" as patchnote_entry {
 entity "Hero" as hero {
   * id : INT [PK]
   --
-  name : VARCHAR(64) NOT NULL UNIQUE
+  name VARCHAR(64) NOT NULL UNIQUE
   resume : VARCHAR(96) NOT NULL
   description : TEXT NOT NULL
   img_path : VARCHAR(128) UNIQUE
@@ -54,14 +60,14 @@ entity "Item" as item {
   * id : INT [PK]
   --
   category : ENUM('WEAPON','VITALITY','SPIRIT') NOT NULL
-  name : VARCHAR(64) NOT NULL UNIQUE
+  name VARCHAR(64) NOT NULL UNIQUE
   cost : INT NOT NULL
   common_bonus : INT NOT NULL
   active_description : TEXT
   active_duration : INT NOT NULL DEFAULT(0)
   passive_description : TEXT
   passive_duration : INT NOT NULL DEFAULT(0)
-  child_id : INT [FK]
+  parent_id : INT [FK]
 }
 
 entity "Item Effect" as item_effect {
@@ -104,15 +110,9 @@ entity "Spell Effect" as spell_effect {
 entity "Keyword" as keyword {
   * id : INT [PK]
   --
-  entity_type : ENUM('HERO','ITEM','SPELL') NOT NULL
-  entity_id : INT NOT NULL [FK]
+  ressource_type : ENUM('HERO','ITEM','SPELL') NOT NULL
+  ressource_id : INT NOT NULL
   value : VARCHAR(64) NOT NULL UNIQUE
-}
-
-entity "PatchnotePublishers" as patchnote_publishers {
-  user_id : INT NOT NULL [FK]
-  --
-  patchnote_id : INT NOT NULL [FK]
 }
 
 entity "Statistic" as statistic {
@@ -138,20 +138,16 @@ entity "Log" as log {
   action : ENUM('LOGIN','CREATE','DELETE','EDIT') NOT NULL
   context : TEXT
   user_id : INT NOT NULL [FK]
-  ip : VARCHAR(15) NOT NULL
+  ip : INET NOT NULL
 }
 
-role ||--o{ user
 user ||--o{ log
 hero ||--o{ spell
-hero ||--o{ keyword
-item ||--o{ keyword
 item ||--o{ item_effect
 spell ||--o{ spell_effect
-spell ||--o{ keyword
-patchnote_publishers }o--|| patchnote
-patchnote_publishers }o--|| user
+user_has_role }o--|| role
+user_has_role }o--|| user
 patchnote_entry }o--|| patchnote
 @enduml
 
-Entity Relationship Diagram : [https://www.plantuml.com/plantuml/dpng/bLPHRzis47xtho3wucIeWIxRYdLFLMAw5YBBdYob7Oh1O2N69YgH0aabCvh-zvseMgPbYVDUx1FlUFpkkpiUtojDfAwAV4IvPdgFNYMAobU8A5I1WBwD4Fe9iGpzWVmmHfzNzt_3ocG2FxdOCWxh3rvqD_UYgrzkhb6uZ56O105AGl_F18DLIPHw5ZAp3D-zxJEK8gURzg1M_tbcJdnaKcbE2chvUVlhqK-DX_oN1MVfLuV54Gij2CjFGdjpPeOG6Duy4Z2xNIu3x8MZxwEMnGYYgLaqORbORF6uI7ocRBlJpUwksZvrHNIwuq8tHvU7BzVvJrGg9kmyziGATd10JWUI2EgCw5eR-mkyZht5giS3gVHEo5FkOJaLN0F-UZF-5CE2qeql72QBg_4qycRn-FLubTm6_dgEfo3N-_q742q8VImWpBNSdtAneVMQWv7Mr56DAI3S2hblKTucizduDHg7E3B_45_u0TVIpFzamqH8KgL49TEZ-uFNKYYc8HVDeaqkLQbaPQtxGLDlt7CgXGbs1u8hmejw071MXIlZ3b08iMAx0I9trlwVRtw_Fhf_OXaLBXChC5_JmWJ6G704TfwNZzXRBKCecGS_zW8__Wl4zSgF_DXEoeMCf49rUz2i5eNWco-2L-fSIrBDdkZcd2nBLqbY59rQc-APbmJnrPlh7zVee2EZlDHJkcDvrgcz3jS8FpxILBUKRwZvTZ5lp0RxHU_BOqVVBHSBanFlBeOk1c7bhTSWdQQaETCkZdSt_Vs-BccU6x2gbXmmJMSCmnGoezBINLuSxdPeCtIS5ROotH6vTUecgQYuTgUrCTIie9VOCQwfV2AvsrQ8F1FF_9oIZ2bDUDgv7WvpUbELMqaosaaUg1LD1S-6zNh7f4FDOBVxMibe8LmMtRAnIzrKpmMrRkmkhwB_NS_tT5-_c0ochutiWjDisvpqs1n7IsWiFyOBS-FX8EXqbzaq70IKHjLVzEw7nwhwaZC5RQOwOxTi5IQM-d7PV_hbSzZEfIQQAStI9f67BnTjGh8juyFpxRpbt0-TxZNtuEEFmFrTuD_TZmSkBgeruzi6SoEx44Cjk3DYvSrCXWwY90hCPHlFuQys680LY0PIBbnmpFWIlFKUB3_uOHrmXBqOWp350JO2ddR7hNdp_MEz-Tpbm4gxRNuxHMqUs2ylauduPjoCwf_30eGmgk_ymxTfNNlbq62ZUe2vrgmvE39UJboUQMmtlKtmNKmcBo-erJcjJ5oT9-ovX_UKPrMH_mi0]
+Entity Relationship Diagram : [https://www.plantuml.com/plantuml/duml/jLRVRzis47xtNq7qnSbG0rqs5EkUgjXqBKIMFLjEEnI3m4cCJLGY3P9APZJzttUaOkk7BCOOi1VxTFUH_FZTySYFIXEfYpmRKAwPFg0t6qNb6qGKAi10tmS8_OHOYdv7VXYXhykxly0p6i5F9hQCW__UMurdtkhgbvjh52uY56w206r2_uyD1jIUAFKaP5e3VdX_3lZ0fDASvBI6VFzhXJGhajSGd2NV78XgDPeJbZN8l-l040BWpGC1sErY4M0l7FmOd7HQYOnQdIGOBfqgFWwPdYZRxdGvkXEsgrRPcH5b5ZybATuH5PzOM0zBsrDzdLQC3BOFKbjhINIouqANA-sFNwwzFbAfcAXNnHbT0GSBPBId922S4csYaJ_7wyYRBy_CG0gz4xAPPt0dWclWRmRZBn4ub2xdmk5cVZMShBnfD7mxN6vk0tyzmnEmpNZ_7ioAmbaL4EPQ7ffQnDJuN8fKqDwS9C1mA-JXnF9sCvqEtw9XY5Vs7_ONViB6clfVXWsb95LA53AXiJxigttEy6e1M_CZF8U_zH87GS-uBYr3MYYc8O-TG4fL8jdUn5uaFglPZ4fXXTg1yUhPS9zKO5hahbfnK4A8vTiOKh2hZV_vvhVhQlf7bbBXWjIsvMkQssqnC5pRwcJqC_QMYn1ISUz7Nk17Vzgi-2i_ggVb8ZqIeTfzmdhpNF3uRy4BrOsIHBD76dUbgiKAIMoWLQCJFFKsGNJrxlgbcVTEP8ENpoH1rQhux55eIOtmmmDDz4dncDflX_0Mrd_G6aTal9ZFRKgySGJ77uobjrw3rSn8kMQzDZxSd6yKwptDCajM6Sj1qnwBVff2fbHsa_ZwlUO-3LMAgWkjKK8x8hVEs2WH1TUEl9w0ckNq4XpZcif7ahcnGcIfUE9TILAcDE59gpiS7nDniTzAaj9MyY2iQ29usX_NEoOTOGQZtLqbfRbm8TfbKozrMpqNrBh5NLH5_wsUx-Z1FDmifs-bxQ3pFzr4K1k5g-hROcgYcT8iAPKyVhbu2ycsZFVVBzsQTpzHsdtctiUVOUVZm1_V3Niw1zMQyMt9kRHTZ24PRaKgtMm7Q3FQh0BRxQ8P_1b03wr0b9GouQ9ZBn31JxC7Yqz-Q3Qymbw4mPZW05i3JzhNdNsj_QChdkx7AzlR06u-EimOzFmy6edlXkh0DDVZjpqZ0tjTbvxwHJAmqGRq66a-gt-8qUZv6HdxVCGu1wr7uJ5sSWy-KfuMUVOl]

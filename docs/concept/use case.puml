@@ -5,26 +5,25 @@ left to right direction
 actor Admin
 actor User
 
-rectangle "Deadlock France Community Platform" {
+rectangle "Deadlock France" {
+
 
     Admin --> (User Authentication)
     Admin --> (2FA Authentication)
-    Admin --> (Create Patchnote)
-    Admin --> (Edit Patchnote)
-    Admin --> (Delete Patchnote)
-    Admin --> (View Statistics)
+    Admin --> (Manage Patchnotes)
+    Admin --> (Manage Users and Roles)
+    Admin --> (Manage Heroes, Spells, Items)
+    Admin --> (View Statistics and Logs)
     Admin --> (Modify Settings)
-    Admin --> (Access Logs)
-    Admin --> (Log Actions)
-
+    
     User --> (User Authentication)
-    User --> (Recover Password)
     User --> (View Patchnotes)
     User --> (Search Patchnotes)
+    User --> (Support Project)
     User --> (Increment Stats)
-
+    User --> (Recover Password)
 }
 
 @enduml
 
-Use Case : [http://www.plantuml.com/plantuml/uml/XP3FIiD04CRl-nH3JthenGUGXjQ2e50CUXzc9ydW_e7PYQM8xsuIXK8YyRRixxUpytsxOgZMn-1SuCR0CgYqdO4NPJB9oJaaomgLZv9-pw-5rRbHmDG6Xis1qOTCxt1KJCImpp7sIUm2fu3MP8qR-7GE07xcm7Px3pVZ6AXwwpYP48w_tSwTksFrdx9NHcCueL6Nil52UF1YA_Z0WLVVlmcVeJOqAIPK5lmvUsakKBEPf7R9Ao8k1Pxo7souX6egUc0Jd5fPx-Ugl33b3rOuOIddh7x6fzMloSeSrunAtOhmc4WvSh8f_u3TbtCxJhwFuHi0]
+Use Case : [https://www.plantuml.com/plantuml/uml/XPBHIaCn38RlynHXLmxSZGyW6yXme31sqFlGPkTKUvAHPWuHtzrrAiAEHtlH5lxl_zEKp8kJ-RxF09ctZgvegUqSOp8EdbG0ABWQBcAVvEl-KDW0Aa3IPiR93LFC6fvnQII19_W607XS9nVEPjTuKKsus7l7uYbGpPwUCrVBnN_8FGcrZ6loq8awbp6YrYj84d6ZUHoxPLCkbzZiEEVZkNBkX_1ZuWCsJfwAf_0PUwVjBwaQq_OL6tPFygsVjlgUyPyuGsgzGOy_SiDaeViBsEzsQevhqoSEVYwl91ZtB7xgQU3USD0NjcD-AGUrE8LtW3bBh8Fo0G00]

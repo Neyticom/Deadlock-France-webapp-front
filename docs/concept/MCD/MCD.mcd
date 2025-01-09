@@ -1,26 +1,26 @@
-ItemEffect: Type, Effect
-HasSpellEffect, 1N Spell, 0N SpellEffect
-Spell: Order, Name, Description, Passive, Charge, ChargeCount, ChargeTime, ChargeInterval, Cooldown, Distance, FirstUpgrade, SecondUpgrade, ThirdUpgrade, IconPath, DemoPath
-Casts, 1N Hero, 0N Spell
-Patchnote: Version, Title, Date, Author, Content, State
-Records, 1N User, 1N Log
-Log: Action, Context, Ip
-Setting: Key, Value, Type
+Patchnote: version, title, date, author, content, state
+:
+Hero: name, resume, description, img_path, video_path
+Setting: key, value, type
+Keyword: ressource_type, ressource_id, value
+Statistic: origin, count, date, type
+HasRole, 0N user, 0N role
+User: login, password, firstname, lastname, nickname, email, 2fa
 
-HasEffect, 1N Item, 0N ItemEffect
-SpellEffect: Effect, Order
-HasKeywordSpell, 0N Spell, 1N Keyword
-Hero: Name, Resume, Description, ImgPath, VideoPath
-Publishes, 0N User, 0N Patchnote
-User: Login, Password, Firstname, Lastname, Nickname, Email, 2Fa
-Assigns, 1N User, 11 Role
-Statistic: Origin, Count, Date, Type
+Contains, 1N patchnote, 0N patchnoteEntry
+:
+Casts, 1N hero, 0N spell
+Spell: order, name, description, passive, charge, charge_count, charge_time, charge_interval, cooldown, distance, first_upgrade, second_upgrade, third_upgrade, icon_path, demo_path
+:
+ItemEffect: type, effect
+Role: name, weight
+Records, 1N user, 0N log
 
-Item: Category, Name, Cost, CommonBonus, Description, ActiveDuration, PassiveDuration, ChildId
-HasKeywordItem, 0N Item, 1N Keyword
-Keyword: Value
-HasKeywordHero, 0N Hero, 1N Keyword
+PatchnoteEntry: patchnote_id, category, ressource_type, ressource_id, position, description
 :
+SpellEffect: order, effect
+HasSpellEffect, 1N spell, 0N spellEffect
 :
-Role: Name, Weight
-:
+HasEffect, 1N item, 0N itemEffect
+Item: category, name, cost, common_bonus, active_description, active_duration, passive_description, passive_duration, parent_id
+Log: action, context, ip

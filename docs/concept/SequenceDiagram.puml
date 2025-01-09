@@ -1,5 +1,4 @@
 @startuml
-
 actor Admin
 actor User
 boundary Interface
@@ -7,54 +6,63 @@ control PatchNoteController
 control StatisticsController
 control SettingsController
 control AuthController
+control UserController
+control RoleController
+control HeroController
+control SpellController
+control ItemController
+control LogController
 database Database
 
 == Authentification ==
-Admin -> AuthController : Demande d'authentification (2FA)
-AuthController -> Database : Vérifie les informations d'identification
-Database --> AuthController : Retourne succès ou échec
-AuthController --> Admin : Résultat de l'authentification
+User -> AuthController : Connexion (Login/2FA)
+AuthController -> Database : Vérification des identifiants
+Database --> AuthController : Succès ou échec
+AuthController --> User : Résultat de la connexion
+
+== Gestion des Utilisateurs et Rôles ==
+Admin -> UserController : Créer/Modifier/Supprimer un utilisateur
+UserController -> Database : Mise à jour de la table user
+
+Admin -> RoleController : Gérer les rôles utilisateurs
+RoleController -> Database : Mise à jour de user_has_role
 
 == Gestion des Patch Notes ==
-Admin -> PatchNoteController : Ajouter une nouvelle patch note
-PatchNoteController -> Database : Enregistre la nouvelle patch note
-Database --> PatchNoteController : Confirmation d'enregistrement
-PatchNoteController --> Admin : Patch note ajoutée
+Admin -> PatchNoteController : Créer/Modifier/Supprimer un patch note
+PatchNoteController -> Database : Modification de la table patchnote
 
-Admin -> PatchNoteController : Modifier une patch note existante
-PatchNoteController -> Database : Met à jour la patch note
-Database --> PatchNoteController : Confirmation de mise à jour
-PatchNoteController --> Admin : Patch note modifiée
-
-Admin -> PatchNoteController : Supprimer une patch note
-PatchNoteController -> Database : Supprime la patch note
-Database --> PatchNoteController : Confirmation de suppression
-PatchNoteController --> Admin : Patch note supprimée
-
-User -> PatchNoteController : Consulter les patch notes
-PatchNoteController -> Database : Récupère la liste des patch notes
-Database --> PatchNoteController : Liste des patch notes
-PatchNoteController --> User : Affiche les patch notes
-
-User -> PatchNoteController : Rechercher une patch note par mot-clé
-PatchNoteController -> Database : Recherche les patch notes correspondantes
-Database --> PatchNoteController : Résultats de la recherche
+User -> PatchNoteController : Rechercher/Consulter des patch notes
+PatchNoteController -> Database : Recherche dans patchnote
 PatchNoteController --> User : Affiche les résultats
 
+== Gestion des Héros ==
+Admin -> HeroController : Créer/Modifier/Supprimer un héros
+HeroController -> Database : Modification de la table hero
+
+== Gestion des Sorts ==
+Admin -> SpellController : Créer/Modifier/Supprimer un sort
+SpellController -> Database : Mise à jour des sorts
+
+== Gestion des Items ==
+Admin -> ItemController : Créer/Modifier/Supprimer un item
+ItemController -> Database : Mise à jour des items
+
 == Consultation des Statistiques ==
-Admin -> StatisticsController : Consulter les statistiques de vues
-StatisticsController -> Database : Récupère les données de statistiques
-Database --> StatisticsController : Données de statistiques
-StatisticsController --> Admin : Affiche les statistiques
+Admin -> StatisticsController : Consulter les statistiques
+StatisticsController -> Database : Récupération des données
+
+== Gestion des Logs ==
+Admin -> LogController : Consulter les logs utilisateur
+LogController -> Database : Récupération des logs
+LogController --> Admin : Affiche les logs
 
 == Modification des Paramètres du Site ==
-Admin -> SettingsController : Modifier les paramètres du site
-SettingsController -> Database : Met à jour les paramètres
-Database --> SettingsController : Confirmation de mise à jour
-SettingsController --> Admin : Paramètres modifiés
+Admin -> SettingsController : Modifier les paramètres
+SettingsController -> Database : Mise à jour des paramètres
 
-== Gestion du Bouton de Soutien ==
+== Soutien du Projet ==
 User -> Interface : Cliquer sur "Soutenir Deadlock France"
 Interface --> User : Redirection vers le site de dons
-
 @enduml
+
+Sequence Diagram : [https://www.plantuml.com/plantuml/uml/bPPDRXix3CVtEeMGrNkB842N1Lp4Q90Fe2c26EasK3HCh5IMN4egsjjq6UzxWxbOoV5KDcEXqow2Z2d-oHyfZZIdAHlCPUMLCZP7rFDkvSBuV9S0rKCieJFuNL-53FXeB2WRGyRezOt9TlanPdY_DNZ0khR89hkKdKsjHSZPXQVMqhpaPSFCA0tpRVIjv9U0iPLs3Tutx5SPLWtpX_YqP-rCDWycWJuR7vIQpGPS2DazEalrng1dCyMi-lZTgrBqMqq_0dnZh_yejWidRyxd_olfHiAQWIIV-WtkWdUGjEks-Kp8ILNFurQ-HR6sVqaw5jrlx1BiGIvICItvtlQRL7mscP9eRxJzpJgKUG6f0jnbvrqo6Gec3PcKFpqaBdoO7Jt6b9LZlm4ykOuTaTF3egpNw5QqLe8kku2gAblDk7Rqh_-XdsF14PFMFEX2AhLBBwU2X1VKHNfWJ1neztCc9VqdadAk-wL9zqYgW-OChuIcTq9sfFMgJBLbFOGAf55ItQICNHqJqPeXoX2apcMRvHPeGf3_JiZEim389Urnf6cGNHZTcJ2APGtj-Pi_4luInZqQPp4TzFUITZBArigNVQghoo60Oj6_DtD9gWEaHSGiYUGvCucKA80IcgaXJAnfT8SFCed2bhydSUIjf6GAX2LRa75gwabLhu0l1GHKysvWj3fsdYlSKokfQ0yU7N5bJRkx0-XY25JjOP_ez9L4PFW3YYTtSKf9zqaErh_Ma6YRNOu-kpAkcC7nP46pwbyoSc55Brm6KSBXdLedUInZlOkWfFVqHair0ouYTGG2iznWV8QyV_NLRmNkfUSzH9qeq16h83ZKPs0w7-rdVOucM3XILI9k9UWSWXsQy1MG-WCwSUKTyEuIoIc4ZZzVVW40]
