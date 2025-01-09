@@ -61,6 +61,7 @@
 | Méthode | Chemin                  | Request Body (JSON)       | Response Body (JSON)        | Status code (OK) | Description                            |
 | ------- | ----------------------- | ------------------------- | --------------------------- | ---------------- | -------------------------------------- |
 | GET     | /api/heroes             | -                         | Tableau de héros            | 200              | Récupérer tous les héros               |
+| GET     | /api/heroes/:id       | -                         | Données d'un héros           | 200              | Récupérer un héros par son ID        |
 | POST    | /api/heroes             | Données d'un héros        | Données du héros créé       | 201              | Créer un nouveau héros                 |
 | PATCH   | /api/heroes/:id         | Champs spécifiques        | Données du héros mis à jour | 200              | Modifier partiellement un héros       |
 | DELETE  | /api/heroes/:id         | -                         | {"message": "Héros supprimé"} | 200            | Supprimer un héros                    |
@@ -70,6 +71,7 @@
 | Méthode | Chemin                  | Request Body (JSON)       | Response Body (JSON)        | Status code (OK) | Description                            |
 | ------- | ----------------------- | ------------------------- | --------------------------- | ---------------- | -------------------------------------- |
 | GET     | /api/spells             | -                         | Tableau de sorts            | 200              | Récupérer tous les sorts               |
+| GET     | /api/spells/:id         | -                         | Données d'un sort           | 200              | Récupérer un sort par son ID           |
 | POST    | /api/spells             | Données d'un sort         | Données du sort créé        | 201              | Créer un nouveau sort                 |
 | PATCH   | /api/spells/:id         | Champs spécifiques        | Données du sort mis à jour  | 200              | Modifier partiellement un sort        |
 | DELETE  | /api/spells/:id         | -                         | {"message": "Sort supprimé"} | 200             | Supprimer un sort                     |
@@ -79,6 +81,7 @@
 | Méthode | Chemin                  | Request Body (JSON)       | Response Body (JSON)        | Status code (OK) | Description                            |
 | ------- | ----------------------- | ------------------------- | --------------------------- | ---------------- | -------------------------------------- |
 | GET     | /api/items              | -                         | Tableau d'items             | 200              | Récupérer tous les items               |
+| GET     | /api/items/:id          | -                         | Données d'un item           | 200              | Récupérer un item par son ID           |
 | POST    | /api/items              | Données d'un item         | Données de l'item créé      | 201              | Créer un nouvel item                  |
 | PATCH   | /api/items/:id          | Champs spécifiques        | Données de l'item mis à jour| 200              | Modifier partiellement un item        |
 | DELETE  | /api/items/:id          | -                         | {"message": "Item supprimé"} | 200             | Supprimer un item                     |
