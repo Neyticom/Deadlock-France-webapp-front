@@ -39,6 +39,7 @@
     "@types/express": "^5.0.0",
     "@types/node": "^22.10.2",
     "@types/sequelize": "^4.28.20",
+    "dotenv-cli": "^8.0.0",
     "nodemon": "^3.1.7",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
