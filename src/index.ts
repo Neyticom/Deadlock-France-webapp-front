@@ -1,7 +1,7 @@
-import express from "express";
-import type { Request, Response } from "express";
-import router from "./routes/router";
-import database from "./models/index";
+import express from 'express';
+import type { Request, Response } from 'express'; 
+import router from './routes/router';
+import database from './models/index';
 
 const app = express();
 const PORT = process.env.PORT || 3000;

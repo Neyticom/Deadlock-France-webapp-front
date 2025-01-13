@@ -1,9 +1,9 @@
-import { Model, DataTypes } from "sequelize";
-import sequelize from "../config/database";
-import User from "./User";
+import { Model, DataTypes } from 'sequelize';
+import sequelize from '../config/database';
+import User from './User';
 
 interface LogAttributes {
-	action: "LOGIN" |"CREATE" | "DELETE" | "EDIT";
+	action: 'LOGIN' |'CREATE' | 'DELETE' | 'EDIT';  
 	context: string;
 	user_id: number;
 	ip: string;
@@ -14,7 +14,7 @@ class Log extends Model {}
 Log.init(
 	{
 		action: {
-			type: DataTypes.ENUM("LOGIN", "CREATE", "DELETE", "EDIT"),
+			type: DataTypes.ENUM('LOGIN', 'CREATE', 'DELETE', 'EDIT'), 
 			allowNull: false
 		},
 		context: {
@@ -25,7 +25,7 @@ Log.init(
 			allowNull: false,
 			references: {
 				model: User,
-				key: "id"
+				key: 'id'
 			}
 		},
 		ip: {
@@ -35,8 +35,8 @@ Log.init(
 	},
 	{
 		sequelize,
-		tableName: "log",
-		modelName: "Log"
+		tableName: 'log',
+		modelName: 'Log'
 	},
 );
 

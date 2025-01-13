@@ -1,5 +1,5 @@
-import type { Request, Response, NextFunction } from "express";
-import Hero from "../models/Hero";
+import type { Request, Response, NextFunction } from 'express';
+import Hero from '../models/Hero';
 
 const heroController = {
   getAllHeroes: async (req: Request, res: Response, next: NextFunction): Promise<void> => {

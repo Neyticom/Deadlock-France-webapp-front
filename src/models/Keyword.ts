@@ -1,5 +1,5 @@
-import { Model, DataTypes } from "sequelize";
-import sequelize from "../config/database";
+import { Model, DataTypes } from 'sequelize';
+import sequelize from '../config/database';
 
 interface KeywordAttributes {
 	ressource_type: 'HERO' | 'ITEM' | 'SPELL';
@@ -27,8 +27,8 @@ Keyword.init(
 	},
 	{
 		sequelize,
-		tableName: "keyword",
-		modelName: "Keyword"
+		tableName: 'keyword',
+		modelName: 'Keyword'
 	},
 );
 
