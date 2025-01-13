@@ -17,7 +17,7 @@ const itemController = {
       const item = await Item.findByPk(id);
 
       if (!item) {
-        res.status(404).json({ error: 'Item not found' });
+        res.status(404).json({ error: "Item not found" });
         return;
       }
 
@@ -32,7 +32,7 @@ const itemController = {
       const { name, description, price } = req.body;
 
       if (!name || !description || price == null) {
-        res.status(400).json({ error: 'Missing required fields: name, description, price' });
+        res.status(400).json({ error: "Missing required fields: name, description, price" });
         return;
       }
 
@@ -49,7 +49,7 @@ const itemController = {
       const item = await Item.findByPk(id);
 
       if (!item) {
-        res.status(404).json({ error: 'Item not found' });
+        res.status(404).json({ error: "Item not found" });
         return;
       }
 
@@ -67,12 +67,12 @@ const itemController = {
       const item = await Item.findByPk(id);
 
       if (!item) {
-        res.status(404).json({ error: 'Item not found' });
+        res.status(404).json({ error: "Item not found" });
         return;
       }
 
       await item.destroy();
-      res.status(200).json({ message: 'Item deleted' });
+      res.status(200).json({ message: "Item deleted" }); 
     } catch (error) {
       next(error);
     }

@@ -1,5 +1,5 @@
-import type { Request, Response, NextFunction } from "express";
-import SpellEffect from "../models/SpellEffect";
+import type { Request, Response, NextFunction } from 'express';
+import SpellEffect from '../models/SpellEffect';
 
 const spellEffectController = {
   getAllSpellEffects: async (req: Request, res: Response, next: NextFunction) => {
