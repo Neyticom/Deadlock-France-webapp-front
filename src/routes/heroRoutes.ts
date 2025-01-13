@@ -6,7 +6,7 @@ const heroRoutes = Router();
 heroRoutes.get("/", heroController.getAllHeroes);
 heroRoutes.get("/:id", heroController.getHeroById);
 heroRoutes.post("/", heroController.createHero);
-heroRoutes.put("/:id", heroController.updateHero);
+heroRoutes.patch("/:id", heroController.updateHero);
 heroRoutes.delete("/:id", heroController.deleteHero);
 
 export default heroRoutes;
