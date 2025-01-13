@@ -1,5 +1,5 @@
-import type { Request, Response, NextFunction } from "express";
-import Spell from "../models/Spell";
+import type { Request, Response, NextFunction } from 'express';
+import Spell from '../models/Spell';
 
 const spellController = {
   getAllSpells: async (req: Request, res: Response, next: NextFunction): Promise<void> => {

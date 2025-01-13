@@ -1,5 +1,5 @@
-import type { Request, Response, NextFunction } from "express";
-import ItemEffect from "../models/ItemEffect";
+import type { Request, Response, NextFunction } from 'express';
+import ItemEffect from '../models/ItemEffect';
 
 const itemEffectController = {
   // Récupérer tous les effets d'un item
