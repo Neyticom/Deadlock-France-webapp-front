@@ -3,17 +3,21 @@ import mainController from '../controllers/mainController';
 import heroRoutes from './heroRoutes';
 import spellRoutes from './spellRoutes';
 import spellEffectRoutes from "./spellEffectRoutes";
-import errorHandler from '../middlewares/errorHandler';
 import itemRoutes from './itemRoutes';
+import itemEffectRoutes from "./itemEffectRoutes";
+import errorHandler from '../middlewares/errorHandler';
 
 const router = Router();
 
 router.get('/status', mainController.getStatus);
 
 router.use('/heroes', heroRoutes);
+
 router.use('/spells', spellRoutes);
 router.use("/spells/:id/effects", spellEffectRoutes);
+
 router.use('/items', itemRoutes);
+router.use("/items", itemEffectRoutes);
 
 router.use(errorHandler);
 
