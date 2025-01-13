@@ -43,7 +43,7 @@ const itemController = {
     }
   },
 
-  patchItem: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  updateItem: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { id } = req.params;
       const item = await Item.findByPk(id);
