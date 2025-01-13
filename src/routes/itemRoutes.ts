@@ -6,7 +6,7 @@ const itemRoutes = Router();
 itemRoutes.get('/', itemController.getAllItems);
 itemRoutes.get('/:id', itemController.getItemById);
 itemRoutes.post('/', itemController.createItem);
-itemRoutes.patch('/:id', itemController.patchItem);
+itemRoutes.patch('/:id', itemController.updateItem);
 itemRoutes.delete('/:id', itemController.deleteItem);
 
 export default itemRoutes;
