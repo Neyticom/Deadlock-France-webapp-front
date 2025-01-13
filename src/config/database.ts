@@ -18,22 +18,22 @@ const envSchema = Joi.object({
   .required();
 
 // Validation des variables d'environnement
-const { error, value: envVars } = envSchema.validate(process.env);
+const { error } = envSchema.validate(process.env);
 
 if (error) {
   throw new Error(`⚠️ Configuration error: ${error.message}`);
 }
 
-// Création de l'instance Sequelize avec la configuration validée
+// Création de l'instance Sequelize avec les variables validées
 const sequelize = new Sequelize(
-  envVars.DB_NAME,
-  envVars.DB_USER,
-  envVars.DB_PASSWORD,
+  process.env.DB_NAME as string, // Joi garantit que ces variables existent
+  process.env.DB_USER as string,
+  process.env.DB_PASSWORD as string,
   {
-    host: envVars.DB_HOST,
-    port: envVars.DB_PORT,
+    host: process.env.DB_HOST || 'localhost', // Valeur par défaut
+    port: Number(process.env.DB_PORT) || 5432, // Conversion explicite en nombre
     dialect: 'postgres',
-    logging: envVars.NODE_ENV === 'development' ? console.log : false, // Désactive les logs en production
+    logging: process.env.NODE_ENV === 'development' ? console.log : false, // Désactive les logs en production
     pool: {
       max: 10, // Connexions max
       min: 0,
@@ -42,7 +42,7 @@ const sequelize = new Sequelize(
     },
     define: {
       timestamps: true, // Ajout automatique de createdAt et updatedAt
-      underscored: true, // Noms de colonnes snake_case
+      underscored: true, // Noms de colonnes en snake_case
     },
   }
 );
