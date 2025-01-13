@@ -48,14 +48,14 @@ const heroController = {
     try {
       const { id } = req.params;
       const hero = await Hero.findByPk(id);
-
+  
       if (!hero) {
         res.status(404).json({ error: "Hero not found" });
         return;
       }
-
-      // Mise à jour des champs passés dans le corps de la requête
-      const updatedHero = await hero.update(req.body);
+  
+      // Avec PATCH, on met à jour uniquement les champs envoyés dans le body
+      const updatedHero = await hero.update(req.body, { fields: Object.keys(req.body) });
       res.status(200).json(updatedHero);
     } catch (error) {
       next(error);
