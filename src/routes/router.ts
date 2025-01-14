@@ -7,6 +7,7 @@ import itemRoutes from './itemRoutes';
 import itemEffectRoutes from './itemEffectRoutes';
 import patchnoteEntryRoutes from './patchnoteEntryRoutes';
 import errorHandler from '../middlewares/errorHandler';
+import keywordRoutes from './keywordRoutes';
 
 const router = Router();
 
@@ -21,6 +22,8 @@ router.use('/items', itemRoutes);
 router.use('/items', itemEffectRoutes);
 
 router.use('/patchnotes', patchnoteEntryRoutes);
+
+router.use('/keywords', keywordRoutes);
 
 router.use(errorHandler);
 
