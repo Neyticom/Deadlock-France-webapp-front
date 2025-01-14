@@ -12,6 +12,7 @@
 - [Spell Effects](#spell-effects---spelleffectcontroller)
 - [Items](#items---itemcontroller)
 - [Item Effects](#item-effects---itemeffectcontroller)
+- [Keywords](#keywords---keywordcontroller)
 - [Logs](#logs---logcontroller)
 - [Statistics](#statistics---statisticscontroller)
 - [Settings](#settings---settingscontroller)
@@ -119,6 +120,16 @@
 | POST    | /api/items/:id/effects     | Données d'un item effect | Données du item effect créé       | 201              | Créer un nouvel effet pour un item     |
 | PATCH   | /api/items/:id/effects/:id | Champs spécifiques       | Données du item effect mis à jour | 200              | Modifier partiellement un effet d'item |
 | DELETE  | /api/items/:id/effects/:id | -                        | {"message": "Effet supprimé"}     | 200              | Supprimer un effet d'item              |
+
+## Keywords - keywordController
+
+| Méthode | Chemin            | Request Body (JSON)  | Response Body (JSON)           | Status Code (OK) | Description                       |
+| ------- | ----------------- | -------------------- | ------------------------------ | ---------------- | --------------------------------- |
+| GET     | /api/keywords     | -                    | Tableau de keywords            | 200              | Récupérer tous les mots-clés      |
+| GET     | /api/keywords/:id | -                    | Données d'un keyword           | 200              | Récupérer un mot-clé par son ID   |
+| POST    | /api/keywords     | Données d'un keyword | Données du keyword créé        | 201              | Créer un nouveau mot-clé          |
+| PATCH   | /api/keywords/:id | Champs spécifiques   | Données du keyword mis à jour  | 200              | Modifier partiellement un mot-clé |
+| DELETE  | /api/keywords/:id | -                    | {"message": "Keyword deleted"} | 200              | Supprimer un mot-clé par son ID   |
 
 ## Logs - logController
 
