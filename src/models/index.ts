@@ -106,6 +106,7 @@ const database = {
   Log,
   Statistic,
   Setting,
+  UserHasRole
 };
 
 export default database;

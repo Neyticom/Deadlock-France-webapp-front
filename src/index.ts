@@ -13,16 +13,6 @@ app.get("/", (req: Request, res: Response) => {
 	res.send("Deadlock France API");
 });
 
-// Synchronisation de la base de données Sequelize
-database.sequelize
-	.sync({ force: true })
-	.then(() => {
-		console.log("✅ Database synced successfully...");
-		app.listen(PORT, () => {
-			console.log(`🚀 Server is running on port ${PORT}`);
-		});
-	})
-	.catch((err) => {
-		console.error("❌ Database synchronization failed:", err.message);
-		process.exit(1);
-	});
+app.listen(PORT, () => {
+	console.log(`🚀 Server is running on port ${PORT}`);
+});
