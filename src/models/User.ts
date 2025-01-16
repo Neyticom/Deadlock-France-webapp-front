@@ -43,10 +43,11 @@ User.init(
       allowNull: false,
       unique: true
     },
-    "2fa": {
+    twoFactor: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: false
+      defaultValue: false,
+      field: "2fa" // ✅ Alias du champ en base de données
     }
   },
   {
