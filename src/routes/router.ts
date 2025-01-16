@@ -7,8 +7,8 @@ import itemRoutes from './itemRoutes';
 import itemEffectRoutes from './itemEffectRoutes';
 import patchnoteRoutes from './patchnoteRoutes';
 import patchnoteEntryRoutes from './patchnoteEntryRoutes';
-import errorHandler from '../middlewares/errorHandler';
 import keywordRoutes from './keywordRoutes';
+import errorHandler from '../middlewares/errorHandler';
 
 const router = Router();
 
