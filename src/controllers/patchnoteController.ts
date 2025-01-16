@@ -170,11 +170,9 @@ const patchnoteController = {
 			});
 
 			if (patchnotes.length === 0) {
-				res
-					.status(200)
-					.json({
-						message: "Aucun contenu ne correspond au mot-clé recherché.",
-					});
+				res.status(200).json({
+					message: "Aucun contenu ne correspond au mot-clé recherché.",
+				});
 				return;
 			}
 
