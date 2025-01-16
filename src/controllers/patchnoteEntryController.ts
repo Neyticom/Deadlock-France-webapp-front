@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import PatchnoteEntry from '../models/PatchnoteEntry';
 
 const patchnoteEntryController = {
-  getAllEntries: async (req: Request, res: Response, next: NextFunction) => {
+  getAllEntries: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { id: patchnoteId } = req.params;
       const entries = await PatchnoteEntry.findAll({ where: { patchnote_id: patchnoteId } });
@@ -12,7 +12,7 @@ const patchnoteEntryController = {
     }
   },
 
-  getEntryById: async (req: Request, res: Response, next: NextFunction) => {
+  getEntryById: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { id: patchnoteId, id: entryId } = req.params;
       const entry = await PatchnoteEntry.findOne({ where: { id: entryId, patchnote_id: patchnoteId } });
@@ -28,7 +28,7 @@ const patchnoteEntryController = {
     }
   },
 
-  createEntry: async (req: Request, res: Response, next: NextFunction) => {
+  createEntry: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { id: patchnoteId } = req.params;
       const newEntry = await PatchnoteEntry.create({ ...req.body, patchnote_id: patchnoteId });
@@ -38,7 +38,7 @@ const patchnoteEntryController = {
     }
   },
 
-  updateEntry: async (req: Request, res: Response, next: NextFunction) => {
+  updateEntry: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { id: patchnoteId, id: entryId } = req.params;
       const entry = await PatchnoteEntry.findOne({ where: { id: entryId, patchnote_id: patchnoteId } });
@@ -55,7 +55,7 @@ const patchnoteEntryController = {
     }
   },
 
-  deleteEntry: async (req: Request, res: Response, next: NextFunction) => {
+  deleteEntry: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { id: patchnoteId, id: entryId } = req.params;
       const entry = await PatchnoteEntry.findOne({ where: { id: entryId, patchnote_id: patchnoteId } });

@@ -1,3 +1,4 @@
+import "../src/models";
 import database from '../src/models/index';
 
 // Synchronisation de la base de données Sequelize
