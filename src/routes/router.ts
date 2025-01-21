@@ -10,6 +10,7 @@ import patchnoteRoutes from "./patchnoteRoutes";
 import patchnoteEntryRoutes from "./patchnoteEntryRoutes";
 import keywordRoutes from "./keywordRoutes";
 import statisticRoutes from "./statisticRoutes";
+import logRoutes from "./logRoutes";
 import errorHandler from "../middlewares/errorHandler";
 
 const router = Router();
@@ -32,6 +33,8 @@ router.use("/patchnotes", patchnoteEntryRoutes);
 router.use("/keywords", keywordRoutes);
 
 router.use("/stats", statisticRoutes);
+
+router.use("/logs", logRoutes);
 
 router.use(errorHandler);
 
