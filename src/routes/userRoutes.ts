@@ -1,20 +1,19 @@
 import { Router } from 'express';
 import userController from '../controllers/userController';
-import authMiddleware from '../middlewares/authMiddleware';
+import validationMiddleware from '../middlewares/validationMiddleware';
+import userRoleSchema from '../schemas/userRole.schema';
 
 const userRoutes = Router();
 
-// Accès public (Aucune authentification requise)
-userRoutes.post('/', userController.createUser);
+// Routes pour les utilisateurs
+userRoutes.get('/', userController.getAllUsers);
+userRoutes.get('/:id', userController.getUserById);
+userRoutes.post('/', validationMiddleware(userRoleSchema.createUser), userController.createUser);
+userRoutes.patch('/:id', validationMiddleware(userRoleSchema.updateUser), userController.updateUser);
 
-// Accès utilisateur authentifié ("User" & "Admin")
-userRoutes.get('/', authMiddleware.verifyToken, userController.getAllUsers);
-userRoutes.get('/:id', authMiddleware.verifyToken, userController.getUserById);
-userRoutes.patch('/:id', authMiddleware.verifyToken, userController.updateUser);
-userRoutes.get('/:id/role', authMiddleware.verifyToken, userController.getUserRole);
-
-// Accès réservé aux administrateurs ("Admin" uniquement)
-userRoutes.patch('/:id/role', authMiddleware.verifyToken, authMiddleware.verifyAdmin, userController.updateUserRole);
-userRoutes.delete('/:id/role', authMiddleware.verifyToken, authMiddleware.verifyAdmin, userController.deleteUserRole);
+// Routes pour la gestion des rôles
+userRoutes.get('/:id/role', userController.getUserRole);
+userRoutes.patch('/:id/role', validationMiddleware(userRoleSchema.updateUserRole), userController.updateUserRole);
+userRoutes.delete('/:id/role', userController.deleteUserRole);
 
 export default userRoutes;

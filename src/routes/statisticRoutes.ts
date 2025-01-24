@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import statisticController from '../controllers/statisticController';
+import validationMiddleware from '../middlewares/validationMiddleware';
+import statisticSchema from '../schemas/statistic.schema';
 
 const statisticRoutes = Router();
 
@@ -10,7 +12,7 @@ statisticRoutes.get('/', statisticController.getAllStats);
 statisticRoutes.get('/search', statisticController.searchStats);
 
 // Ajouter ou mettre à jour une statistique (findOrCreate)
-statisticRoutes.post('/', statisticController.upsertStatistic);
-statisticRoutes.put('/', statisticController.upsertStatistic);
+statisticRoutes.post('/', validationMiddleware(statisticSchema.upsertStatistic), statisticController.upsertStatistic);
+statisticRoutes.put('/', validationMiddleware(statisticSchema.upsertStatistic), statisticController.upsertStatistic);
 
 export default statisticRoutes;
