@@ -4,6 +4,7 @@ import User from "../models/User";
 import Role from "../models/Role";
 import UserHasRole from "../models/UserHasRole";
 import logService from "../services/logService";
+import cryptoService from "../services/cryptoService";
 
 const userController = {
 	// Récupérer tous les utilisateurs
@@ -73,10 +74,13 @@ const userController = {
 				return;
 			}
 
+			// Hasher le mot de passe avant de créer l'utilisateur
+			const hashedPassword = await cryptoService.hashPassword(password);
+
 			// Création de l'utilisateur dans une transaction pour éviter l'incrémentation de l'ID en cas d'échec
 			const newUser = await User.create({
 				login,
-				password,
+				password: hashedPassword,
 				firstname,
 				lastname,
 				nickname,
@@ -122,6 +126,11 @@ const userController = {
 			if (!user) {
 				res.status(404).json({ error: "Utilisateur non trouvé" });
 				return;
+			}
+
+			// Vérification si le champ password est présent dans la requête
+			if (req.body.password) {
+				req.body.password = await cryptoService.hashPassword(req.body.password);
 			}
 
 			// Mise à jour des champs fournis dans le body
