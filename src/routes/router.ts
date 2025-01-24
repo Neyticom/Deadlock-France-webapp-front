@@ -6,6 +6,7 @@ import spellEffectRoutes from "./spellEffectRoutes";
 import itemRoutes from "./itemRoutes";
 import itemEffectRoutes from "./itemEffectRoutes";
 import userRoutes from "./userRoutes";
+import authRoutes from "./authRoutes";
 import patchnoteRoutes from "./patchnoteRoutes";
 import patchnoteEntryRoutes from "./patchnoteEntryRoutes";
 import keywordRoutes from "./keywordRoutes";
@@ -26,6 +27,7 @@ router.use("/items", itemRoutes);
 router.use("/items", itemEffectRoutes);
 
 router.use("/users", userRoutes);
+router.use("/auth", authRoutes);
 
 router.use("/patchnotes", patchnoteRoutes);
 router.use("/patchnotes", patchnoteEntryRoutes);
