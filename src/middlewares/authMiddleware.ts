@@ -39,17 +39,20 @@ const authMiddleware = {
 		next: NextFunction,
 	): Promise<void> => {
 		try {
-			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-			const user = (req as any).user;
+			// Vérifie que le token est valide avant de vérifier le rôle
+			await authMiddleware.verifyToken(req, res, async () => {
+				// biome-ignore lint/suspicious/noExplicitAny:
+				const user = (req as any).user;
 
-			if (!user || user.role !== "Admin") {
-				res
-					.status(403)
-					.json({ error: "Accès refusé, privilèges insuffisants" });
-				return;
-			}
+				if (!user || user.role !== "Admin") {
+					res
+						.status(403)
+						.json({ error: "Accès refusé, privilèges insuffisants" });
+					return;
+				}
 
-			next();
+				next();
+			});
 		} catch (error) {
 			next(error);
 		}
