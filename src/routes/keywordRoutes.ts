@@ -1,14 +1,46 @@
-import { Router } from 'express';
-import keywordController from '../controllers/keywordController';
-import validationMiddleware from '../middlewares/validationMiddleware';
-import keywordSchema from '../schemas/keyword.schema';
+import { Router } from "express";
+import keywordController from "../controllers/keywordController";
+import validationMiddleware from "../middlewares/validationMiddleware";
+import authMiddleware from "../middlewares/authMiddleware";
+import keywordSchema from "../schemas/keyword.schema";
 
 const keywordRoutes = Router();
 
-keywordRoutes.get('/', keywordController.getAllKeywords);
-keywordRoutes.get('/:id', keywordController.getKeywordById);
-keywordRoutes.post('/', validationMiddleware(keywordSchema.createKeyword), keywordController.createKeyword);
-keywordRoutes.patch('/:id', validationMiddleware(keywordSchema.updateKeyword), keywordController.updateKeyword);
-keywordRoutes.delete('/:id', keywordController.deleteKeyword);
+// Récupérer tous les mots-clés
+keywordRoutes.get(
+	"/",
+	authMiddleware.verifyToken,
+	keywordController.getAllKeywords,
+);
+
+// Récupérer un mot-clé par ID
+keywordRoutes.get(
+	"/:id",
+	authMiddleware.verifyToken,
+	keywordController.getKeywordById,
+);
+
+// Ajouter un mot-clé
+keywordRoutes.post(
+	"/",
+	authMiddleware.verifyToken,
+	validationMiddleware(keywordSchema.createKeyword),
+	keywordController.createKeyword,
+);
+
+// Mettre à jour un mot-clé
+keywordRoutes.patch(
+	"/:id",
+	authMiddleware.verifyToken,
+	validationMiddleware(keywordSchema.updateKeyword),
+	keywordController.updateKeyword,
+);
+
+// Supprimer un mot-clé
+keywordRoutes.delete(
+	"/:id",
+	authMiddleware.verifyToken,
+	keywordController.deleteKeyword,
+);
 
 export default keywordRoutes;

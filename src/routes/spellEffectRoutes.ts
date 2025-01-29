@@ -1,14 +1,41 @@
-import { Router } from 'express';
-import spellEffectController from '../controllers/spellEffectController';
-import validationMiddleware from '../middlewares/validationMiddleware';
-import spellEffectSchema from '../schemas/spellEffect.schema';
+import { Router } from "express";
+import spellEffectController from "../controllers/spellEffectController";
+import validationMiddleware from "../middlewares/validationMiddleware";
+import authMiddleware from "../middlewares/authMiddleware";
+import spellEffectSchema from "../schemas/spellEffect.schema";
 
 const spellEffectRoutes = Router();
 
-spellEffectRoutes.get('/:id/effects', spellEffectController.getAllSpellEffects);
-spellEffectRoutes.get('/:id/effects/:id', spellEffectController.getSpellEffectById);
-spellEffectRoutes.post('/:id/effects', validationMiddleware(spellEffectSchema.createSpellEffect), spellEffectController.createSpellEffect);
-spellEffectRoutes.patch('/:id/effects/:id', validationMiddleware(spellEffectSchema.updateSpellEffect), spellEffectController.updateSpellEffect);
-spellEffectRoutes.delete('/:id/effects/:id', spellEffectController.deleteSpellEffect);
+// Récupérer tous les effets d'un sort
+spellEffectRoutes.get("/:id/effects", spellEffectController.getAllSpellEffects);
+
+// Récupérer un effet spécifique d'un sort
+spellEffectRoutes.get(
+	"/:id/effects/:id",
+	spellEffectController.getSpellEffectById,
+);
+
+// Ajouter un effet à un sort
+spellEffectRoutes.post(
+	"/:id/effects",
+	authMiddleware.verifyToken,
+	validationMiddleware(spellEffectSchema.createSpellEffect),
+	spellEffectController.createSpellEffect,
+);
+
+// Mettre à jour un effet d'un sort
+spellEffectRoutes.patch(
+	"/:id/effects/:id",
+	authMiddleware.verifyToken,
+	validationMiddleware(spellEffectSchema.updateSpellEffect),
+	spellEffectController.updateSpellEffect,
+);
+
+// Supprimer un effet d'un sort
+spellEffectRoutes.delete(
+	"/:id/effects/:id",
+	authMiddleware.verifyToken,
+	spellEffectController.deleteSpellEffect,
+);
 
 export default spellEffectRoutes;

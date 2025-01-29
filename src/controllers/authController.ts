@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import User from "../models/User";
+import Role from "../models/Role";
 import cryptoService from "../services/cryptoService";
 
 dotenv.config();
@@ -15,7 +16,16 @@ const authController = {
 		try {
 			const { login, password } = req.body;
 
-			const user = await User.findOne({ where: { login } });
+			const user = await User.findOne({
+				where: { login },
+				include: [
+					{
+						model: Role, // Jointure directe avec la table Role
+						as: "roles", // Utilise l'alias défini dans models/index.ts 
+						attributes: ["name"], // Récupère uniquement le nom du rôle 
+					},
+				],
+			});
 
 			if (!user) {
 				res.status(401).json({ error: "Identifiants incorrects" });
@@ -32,11 +42,13 @@ const authController = {
 				return;
 			}
 
+			const userRole = user.getDataValue("roles")?.[0]?.name || "User";
+
 			const token = jwt.sign(
 				{
 					id: user.getDataValue("id"),
 					login: user.getDataValue("login"),
-					role: user.getDataValue("role"),
+					role: userRole,
 				},
 				process.env.JWT_SECRET as string,
 				{ expiresIn: process.env.TOKEN_EXPIRATION || "1h" },
