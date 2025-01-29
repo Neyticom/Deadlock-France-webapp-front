@@ -1,19 +1,43 @@
-import { Router } from 'express';
-import userController from '../controllers/userController';
-import validationMiddleware from '../middlewares/validationMiddleware';
-import userRoleSchema from '../schemas/userRole.schema';
+import { Router } from "express";
+import userController from "../controllers/userController";
+import validationMiddleware from "../middlewares/validationMiddleware";
+import authMiddleware from "../middlewares/authMiddleware";
+import userRoleSchema from "../schemas/userRole.schema";
 
 const userRoutes = Router();
 
 // Routes pour les utilisateurs
-userRoutes.get('/', userController.getAllUsers);
-userRoutes.get('/:id', userController.getUserById);
-userRoutes.post('/', validationMiddleware(userRoleSchema.createUser), userController.createUser);
-userRoutes.patch('/:id', validationMiddleware(userRoleSchema.updateUser), userController.updateUser);
+userRoutes.get("/", authMiddleware.verifyAdmin, userController.getAllUsers);
+userRoutes.get("/:id", authMiddleware.verifyAdmin, userController.getUserById);
+userRoutes.post(
+	"/",
+	/* authMiddleware.verifyAdmin, */ // Désactivé temporairement car créer un utilisateur nécessite un accès admin, mais aucun compte admin n'existe encore
+	validationMiddleware(userRoleSchema.createUser),
+	userController.createUser,
+);
+userRoutes.patch(
+	"/:id",
+	authMiddleware.verifyAdmin,
+	validationMiddleware(userRoleSchema.updateUser),
+	userController.updateUser,
+);
 
 // Routes pour la gestion des rôles
-userRoutes.get('/:id/role', userController.getUserRole);
-userRoutes.patch('/:id/role', validationMiddleware(userRoleSchema.updateUserRole), userController.updateUserRole);
-userRoutes.delete('/:id/role', userController.deleteUserRole);
+userRoutes.get(
+	"/:id/role",
+	authMiddleware.verifyAdmin,
+	userController.getUserRole,
+);
+userRoutes.patch(
+	"/:id/role",
+/*	authMiddleware.verifyAdmin, */
+	validationMiddleware(userRoleSchema.updateUserRole),
+	userController.updateUserRole,
+);
+userRoutes.delete(
+	"/:id/role",
+	authMiddleware.verifyAdmin,
+	userController.deleteUserRole,
+);
 
 export default userRoutes;
