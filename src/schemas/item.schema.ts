@@ -8,11 +8,11 @@ const itemSchema = {
 			"any.required": "Le nom de l'objet est obligatoire.",
 		}),
 		category: Joi.string()
-			.valid("WEAPON", "VITALITY", "UTILITY", "MAGIC")
+			.valid("WEAPON", "VITALITY", "SPIRIT")
 			.required()
 			.messages({
 				"any.only":
-					"La catégorie doit être WEAPON, VITALITY, UTILITY ou MAGIC.",
+					"La catégorie doit être WEAPON, VITALITY ou SPIRIT.",
 				"any.required": "La catégorie est obligatoire.",
 			}),
 		cost: Joi.number().integer().min(0).required().messages({
@@ -50,10 +50,10 @@ const itemSchema = {
 			"string.max": "Le nom ne doit pas dépasser {#limit} caractères.",
 		}),
 		category: Joi.string()
-			.valid("WEAPON", "VITALITY", "UTILITY", "MAGIC")
+			.valid("WEAPON", "VITALITY", "SPIRIT")
 			.messages({
 				"any.only":
-					"La catégorie doit être WEAPON, VITALITY, UTILITY ou MAGIC.",
+					"La catégorie doit être WEAPON, VITALITY ou SPIRIT.",
 			}),
 		cost: Joi.number().integer().min(0).messages({
 			"number.integer": "Le coût doit être un entier.",
