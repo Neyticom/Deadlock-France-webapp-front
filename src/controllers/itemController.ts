@@ -41,16 +41,37 @@ const itemController = {
 		next: NextFunction,
 	): Promise<void> => {
 		try {
-			const { name, description, price } = req.body;
+			const {
+				name,
+				category,
+				cost,
+				common_bonus,
+				active_description,
+				active_duration,
+				passive_description,
+				passive_duration,
+				parent_id,
+			} = req.body;
 
-			if (!name || !description || price == null) {
-				res
-					.status(400)
-					.json({ error: "Missing required fields: name, description, price" });
+			if (!name || !category || cost == null || common_bonus == null) {
+				res.status(400).json({
+					error: "Missing required fields: name, category, cost, common_bonus",
+				});
 				return;
 			}
 
-			const newItem = await Item.create({ name, description, price });
+			const newItem = await Item.create({
+				name,
+				category,
+				cost,
+				common_bonus,
+				active_description,
+				active_duration: active_duration ?? 0,
+				passive_description,
+				passive_duration: passive_duration ?? 0,
+				parent_id,
+			});
+
 			res.status(201).json(newItem);
 		} catch (error) {
 			next(error);

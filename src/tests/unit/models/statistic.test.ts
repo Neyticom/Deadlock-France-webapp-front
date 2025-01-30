@@ -1,5 +1,5 @@
-import Statistic from "../../models/Statistic";
-import sequelize from "../../config/database";
+import Statistic from "../../../models/Statistic";
+import sequelize from "../../../config/database";
 
 describe("Statistic Model", () => {
 	beforeAll(async () => {

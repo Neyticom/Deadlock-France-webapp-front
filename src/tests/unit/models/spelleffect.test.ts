@@ -1,7 +1,7 @@
-import SpellEffect from "../../models/SpellEffect";
-import Spell from "../../models/Spell";
-import Hero from "../../models/Hero";
-import sequelize from "../../config/database";
+import SpellEffect from "../../../models/SpellEffect";
+import Spell from "../../../models/Spell";
+import Hero from "../../../models/Hero";
+import sequelize from "../../../config/database";
 
 describe("SpellEffect Model", () => {
 	beforeAll(async () => {

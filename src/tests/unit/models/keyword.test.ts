@@ -1,5 +1,5 @@
-import Keyword from "../../models/Keyword";
-import sequelize from "../../config/database";
+import Keyword from "../../../models/Keyword";
+import sequelize from "../../../config/database";
 
 describe("Keyword Model", () => {
   beforeAll(async () => {

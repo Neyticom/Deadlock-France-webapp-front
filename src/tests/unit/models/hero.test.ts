@@ -1,5 +1,5 @@
-import Hero from "../../models/Hero";
-import sequelize from "../../config/database";
+import Hero from "../../../models/Hero";
+import sequelize from "../../../config/database";
 
 describe("Hero Model", () => {
 	beforeAll(async () => {
