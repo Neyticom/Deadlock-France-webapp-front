@@ -1,6 +1,6 @@
-import Log from "../../models/Log";
-import User from "../../models/User";
-import sequelize from "../../config/database";
+import Log from "../../../models/Log";
+import User from "../../../models/User";
+import sequelize from "../../../config/database";
 
 describe("Log Model", () => {
 	beforeAll(async () => {

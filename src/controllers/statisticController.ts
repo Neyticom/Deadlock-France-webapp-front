@@ -17,14 +17,14 @@ const statisticController = {
 		}
 	},
 
-	// Récupérer des statistiques avec des filtres (dates, heures, type d'action)
+	// Récupérer des statistiques avec des filtres (dates, heures, type)
 	searchStats: async (
 		req: Request,
 		res: Response,
 		next: NextFunction,
 	): Promise<void> => {
 		try {
-			const { startDate, endDate, action, startHour, endHour } = req.query;
+			const { startDate, endDate, type, startHour, endHour } = req.query;
 
 			// Initialisation de l'objet de filtre
 			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -85,9 +85,9 @@ const statisticController = {
 				}
 			}
 
-			// Filtre par action
-			if (action) {
-				whereClause.type = (action as string).toUpperCase();
+			// Filtre par type
+			if (type) {
+				whereClause.type = (type as string).toUpperCase();
 			}
 
 			// Exécution de la requête
@@ -107,22 +107,22 @@ const statisticController = {
 		next: NextFunction,
 	): Promise<void> => {
 		try {
-			const { origin, date, action } = req.body;
+			const { origin, date, type } = req.body;
 
 			// Vérification des champs obligatoires
-			if (!origin || !date || !action) {
+			if (!origin || !date || !type) {
 				res.status(400).json({
-					error: "Les champs 'origin', 'date' et 'action' sont obligatoires.",
+					error: "Les champs 'origin', 'date' et 'type' sont obligatoires.",
 				});
 				return;
 			}
 
-			// Uniformisation de l'action en majuscule
-			const formattedAction = (action as string).toUpperCase();
-			if (!["CLICK", "VIEW"].includes(formattedAction)) {
+			// Uniformisation du type en majuscule
+			const formattedType = (type as string).toUpperCase();
+			if (!["CLICK", "VIEW"].includes(formattedType)) {
 				res
 					.status(400)
-					.json({ error: "L'action doit être 'CLICK' ou 'VIEW'." });
+					.json({ error: "Le type doit être 'CLICK' ou 'VIEW'." });
 				return;
 			}
 
@@ -138,7 +138,7 @@ const statisticController = {
 
 			// Trouver ou créer la statistique
 			const [statistic, created] = await Statistic.findOrCreate({
-				where: { origin, date: parsedDate, type: formattedAction },
+				where: { origin, date: parsedDate, type: formattedType },
 				defaults: { count: 1 },
 			});
 

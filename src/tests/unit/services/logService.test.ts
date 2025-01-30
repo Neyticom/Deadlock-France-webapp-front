@@ -1,12 +1,12 @@
-import logService from "../../services/logService";
-import Log from "../../models/Log";
+import logService from "../../../services/logService";
+import Log from "../../../models/Log";
 
-jest.mock("../../models/Log", () => ({
+jest.mock("../../../models/Log", () => ({
 	create: jest.fn(),
 }));
 
 describe("Log Service", () => {
-    // Désactiver console.error pour les tests
+	// Désactiver console.error pour les tests
 	beforeAll(() => {
 		jest.spyOn(console, "error").mockImplementation(() => {});
 	});

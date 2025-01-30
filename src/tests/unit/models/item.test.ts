@@ -1,5 +1,5 @@
-import Item from "../../models/Item";
-import sequelize from "../../config/database";
+import Item from "../../../models/Item";
+import sequelize from "../../../config/database";
 
 describe("Item Model", () => {
 	beforeAll(async () => {

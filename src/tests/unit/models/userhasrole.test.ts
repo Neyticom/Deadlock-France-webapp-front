@@ -1,7 +1,7 @@
-import UserHasRole from "../../models/UserHasRole";
-import User from "../../models/User";
-import Role from "../../models/Role";
-import sequelize from "../../config/database";
+import UserHasRole from "../../../models/UserHasRole";
+import User from "../../../models/User";
+import Role from "../../../models/Role";
+import sequelize from "../../../config/database";
 
 describe("UserHasRole Model", () => {
 	beforeAll(async () => {
