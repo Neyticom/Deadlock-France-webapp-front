@@ -1,6 +1,6 @@
-import Spell from "../../models/Spell";
-import Hero from "../../models/Hero";
-import sequelize from "../../config/database";
+import Spell from "../../../models/Spell";
+import Hero from "../../../models/Hero";
+import sequelize from "../../../config/database";
 
 describe("Spell Model", () => {
 	beforeAll(async () => {

@@ -1,6 +1,6 @@
-import ItemEffect from "../../models/ItemEffect";
-import Item from "../../models/Item";
-import sequelize from "../../config/database";
+import ItemEffect from "../../../models/ItemEffect";
+import Item from "../../../models/Item";
+import sequelize from "../../../config/database";
 
 describe("ItemEffect Model", () => {
 	beforeAll(async () => {

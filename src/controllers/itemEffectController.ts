@@ -14,7 +14,7 @@ const itemEffectController = {
 				where: { item_id: itemId },
 			});
 
-			if (!itemEffects || itemEffects.length === 0) {
+			if (itemEffects.length === 0) {
 				res.status(404).json({ error: "No item effects found for this item" });
 				return;
 			}

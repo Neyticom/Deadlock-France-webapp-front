@@ -1,5 +1,5 @@
-import Setting from "../../models/Setting";
-import sequelize from "../../config/database";
+import Setting from "../../../models/Setting";
+import sequelize from "../../../config/database";
 
 describe("Setting Model", () => {
 	beforeAll(async () => {

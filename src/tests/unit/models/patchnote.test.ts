@@ -1,5 +1,5 @@
-import Patchnote from "../../models/Patchnote";
-import sequelize from "../../config/database";
+import Patchnote from "../../../models/Patchnote";
+import sequelize from "../../../config/database";
 
 describe("Patchnote Model", () => {
 	beforeAll(async () => {
