@@ -8,11 +8,13 @@
   },
   "scripts": {
     "start": "node dist/index.js",
+    "start:prod": "NODE_ENV=production node dist/index.js",
+    "start:full": "npm run build && npm run start:prod",
+    "build": "tsc",
     "dev": "npx nodemon --exec ts-node src/index.ts",
     "db-sync": "ts-node scripts/sync-db.ts",
     "db-seed": "ts-node scripts/seed-db.ts",
     "db-reset": "npm run db-sync && npm run db-seed",
-    "build": "tsc",
     "test": "NODE_ENV=test jest"
   },
   "repository": {
