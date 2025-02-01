@@ -1,4 +1,7 @@
 import express from "express";
+import helmet from "helmet";
+import cors from 'cors';
+import compression from "compression";
 import type { Request, Response } from "express";
 import router from "./routes/router";
 import database from "./models/index";
@@ -6,7 +9,13 @@ import database from "./models/index";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(helmet());
+app.use(cors({
+	origin: "http://localhost:5173",
+	credentials: true
+}));
 app.use(express.json());
+app.use(compression());
 app.use("/api", router);
 
 /**
