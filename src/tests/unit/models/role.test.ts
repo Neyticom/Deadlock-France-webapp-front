@@ -1,7 +1,7 @@
 import Role from "../../../models/Role";
 import sequelize from "../../../config/database";
 
-describe("Role Model", () => {
+describe("Modèle Role", () => {
 	beforeAll(async () => {
 		await sequelize.sync({ force: true }); // Reset la base de tests
 	});
@@ -10,9 +10,9 @@ describe("Role Model", () => {
 		await sequelize.close();
 	});
 
-	it("should create a role with valid data", async () => {
+	it("Devrait créer un rôle avec des données valides", async () => {
 		const role = await Role.create({
-			name: "Moderator",
+			name: "Modérateur",
 			weight: 50,
 		});
 
@@ -20,11 +20,11 @@ describe("Role Model", () => {
 		const typedRole = role as any;
 
 		expect(typedRole.id).toBeDefined();
-		expect(typedRole.name).toBe("Moderator");
+		expect(typedRole.name).toBe("Modérateur");
 		expect(typedRole.weight).toBe(50);
 	});
 
-	it("should not allow a role with a null name", async () => {
+	it("Devrait refuser un rôle sans nom", async () => {
 		await expect(
 			Role.create({
 				name: null, // 🔴 Doit échouer car `allowNull: false`
@@ -33,7 +33,7 @@ describe("Role Model", () => {
 		).rejects.toThrow(/notNull Violation: Role.name cannot be null/);
 	});
 
-	it("should enforce unique constraints on name", async () => {
+	it("Devrait appliquer la contrainte d'unicité sur le nom", async () => {
 		await Role.create({
 			name: "Admin",
 			weight: 100,
@@ -47,7 +47,7 @@ describe("Role Model", () => {
 		).rejects.toThrow();
 	});
 
-	it("should enforce unique constraints on weight", async () => {
+	it("Devrait appliquer la contrainte d'unicité sur le champ `weight`", async () => {
 		await Role.create({
 			name: "User",
 			weight: 10,
@@ -55,16 +55,16 @@ describe("Role Model", () => {
 
 		await expect(
 			Role.create({
-				name: "Guest",
+				name: "Invité",
 				weight: 10, // 🔴 Doit échouer (weight unique)
 			}),
 		).rejects.toThrow();
 	});
 
-	it("should not allow a role with a null weight", async () => {
+	it("Devrait refuser un rôle avec le champ `weight` null", async () => {
 		await expect(
 			Role.create({
-				name: "Tester",
+				name: "Testeur",
 				weight: null, // 🔴 Doit échouer car `allowNull: false`
 			}),
 		).rejects.toThrow(/notNull Violation: Role.weight cannot be null/);

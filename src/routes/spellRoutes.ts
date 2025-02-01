@@ -1,3 +1,8 @@
+/**
+ * Routes des sorts.
+ * Gère la récupération, la création, la mise à jour et la suppression des sorts des héros.
+ */
+
 import { Router } from "express";
 import spellController from "../controllers/spellController";
 import validationMiddleware from "../middlewares/validationMiddleware";

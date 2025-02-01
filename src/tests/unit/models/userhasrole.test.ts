@@ -3,7 +3,7 @@ import User from "../../../models/User";
 import Role from "../../../models/Role";
 import sequelize from "../../../config/database";
 
-describe("UserHasRole Model", () => {
+describe("Modèle UserHasRole", () => {
 	beforeAll(async () => {
 		await sequelize.sync({ force: true }); // Reset la base de tests
 
@@ -26,7 +26,7 @@ describe("UserHasRole Model", () => {
 		await sequelize.close();
 	});
 
-	it("should create a user-role association with valid data", async () => {
+	it("Devrait créer une association user-role avec des données valides", async () => {
 		const user = await User.findOne({ where: { login: "testuser" } });
 		const role = await Role.findOne({ where: { name: "Admin" } });
 
@@ -48,7 +48,7 @@ describe("UserHasRole Model", () => {
 		expect(typedUserHasRole.role_id).toBe(typedRole.id);
 	});
 
-	it("should not allow a user-role association with a null user_id", async () => {
+	it("Devrait refuser une association user-role sans user_id", async () => {
 		await expect(
 			UserHasRole.create({
 				user_id: null, // 🔴 Doit échouer car `allowNull: false`
@@ -57,7 +57,7 @@ describe("UserHasRole Model", () => {
 		).rejects.toThrow(/notNull Violation: UserHasRole.user_id cannot be null/);
 	});
 
-	it("should not allow a user-role association with a null role_id", async () => {
+	it("Devrait refuser une association user-role sans role_id", async () => {
 		await expect(
 			UserHasRole.create({
 				user_id: 1,
@@ -66,7 +66,7 @@ describe("UserHasRole Model", () => {
 		).rejects.toThrow(/notNull Violation: UserHasRole.role_id cannot be null/);
 	});
 
-	it("should not allow a user-role association with a non-existent user_id", async () => {
+	it("Devrait refuser une association user-role avec un user_id inexistant", async () => {
 		await expect(
 			UserHasRole.create({
 				user_id: 999, // 🔴 ID inexistant
@@ -75,7 +75,7 @@ describe("UserHasRole Model", () => {
 		).rejects.toThrow();
 	});
 
-	it("should not allow a user-role association with a non-existent role_id", async () => {
+	it("Devrait refuser une association user-role avec un role_id inexistant", async () => {
 		await expect(
 			UserHasRole.create({
 				user_id: 1,

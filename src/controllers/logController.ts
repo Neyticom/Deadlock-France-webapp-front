@@ -1,9 +1,19 @@
+/**
+ * Contrôleur des logs.
+ * Gère la récupération et la recherche des logs avec filtres.
+ */
+
 import type { Request, Response, NextFunction } from "express";
 import { Op, Sequelize } from "sequelize";
 import Log from "../models/Log";
 
 const logController = {
-	// Récupérer tous les logs
+	/**
+	 * Récupère la liste complète des logs.
+	 * @param req - Requête Express.
+	 * @param res - Réponse Express contenant la liste des logs.
+	 * @param next - Middleware suivant en cas d'erreur.
+	 */
 	getAllLogs: async (
 		req: Request,
 		res: Response,
@@ -17,7 +27,12 @@ const logController = {
 		}
 	},
 
-	// Récupérer un log par ID
+	/**
+	 * Récupère un log spécifique par son identifiant.
+	 * @param req - Requête Express contenant l'ID du log.
+	 * @param res - Réponse Express contenant les données du log.
+	 * @param next - Middleware suivant en cas d'erreur.
+	 */
 	getLogById: async (
 		req: Request,
 		res: Response,
@@ -28,7 +43,7 @@ const logController = {
 			const log = await Log.findByPk(id);
 
 			if (!log) {
-				res.status(404).json({ error: "Log non trouvé" });
+				res.status(404).json({ error: "Log introuvable." });
 				return;
 			}
 
@@ -38,7 +53,12 @@ const logController = {
 		}
 	},
 
-	// Rechercher des logs avec filtres (dates, heures, actions, user_id)
+	/**
+	 * Recherche des logs avec filtres (dates, heures, actions, user_id).
+	 * @param req - Requête Express contenant les filtres en paramètres.
+	 * @param res - Réponse Express contenant les logs filtrés.
+	 * @param next - Middleware suivant en cas d'erreur.
+	 */
 	searchLogs: async (
 		req: Request,
 		res: Response,
@@ -48,17 +68,17 @@ const logController = {
 			const { startDate, endDate, action, startHour, endHour, user_id } =
 				req.query;
 
-			// Initialisation de l'objet de filtre
+			// Initialisation de l'objet de filtre.
 			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 			const whereClause: any = {};
 
-			// Filtre par date
+			// Filtre par date.
 			if (startDate || endDate) {
 				whereClause.createdAt = {};
 
 				if (startDate) {
 					const parsedStart = new Date(startDate as string);
-					parsedStart.setUTCHours(0, 0, 0, 0); // Début de la journée
+					parsedStart.setUTCHours(0, 0, 0, 0); // Début de la journée.
 
 					if (!Number.isNaN(parsedStart.getTime())) {
 						whereClause.createdAt[Op.gte] = parsedStart;
@@ -74,7 +94,7 @@ const logController = {
 
 				if (endDate) {
 					const parsedEnd = new Date(endDate as string);
-					parsedEnd.setUTCHours(23, 59, 59, 999); // Fin de la journée
+					parsedEnd.setUTCHours(23, 59, 59, 999); // Fin de la journée.
 
 					if (!Number.isNaN(parsedEnd.getTime())) {
 						whereClause.createdAt[Op.lte] = parsedEnd;
@@ -82,7 +102,7 @@ const logController = {
 				}
 			}
 
-			// Filtre par heure
+			// Filtre par heure.
 			if (startHour || endHour) {
 				whereClause[Op.and] = [];
 
@@ -107,22 +127,22 @@ const logController = {
 				}
 			}
 
-			// Filtre par action
+			// Filtre par action.
 			if (action) {
 				whereClause.action = (action as string).toUpperCase();
 			}
 
-			// Filtre par user_id
+			// Filtre par user_id.
 			if (user_id) {
 				whereClause.user_id = Number(user_id);
 			}
 
-			// Exécution de la requête
+			// Exécution de la requête.
 			const logs = await Log.findAll({ where: whereClause });
 
 			res.status(200).json(logs);
 		} catch (error) {
-			console.error("❌ ERROR in searchLogs:", error);
+			console.error("❌ Erreur dans searchLogs:", error);
 			next(error);
 		}
 	},

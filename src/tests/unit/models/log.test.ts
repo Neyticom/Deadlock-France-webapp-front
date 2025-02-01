@@ -2,7 +2,7 @@ import Log from "../../../models/Log";
 import User from "../../../models/User";
 import sequelize from "../../../config/database";
 
-describe("Log Model", () => {
+describe("Modèle Log", () => {
 	beforeAll(async () => {
 		await sequelize.sync({ force: true }); // Reset la base de tests
 	});
@@ -11,7 +11,7 @@ describe("Log Model", () => {
 		await sequelize.close();
 	});
 
-	it("should create a log with valid data", async () => {
+	it("Devrait créer un log avec des données valides", async () => {
 		const user = await User.create({
 			login: "johndoe",
 			nickname: "JD",
@@ -19,7 +19,7 @@ describe("Log Model", () => {
 			lastname: "Doe",
 			email: "john.doe@example.com",
 			password: "securepassword",
-			description: "A test user",
+			description: "Un utilisateur de test",
 			image: "/images/john_doe.jpg",
 			role_id: 1,
 		});
@@ -28,7 +28,7 @@ describe("Log Model", () => {
 			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 			user_id: (user as any).id,
 			action: "LOGIN",
-			context: "User logged in successfully",
+			context: "L'utilisateur s'est connecté avec succès",
 			ip: "192.168.1.1",
 		});
 
@@ -39,11 +39,11 @@ describe("Log Model", () => {
 		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 		expect(typedLog.user_id).toBe((user as any).id);
 		expect(typedLog.action).toBe("LOGIN");
-		expect(typedLog.context).toBe("User logged in successfully");
+		expect(typedLog.context).toBe("L'utilisateur s'est connecté avec succès");
 		expect(typedLog.ip).toBe("192.168.1.1");
 	});
 
-	it("should not allow a log with a null action", async () => {
+	it("Devrait refuser un log avec une action `null`", async () => {
 		await expect(
 			Log.create({
 				user_id: 1,
@@ -54,7 +54,7 @@ describe("Log Model", () => {
 		).rejects.toThrow(/notNull Violation: Log.action cannot be null/);
 	});
 
-	it("should not allow a log with an invalid action", async () => {
+	it("Devrait refuser un log avec une action invalide", async () => {
 		const validActions = ["LOGIN", "CREATE", "DELETE", "EDIT"];
 
 		const invalidLog = {
@@ -75,7 +75,7 @@ describe("Log Model", () => {
 		await expect(Log.create(invalidLog)).rejects.toThrow();
 	});
 
-	it("should not allow a log with an invalid IP format", async () => {
+	it("Devrait refuser un log avec un format IP invalide", async () => {
 		const invalidIP = "invalid_ip_address";
 		const ipRegex =
 			/^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])$/;

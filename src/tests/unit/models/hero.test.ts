@@ -1,7 +1,7 @@
 import Hero from "../../../models/Hero";
 import sequelize from "../../../config/database";
 
-describe("Hero Model", () => {
+describe("Modèle Hero", () => {
 	beforeAll(async () => {
 		await sequelize.sync({ force: true }); // Reset la base de tests
 	});
@@ -10,7 +10,7 @@ describe("Hero Model", () => {
 		await sequelize.close();
 	});
 
-	it("should create a hero with valid data", async () => {
+	it("Devrait créer un héros avec des données valides", async () => {
 		const hero = await Hero.create({
 			name: "Superman",
 			resume: "A powerful superhero",
@@ -32,7 +32,7 @@ describe("Hero Model", () => {
 		expect(typedHero.video_path).toBe("/videos/superman.mp4");
 	});
 
-	it("should not allow a hero without a name", async () => {
+	it("Devrait refuser la création d'un héros sans nom", async () => {
 		await expect(
 			Hero.create({
 				name: null, // 🔴 Doit échouer car `allowNull: false`
@@ -44,7 +44,7 @@ describe("Hero Model", () => {
 		).rejects.toThrow();
 	});
 
-	it("should enforce unique constraints on name, img_path, and video_path", async () => {
+	it("Devrait appliquer les contraintes d'unicité sur name, img_path et video_path", async () => {
 		await Hero.create({
 			name: "Batman",
 			resume: "Dark Knight",
@@ -74,7 +74,7 @@ describe("Hero Model", () => {
 		).rejects.toThrow();
 	});
 
-	it("should allow null values for img_path and video_path", async () => {
+	it("Devrait autoriser des valeurs nulles pour img_path et video_path", async () => {
 		const hero = await Hero.create({
 			name: "Invisible Man",
 			resume: "You cannot see him",

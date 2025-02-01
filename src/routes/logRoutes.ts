@@ -1,3 +1,8 @@
+/**
+ * Routes des logs.
+ * Gère la récupération et la recherche des logs pour le suivi des actions des utilisateurs.
+ */
+
 import { Router } from "express";
 import logController from "../controllers/logController";
 import authMiddleware from "../middlewares/authMiddleware";

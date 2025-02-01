@@ -1,6 +1,6 @@
 import request from "supertest";
 import testApp from "../utils/setupTestServer";
-import "../utils/setupTestDB"; // Connexion à SQLite in-memory
+import "../utils/setupTestDB"; // Connexion à SQLite in-memory.
 
 let authToken: string | null = null;
 let testItemId: number;
@@ -17,7 +17,7 @@ beforeAll(async () => {
 		authToken = response.body.token;
 		console.log("✅ Token récupéré pour tests:", authToken);
 	} else {
-		console.error("❌ Login failed during tests:", response.body);
+		console.error("❌ Échec de la connexion lors des tests :", response.body);
 		throw new Error("🚨 Impossible d'obtenir un token d'authentification");
 	}
 
@@ -32,9 +32,9 @@ beforeAll(async () => {
 			category: "WEAPON",
 			cost: 1000,
 			common_bonus: 5,
-			active_description: "Boost attack",
+			active_description: "Augmente l'attaque.",
 			active_duration: 10,
-			passive_description: "Increase defense",
+			passive_description: "Augmente la défense.",
 			passive_duration: 15,
 		});
 
@@ -46,7 +46,7 @@ beforeAll(async () => {
 			"❌ Erreur lors de l'insertion de l'item:",
 			createItemResponse.body,
 		);
-		throw new Error("🚨 Impossible d'insérer un item de test");
+		throw new Error("🚨 Impossible d'insérer un item de test.");
 	}
 
 	// Création d'un effet de test
@@ -54,9 +54,9 @@ beforeAll(async () => {
 		.post(`/api/items/${testItemId}/effects`)
 		.set("Authorization", `Bearer ${authToken}`)
 		.send({
-			item_id: testItemId, // ✅ Ajout explicite de l'item_id
+			item_id: testItemId, // Ajout explicite de l'item_id
 			type: "COMMON",
-			effect: "Increase attack power",
+			effect: "Augmente la puissance d'attaque.",
 		});
 
 	if (createEffectResponse.status === 201) {
@@ -67,12 +67,12 @@ beforeAll(async () => {
 			"❌ Erreur lors de l'insertion de l'effet:",
 			createEffectResponse.body,
 		);
-		throw new Error("🚨 Impossible d'insérer un effet de test");
+		throw new Error("🚨 Impossible d'insérer un effet de test.");
 	}
 });
 
-describe("ItemEffect API", () => {
-	test("GET /api/items/:id/effects - should return all effects of an item", async () => {
+describe("✨ API des effets d'items.", () => {
+	test("✅ GET /api/items/:id/effects - Retourne tous les effets d'un item.", async () => {
 		const response = await request(testApp).get(
 			`/api/items/${testItemId}/effects`,
 		);
@@ -82,7 +82,7 @@ describe("ItemEffect API", () => {
 		expect(response.body.length).toBeGreaterThan(0);
 	});
 
-	test("GET /api/items/:id/effects/:id - should return a specific effect", async () => {
+	test("✅ GET /api/items/:id/effects/:id - Retourne un effet spécifique.", async () => {
 		const response = await request(testApp).get(
 			`/api/items/${testItemId}/effects/${testEffectId}`,
 		);
@@ -90,41 +90,49 @@ describe("ItemEffect API", () => {
 		expect(response.status).toBe(200);
 		expect(response.body).toHaveProperty("id", testEffectId);
 		expect(response.body).toHaveProperty("type", "COMMON");
-		expect(response.body).toHaveProperty("effect", "Increase attack power");
+		expect(response.body).toHaveProperty(
+			"effect",
+			"Augmente la puissance d'attaque.",
+		);
 	});
 
-	test("POST /api/items/:id/effects - should create a new item effect (auth required)", async () => {
+	test("✅ POST /api/items/:id/effects - Crée un nouvel effet d'item (authentification requise).", async () => {
 		const response = await request(testApp)
 			.post(`/api/items/${testItemId}/effects`)
 			.set("Authorization", `Bearer ${authToken}`)
 			.send({
 				item_id: testItemId,
 				type: "ACTIVE",
-				effect: "Grants temporary invulnerability",
+				effect: "Accorde une invulnérabilité temporaire.",
 			});
 
 		expect(response.status).toBe(201);
 		expect(response.body).toHaveProperty("id");
 		expect(response.body).toHaveProperty("type", "ACTIVE");
-		expect(response.body.effect).toBe("Grants temporary invulnerability");
+		expect(response.body.effect).toBe(
+			"Accorde une invulnérabilité temporaire.",
+		);
 	});
 
-	test("PATCH /api/items/:id/effects/:id - should update an existing item effect", async () => {
+	test("✅ PATCH /api/items/:id/effects/:id - Met à jour un effet d'item existant.", async () => {
 		const response = await request(testApp)
 			.patch(`/api/items/${testItemId}/effects/${testEffectId}`)
 			.set("Authorization", `Bearer ${authToken}`)
-			.send({ effect: "Updated attack boost" });
+			.send({ effect: "Augmentation de l'attaque améliorée." });
 
 		expect(response.status).toBe(200);
-		expect(response.body).toHaveProperty("effect", "Updated attack boost");
+		expect(response.body).toHaveProperty(
+			"effect",
+			"Augmentation de l'attaque améliorée.",
+		);
 	});
 
-	test("DELETE /api/items/:id/effects/:id - should delete an item effect", async () => {
+	test("✅ DELETE /api/items/:id/effects/:id - Supprime un effet d'item.", async () => {
 		const response = await request(testApp)
 			.delete(`/api/items/${testItemId}/effects/${testEffectId}`)
 			.set("Authorization", `Bearer ${authToken}`);
 
 		expect(response.status).toBe(200);
-		expect(response.body).toHaveProperty("message", "Item effect deleted");
+		expect(response.body).toHaveProperty("message", "Effet d'objet supprimé.");
 	});
 });

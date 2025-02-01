@@ -19,13 +19,13 @@ beforeAll(async () => {
 		adminToken = response.body.token;
 		console.log("✅ Token admin récupéré pour tests.");
 	} else {
-		console.error("❌ Login admin failed:", response.body);
-		throw new Error("🚨 Impossible d'obtenir le token d'admin");
+		console.error("❌ Échec de la connexion administrateur :", response.body);
+		throw new Error("🚨 Impossible d'obtenir le token administrateur.");
 	}
 });
 
-describe("🛠️ Test End-to-End - Parcours utilisateur complet", () => {
-	it("❌ 1. Connexion échoue avec un mauvais mot de passe", async () => {
+describe("🛠️ Test End-to-End - Parcours utilisateur complet.", () => {
+	it("❌ 1. Connexion échoue avec un mauvais mot de passe.", async () => {
 		const response = await request(testApp)
 			.post("/api/auth/login")
 			.send({ login: "admin", password: "wrongpassword" });
@@ -33,7 +33,7 @@ describe("🛠️ Test End-to-End - Parcours utilisateur complet", () => {
 		expect(response.status).toBe(401);
 	});
 
-	it("✅ 2. Inscription d'un nouvel utilisateur", async () => {
+	it("✅ 2. Inscription d'un nouvel utilisateur.", async () => {
 		const response = await request(testApp)
 			.post("/api/users")
 			.set("Authorization", `Bearer ${adminToken}`)
@@ -52,7 +52,7 @@ describe("🛠️ Test End-to-End - Parcours utilisateur complet", () => {
 		console.log(`✅ Utilisateur créé avec ID: ${userId}`);
 	});
 
-	it("✅ 3. Connexion de l'utilisateur et récupération du token", async () => {
+	it("✅ 3. Connexion de l'utilisateur et récupération du token.", async () => {
 		const response = await request(testApp).post("/api/auth/login").send({
 			login: "testuser",
 			password: "securepassword123",
@@ -63,7 +63,7 @@ describe("🛠️ Test End-to-End - Parcours utilisateur complet", () => {
 		console.log(`✅ Token utilisateur récupéré: ${userToken}`);
 	});
 
-	it("✅ 4. Consultation des utilisateurs (admin)", async () => {
+	it("✅ 4. Consultation des utilisateurs (administrateur).", async () => {
 		const response = await request(testApp)
 			.get("/api/users")
 			.set("Authorization", `Bearer ${adminToken}`);
@@ -72,7 +72,7 @@ describe("🛠️ Test End-to-End - Parcours utilisateur complet", () => {
 		expect(Array.isArray(response.body)).toBe(true);
 	});
 
-	it("❌ 5. Accès refusé à `/api/users` avec un token utilisateur", async () => {
+	it("❌ 5. Accès refusé à `/api/users` avec un token utilisateur.", async () => {
 		const response = await request(testApp)
 			.get("/api/users")
 			.set("Authorization", `Bearer ${userToken}`);
@@ -80,7 +80,7 @@ describe("🛠️ Test End-to-End - Parcours utilisateur complet", () => {
 		expect(response.status).toBe(403); // Forbidden
 	});
 
-	it("✅ 6. Création d'un patchnote par un admin", async () => {
+	it("✅ 6. Création d'un patchnote par un administrateur.", async () => {
 		const response = await request(testApp)
 			.post("/api/patchnotes")
 			.set("Authorization", `Bearer ${adminToken}`)
@@ -98,7 +98,7 @@ describe("🛠️ Test End-to-End - Parcours utilisateur complet", () => {
 		console.log(`✅ Patchnote créé avec ID: ${patchnoteId}`);
 	});
 
-	it("✅ 7. Consultation des patchnotes (public)", async () => {
+	it("✅ 7. Consultation des patchnotes (public).", async () => {
 		const response = await request(testApp)
 			.get("/api/patchnotes")
 			.set("Authorization", `Bearer ${userToken}`);
@@ -107,7 +107,7 @@ describe("🛠️ Test End-to-End - Parcours utilisateur complet", () => {
 		expect(Array.isArray(response.body)).toBe(true);
 	});
 
-	it("✅ 8. Création d'un item (admin)", async () => {
+	it("✅ 8. Création d'un item (administrateur).", async () => {
 		const response = await request(testApp)
 			.post("/api/items")
 			.set("Authorization", `Bearer ${adminToken}`)
@@ -119,7 +119,7 @@ describe("🛠️ Test End-to-End - Parcours utilisateur complet", () => {
 				active_description: "Augmente l'attaque de 20%",
 				active_duration: 60,
 				passive_description: "Bonus permanent d'attaque +10",
-				passive_duration: 0, // Correction ici
+				passive_duration: 0,
 				parent_id: null,
 			});
 
@@ -129,7 +129,7 @@ describe("🛠️ Test End-to-End - Parcours utilisateur complet", () => {
 		console.log(`✅ Item créé avec ID: ${itemId}`);
 	});
 
-	it("✅ 9. Consultation des items par un utilisateur", async () => {
+	it("✅ 9. Consultation des items par un utilisateur.", async () => {
 		expect(itemId).not.toBeNull();
 		const response = await request(testApp)
 			.get(`/api/items/${itemId}`)
@@ -139,7 +139,7 @@ describe("🛠️ Test End-to-End - Parcours utilisateur complet", () => {
 		expect(response.status).toBe(200);
 	});
 
-	it("✅ 10. Modification d'un item (admin)", async () => {
+	it("✅ 10. Modification d'un item (administrateur).", async () => {
 		expect(itemId).not.toBeNull();
 		const response = await request(testApp)
 			.patch(`/api/items/${itemId}`)
@@ -150,7 +150,7 @@ describe("🛠️ Test End-to-End - Parcours utilisateur complet", () => {
 		expect(response.status).toBe(200);
 	});
 
-	it("✅ 11. Déconnexion de l'utilisateur", async () => {
+	it("✅ 11. Déconnexion de l'utilisateur.", async () => {
 		const response = await request(testApp)
 			.get("/api/auth/logout")
 			.set("Authorization", `Bearer ${userToken}`);
@@ -159,7 +159,7 @@ describe("🛠️ Test End-to-End - Parcours utilisateur complet", () => {
 		expect(response.status).toBe(200);
 	});
 
-	it("✅ 12. Désactivation de l'utilisateur par un admin", async () => {
+	it("✅ 12. Désactivation de l'utilisateur par un administrateur.", async () => {
 		expect(userId).not.toBeNull();
 		const response = await request(testApp)
 			.delete(`/api/users/${userId}/role`)
@@ -167,6 +167,6 @@ describe("🛠️ Test End-to-End - Parcours utilisateur complet", () => {
 
 		console.log("📢 Réponse désactivation utilisateur:", response.body);
 		expect(response.status).toBe(200);
-		expect(response.body.message).toContain("compte désactivé");
+		expect(response.body.message).toContain(`Rôle de l'utilisateur ${userId} supprimé avec succès (compte désactivé).`);
 	});
 });

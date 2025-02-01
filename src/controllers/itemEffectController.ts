@@ -1,8 +1,18 @@
+/**
+ * Contrôleur des effets d'objets.
+ * Gère les opérations CRUD sur les effets liés aux objets.
+ */
+
 import type { Request, Response, NextFunction } from "express";
 import ItemEffect from "../models/ItemEffect";
 
 const itemEffectController = {
-	// Récupérer tous les effets d'un item
+	/**
+	 * Récupère tous les effets associés à un objet.
+	 * @param req - Requête Express contenant l'ID de l'objet.
+	 * @param res - Réponse Express contenant la liste des effets.
+	 * @param next - Middleware suivant en cas d'erreur.
+	 */
 	getAllItemEffects: async (
 		req: Request,
 		res: Response,
@@ -15,7 +25,7 @@ const itemEffectController = {
 			});
 
 			if (itemEffects.length === 0) {
-				res.status(404).json({ error: "No item effects found for this item" });
+				res.status(404).json({ error: "Aucun effet trouvé pour cet objet." });
 				return;
 			}
 
@@ -25,7 +35,12 @@ const itemEffectController = {
 		}
 	},
 
-	// Récupérer un effet d'item par son ID
+	/**
+	 * Récupère un effet spécifique d'un objet par son identifiant.
+	 * @param req - Requête Express contenant l'ID de l'objet et de l'effet.
+	 * @param res - Réponse Express contenant les données de l'effet.
+	 * @param next - Middleware suivant en cas d'erreur.
+	 */
 	getItemEffectById: async (
 		req: Request,
 		res: Response,
@@ -38,7 +53,7 @@ const itemEffectController = {
 			});
 
 			if (!itemEffect) {
-				res.status(404).json({ error: "Item effect not found" });
+				res.status(404).json({ error: "Effet d'objet introuvable." });
 				return;
 			}
 
@@ -48,7 +63,12 @@ const itemEffectController = {
 		}
 	},
 
-	// Créer un nouvel effet pour un item
+	/**
+	 * Crée un nouvel effet pour un objet.
+	 * @param req - Requête Express contenant les données de l'effet.
+	 * @param res - Réponse Express contenant l'effet créé.
+	 * @param next - Middleware suivant en cas d'erreur.
+	 */
 	createItemEffect: async (
 		req: Request,
 		res: Response,
@@ -58,10 +78,11 @@ const itemEffectController = {
 			const { id: itemId } = req.params;
 			const { type, effect } = req.body;
 
+			// Vérification des champs obligatoires.
 			if (!type || !effect) {
 				res
 					.status(400)
-					.json({ error: "Missing required fields: type, effect" });
+					.json({ error: "Champs obligatoires manquants : type, effect." });
 				return;
 			}
 
@@ -77,7 +98,12 @@ const itemEffectController = {
 		}
 	},
 
-	// Modifier partiellement un effet d'item
+	/**
+	 * Met à jour un effet d'objet existant.
+	 * @param req - Requête Express contenant l'ID et les nouvelles données.
+	 * @param res - Réponse Express contenant l'effet mis à jour.
+	 * @param next - Middleware suivant en cas d'erreur.
+	 */
 	updateItemEffect: async (
 		req: Request,
 		res: Response,
@@ -90,10 +116,11 @@ const itemEffectController = {
 			});
 
 			if (!itemEffect) {
-				res.status(404).json({ error: "Item effect not found" });
+				res.status(404).json({ error: "Effet d'objet introuvable." });
 				return;
 			}
 
+			// Mise à jour partielle (PATCH).
 			const updatedItemEffect = await itemEffect.update(req.body, {
 				fields: Object.keys(req.body),
 			});
@@ -104,7 +131,12 @@ const itemEffectController = {
 		}
 	},
 
-	// Supprimer un effet d'item
+	/**
+	 * Supprime un effet d'objet par son identifiant.
+	 * @param req - Requête Express contenant l'ID de l'objet et de l'effet.
+	 * @param res - Réponse Express confirmant la suppression.
+	 * @param next - Middleware suivant en cas d'erreur.
+	 */
 	deleteItemEffect: async (
 		req: Request,
 		res: Response,
@@ -117,12 +149,12 @@ const itemEffectController = {
 			});
 
 			if (!itemEffect) {
-				res.status(404).json({ error: "Item effect not found" });
+				res.status(404).json({ error: "Effet d'objet introuvable." });
 				return;
 			}
 
 			await itemEffect.destroy();
-			res.status(200).json({ message: "Item effect deleted" });
+			res.status(200).json({ message: "Effet d'objet supprimé." });
 		} catch (error) {
 			next(error);
 		}

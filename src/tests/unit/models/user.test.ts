@@ -1,7 +1,7 @@
 import User from "../../../models/User";
 import sequelize from "../../../config/database";
 
-describe("User Model", () => {
+describe("Modèle User", () => {
 	beforeAll(async () => {
 		await sequelize.sync({ force: true }); // Reset la base de tests
 	});
@@ -10,7 +10,7 @@ describe("User Model", () => {
 		await sequelize.close();
 	});
 
-	it("should create a user with valid data", async () => {
+	it("Devrait créer un utilisateur avec des données valides", async () => {
 		const user = await User.create({
 			login: "johndoe",
 			password: "securepassword123",
@@ -34,7 +34,7 @@ describe("User Model", () => {
 		expect(typedUser.twoFactor).toBe(true);
 	});
 
-	it("should not allow a user with a null login", async () => {
+	it("Devrait refuser un utilisateur sans login", async () => {
 		await expect(
 			User.create({
 				login: null, // 🔴 Doit échouer car `allowNull: false`
@@ -48,7 +48,7 @@ describe("User Model", () => {
 		).rejects.toThrow(/notNull Violation: User.login cannot be null/);
 	});
 
-	it("should enforce unique constraints on login", async () => {
+	it("Devrait appliquer une contrainte d'unicité sur le login", async () => {
 		await User.create({
 			login: "uniqueuser",
 			password: "securepass456",
@@ -72,7 +72,7 @@ describe("User Model", () => {
 		).rejects.toThrow();
 	});
 
-	it("should enforce unique constraints on email", async () => {
+	it("Devrait appliquer une contrainte d'unicité sur l'email", async () => {
 		await User.create({
 			login: "emailuser",
 			password: "securepass999",
@@ -96,7 +96,7 @@ describe("User Model", () => {
 		).rejects.toThrow();
 	});
 
-	it("should enforce unique constraints on nickname", async () => {
+	it("Devrait appliquer une contrainte d'unicité sur le surnom (nickname)", async () => {
 		await User.create({
 			login: "nickuser",
 			password: "nickpass123",
@@ -120,7 +120,7 @@ describe("User Model", () => {
 		).rejects.toThrow();
 	});
 
-	it("should enforce unique constraints on password", async () => {
+	it("Devrait appliquer une contrainte d'unicité sur le mot de passe", async () => {
 		await User.create({
 			login: "passuser",
 			password: "uniquepassword",
@@ -144,7 +144,7 @@ describe("User Model", () => {
 		).rejects.toThrow();
 	});
 
-	it("should default twoFactor to false if not provided", async () => {
+	it("Devrait définir twoFactor sur false par défaut si non fourni", async () => {
 		const user = await User.create({
 			login: "default2fa",
 			password: "defaultpass",
