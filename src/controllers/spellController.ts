@@ -1,7 +1,18 @@
+/**
+ * Contrôleur des sorts.
+ * Gère les opérations CRUD sur les sorts.
+ */
+
 import type { Request, Response, NextFunction } from "express";
 import Spell from "../models/Spell";
 
 const spellController = {
+	/**
+	 * Récupère tous les sorts disponibles.
+	 * @param req - Requête Express.
+	 * @param res - Réponse Express contenant la liste des sorts.
+	 * @param next - Middleware suivant en cas d'erreur.
+	 */
 	getAllSpells: async (
 		req: Request,
 		res: Response,
@@ -15,6 +26,12 @@ const spellController = {
 		}
 	},
 
+	/**
+	 * Récupère un sort spécifique par son identifiant.
+	 * @param req - Requête Express contenant l'ID du sort.
+	 * @param res - Réponse Express contenant les données du sort.
+	 * @param next - Middleware suivant en cas d'erreur.
+	 */
 	getSpellById: async (
 		req: Request,
 		res: Response,
@@ -25,7 +42,7 @@ const spellController = {
 			const spell = await Spell.findByPk(id);
 
 			if (!spell) {
-				res.status(404).json({ error: "Spell not found" });
+				res.status(404).json({ error: "Sort introuvable." });
 				return;
 			}
 
@@ -35,6 +52,12 @@ const spellController = {
 		}
 	},
 
+	/**
+	 * Crée un nouveau sort.
+	 * @param req - Requête Express contenant les données du sort.
+	 * @param res - Réponse Express contenant le sort créé.
+	 * @param next - Middleware suivant en cas d'erreur.
+	 */
 	createSpell: async (
 		req: Request,
 		res: Response,
@@ -44,7 +67,7 @@ const spellController = {
 			const { hero_id, name, order, description, passive, charge, cooldown } =
 				req.body;
 
-			// Validation des champs obligatoires
+			// Vérification des champs obligatoires.
 			if (
 				!hero_id ||
 				!name ||
@@ -54,12 +77,10 @@ const spellController = {
 				charge === undefined ||
 				!cooldown
 			) {
-				res
-					.status(400)
-					.json({
-						error:
-							"Missing required fields: hero_id, name, order, description, passive, charge, cooldown",
-					});
+				res.status(400).json({
+					error:
+						"Champs requis manquants : hero_id, name, order, description, passive, charge, cooldown.",
+				});
 				return;
 			}
 
@@ -70,6 +91,12 @@ const spellController = {
 		}
 	},
 
+	/**
+	 * Met à jour un sort existant.
+	 * @param req - Requête Express contenant l'ID du sort et les nouvelles données.
+	 * @param res - Réponse Express contenant le sort mis à jour.
+	 * @param next - Middleware suivant en cas d'erreur.
+	 */
 	updateSpell: async (
 		req: Request,
 		res: Response,
@@ -80,11 +107,11 @@ const spellController = {
 			const spell = await Spell.findByPk(id);
 
 			if (!spell) {
-				res.status(404).json({ error: "Spell not found" });
+				res.status(404).json({ error: "Sort introuvable." });
 				return;
 			}
 
-			// Mise à jour partielle des champs envoyés dans le body (PATCH)
+			// Mise à jour partielle (PATCH).
 			const updatedSpell = await spell.update(req.body, {
 				fields: Object.keys(req.body),
 			});
@@ -94,6 +121,12 @@ const spellController = {
 		}
 	},
 
+	/**
+	 * Supprime un sort par son identifiant.
+	 * @param req - Requête Express contenant l'ID du sort.
+	 * @param res - Réponse Express confirmant la suppression.
+	 * @param next - Middleware suivant en cas d'erreur.
+	 */
 	deleteSpell: async (
 		req: Request,
 		res: Response,
@@ -104,12 +137,12 @@ const spellController = {
 			const spell = await Spell.findByPk(id);
 
 			if (!spell) {
-				res.status(404).json({ error: "Spell not found" });
+				res.status(404).json({ error: "Sort introuvable." });
 				return;
 			}
 
 			await spell.destroy();
-			res.status(200).json({ message: "Spell deleted" });
+			res.status(200).json({ message: "Sort supprimé." });
 		} catch (error) {
 			next(error);
 		}

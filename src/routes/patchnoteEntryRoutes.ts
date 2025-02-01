@@ -1,3 +1,8 @@
+/**
+ * Routes des entrées de patchnote.
+ * Gère la récupération, la création, la mise à jour et la suppression des entrées d'un patchnote.
+ */
+
 import { Router } from "express";
 import patchnoteEntryController from "../controllers/patchnoteEntryController";
 import validationMiddleware from "../middlewares/validationMiddleware";

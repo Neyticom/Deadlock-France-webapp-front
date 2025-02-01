@@ -1,7 +1,7 @@
 import Keyword from "../../../models/Keyword";
 import sequelize from "../../../config/database";
 
-describe("Keyword Model", () => {
+describe("Modèle Keyword", () => {
   beforeAll(async () => {
     await sequelize.sync({ force: true }); // Reset la base de tests
   });
@@ -10,11 +10,11 @@ describe("Keyword Model", () => {
     await sequelize.close();
   });
 
-  it("should create a keyword with valid data", async () => {
+	it("Devrait créer un mot-clé avec des données valides", async () => {
     const keyword = await Keyword.create({
       ressource_type: "HERO",
       ressource_id: 1,
-      value: "Flying",
+      value: "Volant",
     });
 
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -23,20 +23,20 @@ describe("Keyword Model", () => {
     expect(typedKeyword.id).toBeDefined();
     expect(typedKeyword.ressource_type).toBe("HERO");
     expect(typedKeyword.ressource_id).toBe(1);
-    expect(typedKeyword.value).toBe("Flying");
+    expect(typedKeyword.value).toBe("Volant");
   });
 
-  it("should not allow a keyword with a null ressource_type", async () => {
+	it("Devrait refuser un mot-clé avec un ressource_type null", async () => {
     await expect(
       Keyword.create({
         ressource_type: null,
         ressource_id: 2,
-        value: "Stealth",
+        value: "Furtif",
       })
     ).rejects.toThrow(/notNull Violation: Keyword.ressource_type cannot be null/);
   });
 
-  it("should enforce unique constraint on value", async () => {
+	it("Devrait appliquer la contrainte d'unicité sur le champ `value`", async () => {
     await Keyword.create({
       ressource_type: "ITEM",
       ressource_id: 5,
@@ -52,13 +52,13 @@ describe("Keyword Model", () => {
     ).rejects.toThrow();
   });
 
-  it("should not allow a keyword with an invalid ressource_type", async () => {
+	it("Devrait refuser un mot-clé avec un `ressource_type` invalide", async () => {
     const validTypes = ["HERO", "ITEM", "SPELL"];
 
     const invalidKeyword = {
       ressource_type: "MONSTER", // 🔴 Doit être rejeté (ENUM)
       ressource_id: 3,
-      value: "Shadow Walk",
+      value: "Marche de l'ombre",
     };
 
     // Vérification manuelle pour SQLite

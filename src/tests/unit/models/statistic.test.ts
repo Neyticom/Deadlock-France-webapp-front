@@ -1,7 +1,7 @@
 import Statistic from "../../../models/Statistic";
 import sequelize from "../../../config/database";
 
-describe("Statistic Model", () => {
+describe("Modèle Statistic", () => {
 	beforeAll(async () => {
 		await sequelize.sync({ force: true }); // Reset la base de tests
 	});
@@ -10,7 +10,7 @@ describe("Statistic Model", () => {
 		await sequelize.close();
 	});
 
-	it("should create a statistic with valid data", async () => {
+	it("Devrait créer une statistique avec des données valides", async () => {
 		const statistic = await Statistic.create({
 			origin: "Homepage",
 			count: 120,
@@ -28,7 +28,7 @@ describe("Statistic Model", () => {
 		expect(typedStatistic.type).toBe("VIEW");
 	});
 
-	it("should not allow a statistic with a null origin", async () => {
+	it("Devrait refuser une statistique sans origine", async () => {
 		await expect(
 			Statistic.create({
 				origin: null, // 🔴 Doit échouer car `allowNull: false`
@@ -39,7 +39,7 @@ describe("Statistic Model", () => {
 		).rejects.toThrow(/notNull Violation: Statistic.origin cannot be null/);
 	});
 
-	it("should not allow a statistic with a null count", async () => {
+	it("Devrait refuser une statistique sans valeur de comptage", async () => {
 		await expect(
 			Statistic.create({
 				origin: "Patchnotes",
@@ -50,11 +50,11 @@ describe("Statistic Model", () => {
 		).rejects.toThrow(/notNull Violation: Statistic.count cannot be null/);
 	});
 
-	it("should not allow a statistic with an invalid type", async () => {
+	it("Devrait refuser une statistique avec un type invalide", async () => {
 		const validTypes = ["VIEW", "CLICK"];
 
 		const invalidStatistic = {
-			origin: "Invalid Event",
+			origin: "Événement invalide",
 			count: 10,
 			date: new Date(),
 			type: "INVALID", // 🔴 Doit être rejeté
@@ -71,9 +71,9 @@ describe("Statistic Model", () => {
 		await expect(Statistic.create(invalidStatistic)).rejects.toThrow();
 	});
 
-	it("should assign a default timestamp if date is not provided", async () => {
+	it("Devrait assigner automatiquement un timestamp si la date n'est pas fournie", async () => {
 		const statistic = await Statistic.create({
-			origin: "Auto Timestamp",
+			origin: "Horodatage automatique",
 			count: 5,
 			type: "VIEW",
 		});

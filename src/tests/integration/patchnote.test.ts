@@ -1,6 +1,6 @@
 import request from "supertest";
 import testApp from "../utils/setupTestServer";
-import "../utils/setupTestDB"; // Connexion à SQLite in-memory
+import "../utils/setupTestDB"; // Connexion à SQLite in-memory.
 
 let authToken: string | null = null;
 let testPatchnoteId: number;
@@ -16,8 +16,8 @@ beforeAll(async () => {
 		authToken = response.body.token;
 		console.log("✅ Token récupéré pour tests:", authToken);
 	} else {
-		console.error("❌ Login failed during tests:", response.body);
-		throw new Error("🚨 Impossible d'obtenir un token d'authentification");
+		console.error("❌ Échec de connexion lors des tests :", response.body);
+		throw new Error("🚨 Impossible d'obtenir un token d'authentification.");
 	}
 
 	console.log("🛠 Insertion d'un patchnote de test...");
@@ -30,7 +30,7 @@ beforeAll(async () => {
 			title: "Mise à jour initiale",
 			date: "2024-01-01T00:00:00.000Z",
 			author: "Admin",
-			content: "Ajout de nouvelles fonctionnalités",
+			content: "Ajout de nouvelles fonctionnalités.",
 			state: "PUBLISHED",
 		});
 
@@ -42,12 +42,12 @@ beforeAll(async () => {
 			"❌ Erreur lors de l'insertion du patchnote:",
 			createPatchnoteResponse.body,
 		);
-		throw new Error("🚨 Impossible d'insérer un patchnote de test");
+		throw new Error("🚨 Impossible d'insérer un patchnote de test.");
 	}
 });
 
-describe("Patchnote API", () => {
-	test("GET /api/patchnotes - should return all patchnotes", async () => {
+describe("📜 API des patchnotes.", () => {
+	test("✅ GET /api/patchnotes - Retourne tous les patchnotes.", async () => {
 		const response = await request(testApp).get("/api/patchnotes");
 
 		expect(response.status).toBe(200);
@@ -55,7 +55,7 @@ describe("Patchnote API", () => {
 		expect(response.body.length).toBeGreaterThan(0);
 	});
 
-	test("GET /api/patchnotes/:id - should return a specific patchnote", async () => {
+	test("✅ GET /api/patchnotes/:id - Retourne un patchnote spécifique.", async () => {
 		const response = await request(testApp).get(
 			`/api/patchnotes/${testPatchnoteId}`,
 		);
@@ -65,7 +65,7 @@ describe("Patchnote API", () => {
 		expect(response.body).toHaveProperty("title", "Mise à jour initiale");
 	});
 
-	test("POST /api/patchnotes - should create a new patchnote (auth required)", async () => {
+	test("✅ POST /api/patchnotes - Crée un nouveau patchnote (authentification requise).", async () => {
 		const response = await request(testApp)
 			.post("/api/patchnotes")
 			.set("Authorization", `Bearer ${authToken}`)
@@ -74,7 +74,7 @@ describe("Patchnote API", () => {
 				title: "Deuxième mise à jour",
 				date: "2024-02-01T00:00:00.000Z",
 				author: "Admin",
-				content: "Amélioration des performances",
+				content: "Amélioration des performances.",
 				state: "PUBLISHED",
 			});
 
@@ -83,7 +83,7 @@ describe("Patchnote API", () => {
 		expect(response.body.title).toBe("Deuxième mise à jour");
 	});
 
-	test("PATCH /api/patchnotes/:id - should update an existing patchnote (auth required)", async () => {
+	test("✅ PATCH /api/patchnotes/:id - Met à jour un patchnote existant (authentification requise).", async () => {
 		const response = await request(testApp)
 			.patch(`/api/patchnotes/${testPatchnoteId}`)
 			.set("Authorization", `Bearer ${authToken}`)
@@ -93,7 +93,7 @@ describe("Patchnote API", () => {
 		expect(response.body).toHaveProperty("title", "Titre mis à jour");
 	});
 
-	test("PUT /api/patchnotes/:id - should replace an existing patchnote (auth required)", async () => {
+	test("✅ PUT /api/patchnotes/:id - Remplace entièrement un patchnote existant (authentification requise).", async () => {
 		const response = await request(testApp)
 			.put(`/api/patchnotes/${testPatchnoteId}`)
 			.set("Authorization", `Bearer ${authToken}`)
@@ -102,7 +102,7 @@ describe("Patchnote API", () => {
 				title: "Patchnote complètement remplacé",
 				date: "2024-01-05T00:00:00.000Z",
 				author: "Admin",
-				content: "Correctifs divers",
+				content: "Correctifs divers.",
 				state: "DRAFT",
 			});
 
@@ -114,36 +114,36 @@ describe("Patchnote API", () => {
 		expect(response.body).toHaveProperty("state", "DRAFT");
 	});
 
-	test("DELETE /api/patchnotes/:id - should delete a patchnote (auth required)", async () => {
+	test("✅ DELETE /api/patchnotes/:id - Supprime un patchnote (authentification requise).", async () => {
 		const response = await request(testApp)
 			.delete(`/api/patchnotes/${testPatchnoteId}`)
 			.set("Authorization", `Bearer ${authToken}`);
 
 		expect(response.status).toBe(200);
-		expect(response.body).toHaveProperty("message", "Patchnote deleted");
+		expect(response.body).toHaveProperty("message", "Patchnote supprimé.");
 	});
 
-	test("GET /api/patchnotes/:id - should return 404 if patchnote does not exist", async () => {
+	test("❌ GET /api/patchnotes/:id - Retourne 404 si le patchnote n'existe pas.", async () => {
 		const response = await request(testApp).get("/api/patchnotes/999");
 
 		expect(response.status).toBe(404);
-		expect(response.body).toHaveProperty("error", "Patchnote not found");
+		expect(response.body).toHaveProperty("error", "Patchnote introuvable.");
 	});
 
-	test("POST /api/patchnotes - should return 401 if no token is provided", async () => {
+	test("❌ POST /api/patchnotes - Retourne 401 si aucun token n'est fourni.", async () => {
 		const response = await request(testApp).post("/api/patchnotes").send({
 			version: "1.2.0",
-			title: "Nouvelle update",
+			title: "Nouvelle mise à jour",
 			date: "2024-03-01T00:00:00.000Z",
 			author: "Admin",
-			content: "Nouveaux changements",
+			content: "Nouveaux changements.",
 			state: "PUBLISHED",
 		});
 
 		expect(response.status).toBe(401);
 		expect(response.body).toHaveProperty(
 			"error",
-			"Accès refusé, token manquant",
+			"Accès refusé, token manquant.",
 		);
 	});
 });

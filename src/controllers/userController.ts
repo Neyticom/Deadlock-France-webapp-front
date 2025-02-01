@@ -1,3 +1,8 @@
+/**
+ * Contrôleur des utilisateurs.
+ * Gère les opérations CRUD sur les utilisateurs et leurs rôles.
+ */
+
 import type { Request, Response, NextFunction } from "express";
 import { Op } from "sequelize";
 import User from "../models/User";
@@ -7,7 +12,12 @@ import logService from "../services/logService";
 import cryptoService from "../services/cryptoService";
 
 const userController = {
-	// Récupérer tous les utilisateurs
+	/**
+	 * Récupère tous les utilisateurs.
+	 * @param req - Requête Express.
+	 * @param res - Réponse Express contenant la liste des utilisateurs.
+	 * @param next - Middleware suivant en cas d'erreur.
+	 */
 	getAllUsers: async (
 		req: Request,
 		res: Response,
@@ -21,7 +31,12 @@ const userController = {
 		}
 	},
 
-	// Récupérer un utilisateur par ID
+	/**
+	 * Récupère un utilisateur par son identifiant.
+	 * @param req - Requête Express contenant l'ID de l'utilisateur.
+	 * @param res - Réponse Express contenant les données de l'utilisateur.
+	 * @param next - Middleware suivant en cas d'erreur.
+	 */
 	getUserById: async (
 		req: Request,
 		res: Response,
@@ -32,7 +47,7 @@ const userController = {
 			const user = await User.findByPk(id);
 
 			if (!user) {
-				res.status(404).json({ error: "Utilisateur non trouvé" });
+				res.status(404).json({ error: "Utilisateur introuvable." });
 				return;
 			}
 
@@ -42,7 +57,12 @@ const userController = {
 		}
 	},
 
-	// Ajouter un utilisateur
+	/**
+	 * Crée un nouvel utilisateur.
+	 * @param req - Requête Express contenant les données de l'utilisateur.
+	 * @param res - Réponse Express contenant l'utilisateur créé.
+	 * @param next - Middleware suivant en cas d'erreur.
+	 */
 	createUser: async (
 		req: Request,
 		res: Response,
@@ -59,7 +79,7 @@ const userController = {
 				twoFactor,
 			} = req.body;
 
-			// Vérifier si un utilisateur existe déjà avec le même login, password, nickname ou email
+			// Vérification des champs obligatoires.
 			const existingUser = await User.findOne({
 				where: {
 					[Op.or]: [{ login }, { password }, { nickname }, { email }],
@@ -74,10 +94,10 @@ const userController = {
 				return;
 			}
 
-			// Hasher le mot de passe avant de créer l'utilisateur
+			// Hachage du mot de passe avant la création.
 			const hashedPassword = await cryptoService.hashPassword(password);
 
-			// Création de l'utilisateur dans une transaction pour éviter l'incrémentation de l'ID en cas d'échec
+			// Création de l'utilisateur dans une transaction pour éviter l'incrémentation de l'ID en cas d'échec.
 			const newUser = await User.create({
 				login,
 				password: hashedPassword,
@@ -88,17 +108,17 @@ const userController = {
 				twoFactor,
 			});
 
-			// Assigner automatiquement le rôle "User" (id = 2)
+			// Attribution automatique du rôle "Utilisateur" (id = 2).
 			await UserHasRole.create({
 				user_id: newUser.getDataValue("id"),
 				role_id: 2,
 			});
 
-			// Création du log associé
+			// Création d'un log associé.
 			await logService.createLog(
 				newUser.getDataValue("id"),
 				"CREATE",
-				`User ${newUser.getDataValue("login")} created`,
+				`Utilisateur ${newUser.getDataValue("login")} créé.`,
 				req,
 			);
 
@@ -113,7 +133,12 @@ const userController = {
 		}
 	},
 
-	// Modifier un utilisateur
+	/**
+	 * Met à jour un utilisateur existant.
+	 * @param req - Requête Express contenant l'ID de l'utilisateur et les nouvelles données.
+	 * @param res - Réponse Express contenant l'utilisateur mis à jour.
+	 * @param next - Middleware suivant en cas d'erreur.
+	 */
 	updateUser: async (
 		req: Request,
 		res: Response,
@@ -124,23 +149,23 @@ const userController = {
 			const user = await User.findByPk(id);
 
 			if (!user) {
-				res.status(404).json({ error: "Utilisateur non trouvé" });
+				res.status(404).json({ error: "Utilisateur introuvable." });
 				return;
 			}
 
-			// Vérification si le champ password est présent dans la requête
+			// Vérifie si le champ password est présent dans la requête.
 			if (req.body.password) {
 				req.body.password = await cryptoService.hashPassword(req.body.password);
 			}
 
-			// Mise à jour des champs fournis dans le body
+			// Mise à jour partielle (PATCH).
 			await user.update(req.body, { fields: Object.keys(req.body) });
 
-			// Création du log pour suivre la modification de l'utilisateur
+			// Création d'un log pour suivre la modification.
 			await logService.createLog(
 				user.getDataValue("id"),
 				"EDIT",
-				`User ${user.getDataValue("login")} updated`,
+				`Utilisateur ${user.getDataValue("login")} mis à jour.`,
 				req,
 			);
 
@@ -150,7 +175,12 @@ const userController = {
 		}
 	},
 
-	// Récupérer le rôle d'un utilisateur
+	/**
+	 * Récupère le rôle d'un utilisateur.
+	 * @param req - Requête Express contenant l'ID de l'utilisateur.
+	 * @param res - Réponse Express contenant le rôle de l'utilisateur.
+	 * @param next - Middleware suivant en cas d'erreur.
+	 */
 	getUserRole: async (
 		req: Request,
 		res: Response,
@@ -165,7 +195,9 @@ const userController = {
 			});
 
 			if (!userRole) {
-				res.status(404).json({ error: "Rôle non trouvé pour cet utilisateur" });
+				res
+					.status(404)
+					.json({ error: "Rôle introuvable pour cet utilisateur." });
 				return;
 			}
 
@@ -175,7 +207,12 @@ const userController = {
 		}
 	},
 
-	// Modifier le rôle d'un utilisateur
+	/**
+	 * Met à jour le rôle d'un utilisateur.
+	 * @param req - Requête Express contenant l'ID de l'utilisateur et le nouveau rôle.
+	 * @param res - Réponse Express contenant les détails du rôle mis à jour.
+	 * @param next - Middleware suivant en cas d'erreur.
+	 */
 	updateUserRole: async (
 		req: Request,
 		res: Response,
@@ -185,31 +222,31 @@ const userController = {
 			const { id } = req.params;
 			const { newRoleId } = req.body;
 
-			// Vérifie si le champ 'newRoleId' est bien présent dans la requête
+			// Vérifie si le champ 'newRoleId' est bien présent dans la requête.
 			if (!newRoleId) {
 				res.status(400).json({ error: "Le champ 'newRoleId' est requis." });
 				return;
 			}
 
-			// Vérifie si l'utilisateur existe
+			// Vérifie si l'utilisateur existe.
 			const user = await User.findByPk(id);
 			if (!user) {
-				res.status(404).json({ error: "Utilisateur non trouvé." });
+				res.status(404).json({ error: "Utilisateur introuvable." });
 				return;
 			}
 
-			// Vérifie si le rôle existe dans la table Role
+			// Vérifie si le rôle existe dans la table Role.
 			const roleExists = await Role.findByPk(newRoleId);
 			if (!roleExists) {
 				res.status(404).json({ error: "Le rôle spécifié n'existe pas." });
 				return;
 			}
 
-			// Vérifie si l'utilisateur a déjà un rôle attribué
+			// Vérifie si l'utilisateur a déjà un rôle attribué.
 			const userRole = await UserHasRole.findOne({ where: { user_id: id } });
 
 			if (userRole) {
-				// Si le rôle est déjà attribué, on vérifie s'il est identique
+				// Si le rôle est déjà attribué, on vérifie s'il est identique.
 				if (userRole.getDataValue("role_id") === newRoleId) {
 					res.status(200).json({
 						message: "L'utilisateur possède déjà ce rôle.",
@@ -219,41 +256,45 @@ const userController = {
 					return;
 				}
 
-				// Suppression de l'ancien rôle avant d'ajouter le nouveau
+				// Suppression de l'ancien rôle avant d'ajouter le nouveau.
 				await userRole.destroy();
 			}
 
-			// Ajoute un nouveau rôle à l'utilisateur
+			// Ajoute un nouveau rôle à l'utilisateur.
 			await UserHasRole.create({ user_id: id, role_id: newRoleId });
 
-			// Récupère la nouvelle relation avec les détails du rôle
+			// Récupère la nouvelle relation avec les détails du rôle.
 			const updatedUserRole = (await UserHasRole.findOne({
 				where: { user_id: id },
 				include: [{ model: Role, as: "role" }],
 				raw: false,
 			})) as unknown as { role: Role };
 
-			// Enregistrer la modification du rôle dans les logs
+			// Enregistrer la modification du rôle dans les logs.
 			await logService.createLog(
 				Number(id),
 				"EDIT",
-				`User ${id} role changed to ${newRoleId}`,
+				`Rôle de l'utilisateur ${id} modifié en ${newRoleId}.`,
 				req,
 			);
 
-			// Retourne le nouvel état avec un message clair
 			res.status(200).json({
-				message: "Rôle mis à jour avec succès",
+				message: "Rôle mis à jour avec succès.",
 				user_id: id,
 				role: updatedUserRole?.role || roleExists,
 			});
 		} catch (error) {
-			console.error("❌ ERROR in updateUserRole:", error);
+			console.error("❌ Erreur dans updateUserRole:", error);
 			next(error);
 		}
 	},
 
-	// Supprimer le rôle d'un utilisateur (désactiver le compte)
+	/**
+	 * Supprime le rôle d'un utilisateur (désactivation du compte).
+	 * @param req - Requête Express contenant l'ID de l'utilisateur.
+	 * @param res - Réponse Express confirmant la suppression du rôle.
+	 * @param next - Middleware suivant en cas d'erreur.
+	 */
 	deleteUserRole: async (
 		req: Request,
 		res: Response,
@@ -262,14 +303,14 @@ const userController = {
 		try {
 			const { id } = req.params;
 
-			// Vérifier si l'utilisateur existe
+			// Vérifie si l'utilisateur existe.
 			const user = await User.findByPk(id);
 			if (!user) {
 				res.status(404).json({ error: "Utilisateur non trouvé." });
 				return;
 			}
 
-			// Vérifier si l'utilisateur a un rôle attribué
+			// Vérifie si l'utilisateur a un rôle attribué.
 			const userRole = await UserHasRole.findOne({ where: { user_id: id } });
 			if (!userRole) {
 				res
@@ -278,14 +319,14 @@ const userController = {
 				return;
 			}
 
-			// Suppression du rôle de l'utilisateur
+			// Suppression du rôle de l'utilisateur.
 			await userRole.destroy();
 
-			// Création d'un log pour enregistrer la suppression du rôle
+			// Création d'un log pour enregistrer la suppression du rôle.
 			await logService.createLog(
 				user.getDataValue("id"),
 				"DELETE",
-				`Role removed for user ${user.getDataValue("login")}`,
+				`Rôle supprimé pour l'utilisateur ${user.getDataValue("login")}.`,
 				req,
 			);
 
@@ -293,7 +334,7 @@ const userController = {
 				message: `Rôle de l'utilisateur ${id} supprimé avec succès (compte désactivé).`,
 			});
 		} catch (error) {
-			console.error("❌ ERROR in deleteUserRole:", error);
+			console.error("❌ Erreur dans deleteUserRole:", error);
 			next(error);
 		}
 	},

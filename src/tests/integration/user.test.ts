@@ -1,6 +1,6 @@
 import request from "supertest";
 import testApp from "../utils/setupTestServer";
-import "../utils/setupTestDB"; // Connexion à la base SQLite in-memory
+import "../utils/setupTestDB"; // Connexion à la base SQLite in-memory.
 
 let authToken: string | null = null;
 let userId: number | null = null;
@@ -17,13 +17,13 @@ beforeAll(async () => {
 		authToken = response.body.token;
 		console.log("✅ Token récupéré pour tests:", authToken);
 	} else {
-		console.error("❌ Login failed:", response.body);
+		console.error("❌ Échec de connexion :", response.body);
 		throw new Error("🚨 Impossible d'obtenir le token d'authentification");
 	}
 });
 
-describe("User API", () => {
-	test("GET /api/users - should return users if authenticated as admin", async () => {
+describe("👤 API des utilisateurs.", () => {
+	test("✅ GET /api/users - Retourne la liste des utilisateurs.", async () => {
 		const response = await request(testApp)
 			.get("/api/users")
 			.set("Authorization", `Bearer ${authToken}`);
@@ -32,7 +32,7 @@ describe("User API", () => {
 		expect(Array.isArray(response.body)).toBe(true);
 	});
 
-	test("POST /api/users - should create a new user", async () => {
+	test("✅ POST /api/users - Crée un nouvel utilisateur.", async () => {
 		console.log("🛠 Création d'un nouvel utilisateur...");
 
 		const response = await request(testApp)
@@ -58,7 +58,7 @@ describe("User API", () => {
 		expect(typeof userId).toBe("number");
 	});
 
-	test("GET /api/users/:id - should return a specific user", async () => {
+	test("✅ GET /api/users/:id - Retourne un utilisateur spécifique.", async () => {
 		expect(userId).not.toBeNull();
 
 		const response = await request(testApp)
@@ -69,7 +69,7 @@ describe("User API", () => {
 		expect(response.body).toHaveProperty("id", userId);
 	});
 
-	test("PATCH /api/users/:id - should update an existing user", async () => {
+	test("✅ PATCH /api/users/:id - Met à jour un utilisateur existant.", async () => {
 		expect(userId).not.toBeNull();
 
 		const response = await request(testApp)
@@ -81,7 +81,7 @@ describe("User API", () => {
 		expect(response.body).toHaveProperty("firstname", "UpdatedTest");
 	});
 
-	test("GET /api/users/:id/role - should return user role", async () => {
+	test("✅ GET /api/users/:id/role - Retourne le rôle de l'utilisateur.", async () => {
 		expect(userId).not.toBeNull();
 
 		const response = await request(testApp)
@@ -94,8 +94,8 @@ describe("User API", () => {
 		userRoleId = response.body.role.id;
 	});
 
-	// PATCH /api/users/:id/role - Modifier le rôle d'un utilisateur (admin)
-	test("PATCH /api/users/:id/role - should update user role", async () => {
+	// Modifier le rôle d'un utilisateur.
+	test("✅ PATCH /api/users/:id/role - Met à jour le rôle d'un utilisateur.", async () => {
 		expect(userId).not.toBeNull();
 
 		const response = await request(testApp)
@@ -104,11 +104,14 @@ describe("User API", () => {
 			.send({ newRoleId: 1 });
 
 		expect(response.status).toBe(200);
-		expect(response.body).toHaveProperty("message", "Rôle mis à jour avec succès");
+		expect(response.body).toHaveProperty(
+			"message",
+			"Rôle mis à jour avec succès.",
+		);
 	});
 
-	// DELETE /api/users/:id/role - Supprimer le rôle d'un utilisateur (admin)
-	test("DELETE /api/users/:id/role - should remove user role", async () => {
+	// Supprimer le rôle d'un utilisateur (désactivation du compte).
+	test("✅ DELETE /api/users/:id/role - Supprime le rôle d'un utilisateur.", async () => {
 		expect(userId).not.toBeNull();
 
 		const response = await request(testApp)

@@ -1,7 +1,7 @@
 import Setting from "../../../models/Setting";
 import sequelize from "../../../config/database";
 
-describe("Setting Model", () => {
+describe("Modèle Setting", () => {
 	beforeAll(async () => {
 		await sequelize.sync({ force: true }); // Reset la base de tests
 	});
@@ -10,7 +10,7 @@ describe("Setting Model", () => {
 		await sequelize.close();
 	});
 
-	it("should create a setting with valid data", async () => {
+	it("Devrait créer un paramètre avec des données valides", async () => {
 		const setting = await Setting.create({
 			key: "homepage_url",
 			value: "https://example.com",
@@ -26,7 +26,7 @@ describe("Setting Model", () => {
 		expect(typedSetting.type).toBe("URL");
 	});
 
-	it("should not allow a setting with a null key", async () => {
+	it("Devrait refuser un paramètre sans clé", async () => {
 		await expect(
 			Setting.create({
 				key: null, // 🔴 Doit échouer car `allowNull: false`
@@ -36,7 +36,7 @@ describe("Setting Model", () => {
 		).rejects.toThrow();
 	});
 
-	it("should not allow a setting with an invalid type", async () => {
+	it("Devrait refuser un paramètre avec un type invalide", async () => {
 		const validTypes = ["URL", "PATH", "TEXT"];
 
 		const invalidSetting = {
@@ -56,7 +56,7 @@ describe("Setting Model", () => {
 		await expect(Setting.create(invalidSetting)).rejects.toThrow();
 	});
 
-	it("should allow a setting with a null value", async () => {
+	it("Devrait autoriser un paramètre avec une valeur nulle", async () => {
 		const setting = await Setting.create({
 			key: "default_avatar_path",
 			value: null, // 🔴 Vérification que `value` peut être NULL

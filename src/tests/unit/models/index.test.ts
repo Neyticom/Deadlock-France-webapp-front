@@ -1,6 +1,6 @@
 import database from "../../../models/index";
 
-describe("Database Associations", () => {
+describe("Tests des associations de la base de données", () => {
 	beforeAll(async () => {
 		await database.sequelize.sync({ force: true }); // Reset la base de tests
 	});
@@ -9,7 +9,7 @@ describe("Database Associations", () => {
 		await database.sequelize.close();
 	});
 
-	it("should have all models initialized", () => {
+	it("Devrait initialiser tous les modèles", () => {
 		expect(database.Hero).toBeDefined();
 		expect(database.Spell).toBeDefined();
 		expect(database.SpellEffect).toBeDefined();
@@ -26,36 +26,36 @@ describe("Database Associations", () => {
 		expect(database.UserHasRole).toBeDefined();
 	});
 
-	it("should have proper Hero → Spell association", () => {
+	it("Devrait gérer l'association entre Hero et Spell", () => {
 		expect(database.Hero.associations.spells).toBeDefined();
 		expect(database.Spell.associations.hero).toBeDefined();
 	});
 
-	it("should have proper Spell → SpellEffect association", () => {
+	it("Devrait gérer l'association entre Spell et SpellEffect", () => {
 		expect(database.Spell.associations.spell_effects).toBeDefined();
 		expect(database.SpellEffect.associations.spell).toBeDefined();
 	});
 
-	it("should have proper Item → ItemEffect association", () => {
+	it("Devrait gérer l'association entre Item et ItemEffect", () => {
 		expect(database.Item.associations.itemeffects).toBeDefined();
 		expect(database.ItemEffect.associations.item).toBeDefined();
 	});
 
-	it("should have proper Item parent-child association", () => {
+	it("Devrait gérer l'association entre un Item parent et ses enfants", () => {
 		expect(database.Item.associations.parent).toBeDefined();
 	});
 
-	it("should have proper Patchnote → PatchnoteEntry association", () => {
+	it("Devrait gérer l'association entre Patchnote et PatchnoteEntry", () => {
 		expect(database.Patchnote.associations.patchnote_entries).toBeDefined();
 		expect(database.PatchnoteEntry.associations.patchnote).toBeDefined();
 	});
 
-	it("should have proper User → Log association", () => {
+	it("Devrait gérer l'association entre User et Log", () => {
 		expect(database.User.associations.logs).toBeDefined();
 		expect(database.Log.associations.user).toBeDefined();
 	});
 
-	it("should have proper User ↔ Role many-to-many association via UserHasRole", () => {
+	it("Devrait gérer l'association many-to-many entre User et Role via UserHasRole", () => {
 		expect(database.User.associations.roles).toBeDefined();
 		expect(database.Role.associations.users).toBeDefined();
 		expect(database.UserHasRole.associations.role).toBeDefined();

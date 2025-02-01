@@ -1,3 +1,8 @@
+/**
+ * Routes des effets de sorts.
+ * Gère la récupération, la création, la mise à jour et la suppression des effets appliqués aux sorts.
+ */
+
 import { Router } from "express";
 import spellEffectController from "../controllers/spellEffectController";
 import validationMiddleware from "../middlewares/validationMiddleware";

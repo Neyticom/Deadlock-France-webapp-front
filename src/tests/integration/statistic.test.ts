@@ -1,6 +1,6 @@
 import request from "supertest";
 import testApp from "../utils/setupTestServer";
-import "../utils/setupTestDB"; // Connexion à la base SQLite in-memory
+import "../utils/setupTestDB"; // Connexion à la base SQLite in-memory.
 
 let authToken: string | null = null;
 let statisticId: number | null = null;
@@ -13,17 +13,17 @@ beforeAll(async () => {
 		.send({ login: "admin", password: "password_hash_1" });
 
 	if (response.status !== 200) {
-		console.error("❌ Login failed:", response.body);
-		throw new Error("🚨 Impossible d'obtenir le token d'authentification");
+		console.error("❌ Échec de connexion :", response.body);
+		throw new Error("🚨 Impossible d'obtenir le token d'authentification.");
 	}
 
 	authToken = response.body.token;
 	console.log("✅ Token récupéré pour tests:", authToken);
 });
 
-describe("Statistic API", () => {
-	// ✅ Test de création d'une statistique
-	test("PUT /api/stats - should create or update a statistic entry", async () => {
+describe("📊 API des statistiques.", () => {
+	// Test de création ou mise à jour d'une statistique.
+	test("✅ PUT /api/stats - Crée ou met à jour une statistique.", async () => {
 		console.log("🛠 Insertion ou mise à jour d'une statistique de test...");
 
 		const response = await request(testApp)
@@ -32,7 +32,7 @@ describe("Statistic API", () => {
 			.send({
 				origin: "homepage",
 				count: 1,
-				date: new Date().toISOString(), // Format ISO valide
+				date: new Date().toISOString(), // Format ISO valide.
 				type: "VIEW",
 			});
 
@@ -41,14 +41,14 @@ describe("Statistic API", () => {
 		expect(response.status).toBe(200);
 		expect(response.body).toHaveProperty("id");
 
-		// ✅ Vérification et stockage de l'ID
+		// Vérification et stockage de l'ID.
 		statisticId = response.body.id;
 		console.log("✅ Statistique de test insérée avec ID:", statisticId);
 		expect(typeof statisticId).toBe("number");
 	});
 
-	// ✅ Test de récupération des statistiques
-	test("GET /api/stats - should return all statistics", async () => {
+	// Test de récupération des statistiques.
+	test("✅ GET /api/stats - Retourne toutes les statistiques.", async () => {
 		const response = await request(testApp)
 			.get("/api/stats")
 			.set("Authorization", `Bearer ${authToken}`);
@@ -58,8 +58,8 @@ describe("Statistic API", () => {
 		expect(response.body.length).toBeGreaterThan(0);
 	});
 
-	// ✅ Test de filtrage des statistiques par date
-	test("GET /api/stats/search - should filter statistics by date", async () => {
+	// Test de filtrage des statistiques par date.
+	test("✅ GET /api/stats/search - Filtre les statistiques par date.", async () => {
 		const startDate = new Date();
 		startDate.setDate(startDate.getDate() - 1); // Hier
 		const endDate = new Date(); // Aujourd'hui
@@ -77,9 +77,9 @@ describe("Statistic API", () => {
 		expect(Array.isArray(response.body)).toBe(true);
 	});
 
-	// ✅ Vérification que la mise à jour avec PUT fonctionne bien
-	test("PUT /api/stats - should update an existing statistic", async () => {
-		// ✅ Vérification que l'ID est bien défini
+	// Vérifie que la mise à jour avec PUT fonctionne bien.
+	test("✅ PUT /api/stats - Met à jour une statistique existante.", async () => {
+		// Vérifie que l'ID est bien défini.
 		expect(statisticId).not.toBeNull();
 		console.log(
 			`🔄 Tentative de mise à jour de la statistique ID: ${statisticId}`,
@@ -99,6 +99,6 @@ describe("Statistic API", () => {
 		console.log("🔎 Statut HTTP:", response.status);
 
 		expect(response.status).toBe(200);
-		expect(response.body).toHaveProperty("type", "CLICK"); 
+		expect(response.body).toHaveProperty("type", "CLICK");
 	});
 });

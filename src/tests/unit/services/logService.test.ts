@@ -5,8 +5,10 @@ jest.mock("../../../models/Log", () => ({
 	create: jest.fn(),
 }));
 
-describe("Log Service", () => {
-	// Désactiver console.error pour les tests
+// Service de gestion des logs (logService)
+// Vérifie la bonne création des logs et la gestion des adresses IP.
+describe("📝 Tests du service de logs", () => {
+	// Désactiver console.error pour les tests.
 	beforeAll(() => {
 		jest.spyOn(console, "error").mockImplementation(() => {});
 	});
@@ -15,12 +17,12 @@ describe("Log Service", () => {
 		jest.restoreAllMocks();
 	});
 
-	// Avant chaque test, réinitialiser les mocks pour éviter les interférences
+	// Avant chaque test, réinitialiser les mocks pour éviter les interférences.
 	beforeEach(() => {
 		jest.clearAllMocks();
 	});
 
-	it("should create a log using x-forwarded-for IP if available", async () => {
+	it("✅ Devrait créer un log en utilisant l'IP x-forwarded-for si disponible.", async () => {
 		const mockRequest = {
 			headers: { "x-forwarded-for": "203.0.113.42" },
 			ip: undefined, // Simule une requête sans `req.ip`
@@ -35,9 +37,11 @@ describe("Log Service", () => {
 			context: "User logged in",
 			ip: "203.0.113.42", // x-forwarded-for est utilisé
 		});
+
+		console.log("🟢 Log créé avec IP:", "203.0.113.42");
 	});
 
-	it("should fallback to req.ip if x-forwarded-for is missing", async () => {
+	it("✅ Devrait utiliser req.ip si x-forwarded-for est absent.", async () => {
 		const mockRequestNoXForwardedFor = {
 			headers: {}, // Aucune IP dans les headers
 			ip: "192.168.1.1", // Simule une requête avec uniquement `req.ip`
@@ -57,9 +61,11 @@ describe("Log Service", () => {
 			context: "Anonymous action",
 			ip: "192.168.1.1", // req.ip est utilisé
 		});
+
+		console.log("🟢 Log créé avec fallback sur req.ip:", "192.168.1.1");
 	});
 
-	it("should default to UNKNOWN if no IP is available", async () => {
+	it("✅ Devrait utiliser UNKNOWN (par défaut) si aucune IP n'est disponible.", async () => {
 		const mockRequestNoIp = {
 			headers: {}, // Pas de x-forwarded-for
 			ip: undefined, // Pas de req.ip non plus
@@ -81,7 +87,7 @@ describe("Log Service", () => {
 		});
 	});
 
-	it("should handle logging errors", async () => {
+	it("❌ Devrait gérer une erreur lors de la création d'un log.", async () => {
 		(Log.create as jest.Mock).mockRejectedValue(new Error("DB error"));
 
 		await expect(
@@ -92,7 +98,7 @@ describe("Log Service", () => {
 			} as any),
 		).rejects.toThrow("DB error");
 
-		// Vérifie que `Log.create` a bien été appelé malgré l'erreur
+		// Vérifie que `Log.create` a bien été appelé malgré l'erreur.
 		expect(Log.create).toHaveBeenCalledTimes(1);
 	});
 });
