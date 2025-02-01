@@ -1,3 +1,8 @@
+/**
+ * Routes des patchnotes.
+ * Gère la récupération, la création, la mise à jour, la suppression et la recherche des patchnotes.
+ */
+
 import { Router } from "express";
 import patchnoteController from "../controllers/patchnoteController";
 import validationMiddleware from "../middlewares/validationMiddleware";

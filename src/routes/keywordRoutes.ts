@@ -1,3 +1,8 @@
+/**
+ * Routes des mots-clés.
+ * Gère la récupération, la création, la mise à jour et la suppression des mots-clés associés aux ressources.
+ */
+
 import { Router } from "express";
 import keywordController from "../controllers/keywordController";
 import validationMiddleware from "../middlewares/validationMiddleware";

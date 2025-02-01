@@ -2,7 +2,7 @@ import PatchnoteEntry from "../../../models/PatchnoteEntry";
 import Patchnote from "../../../models/Patchnote";
 import sequelize from "../../../config/database";
 
-describe("PatchnoteEntry Model", () => {
+describe("Modèle PatchnoteEntry", () => {
 	beforeAll(async () => {
 		await sequelize.sync({ force: true }); // Reset la base de tests
 	});
@@ -11,13 +11,13 @@ describe("PatchnoteEntry Model", () => {
 		await sequelize.close();
 	});
 
-	it("should create a patchnote entry with valid data", async () => {
+	it("Devrait créer une entrée de patchnote avec des données valides", async () => {
 		const patchnote = await Patchnote.create({
 			version: "1.2.0",
-			title: "Balance Update",
+			title: "Mise à jour d'équilibrage",
 			date: new Date("2025-02-05"),
-			author: "BalanceTeam",
-			content: "Adjustments to hero abilities and items.",
+			author: "Équipe d'équilibrage",
+			content: "Ajustements des capacités des héros et des objets.",
 			state: "PUBLISHED",
 		});
 
@@ -30,7 +30,7 @@ describe("PatchnoteEntry Model", () => {
 			ressource_type: "HERO",
 			ressource_id: 1,
 			position: 1,
-			description: "Increased movement speed for Hero A.",
+			description: "Augmentation de la vitesse de déplacement pour le Héros A.",
 		});
 
 		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -42,11 +42,13 @@ describe("PatchnoteEntry Model", () => {
 		expect(typedEntry.ressource_type).toBe("HERO");
 		expect(typedEntry.ressource_id).toBe(1);
 		expect(typedEntry.position).toBe(1);
-		expect(typedEntry.description).toBe("Increased movement speed for Hero A.");
+		expect(typedEntry.description).toBe(
+			"Augmentation de la vitesse de déplacement pour le Héros A.",
+		);
 	});
 });
 
-it("should not allow a patchnote entry with a null patchnote_id", async () => {
+it("Devrait refuser une entrée de patchnote sans patchnote_id", async () => {
 	await expect(
 		PatchnoteEntry.create({
 			patchnote_id: null, // 🔴 Doit échouer car `allowNull: false`
@@ -54,14 +56,14 @@ it("should not allow a patchnote entry with a null patchnote_id", async () => {
 			ressource_type: "ITEM",
 			ressource_id: 2,
 			position: 2,
-			description: "Item effect modified.",
+			description: "Modification de l'effet de l'objet.",
 		}),
 	).rejects.toThrow(
 		/notNull Violation: PatchnoteEntry.patchnote_id cannot be null/,
 	);
 });
 
-it("should not allow a patchnote entry with an invalid ressource_type", async () => {
+it("Devrait refuser une entrée de patchnote avec un type de ressource invalide", async () => {
 	const validTypes = ["HERO", "ITEM", "SPELL"];
 
 	const invalidEntry = {
@@ -70,7 +72,7 @@ it("should not allow a patchnote entry with an invalid ressource_type", async ()
 		ressource_type: "MONSTER", // 🔴 Doit être rejeté
 		ressource_id: 3,
 		position: 3,
-		description: "Monster attack power reduced.",
+		description: "Réduction de la puissance d'attaque du monstre.",
 	};
 
 	// Vérification manuelle pour SQLite
@@ -84,7 +86,7 @@ it("should not allow a patchnote entry with an invalid ressource_type", async ()
 	await expect(PatchnoteEntry.create(invalidEntry)).rejects.toThrow();
 });
 
-it("should not allow a patchnote entry with an invalid category", async () => {
+it("Devrait refuser une entrée de patchnote avec une catégorie invalide", async () => {
 	const validCategories = ["BUFF", "NERF", "CHANGE", "FIX"];
 
 	const invalidEntry = {
@@ -93,7 +95,7 @@ it("should not allow a patchnote entry with an invalid category", async () => {
 		ressource_type: "SPELL",
 		ressource_id: 4,
 		position: 4,
-		description: "Spell completely removed from the game.",
+		description: "Sort complètement supprimé du jeu.",
 	};
 
 	// Vérification manuelle pour SQLite
@@ -107,7 +109,7 @@ it("should not allow a patchnote entry with an invalid category", async () => {
 	await expect(PatchnoteEntry.create(invalidEntry)).rejects.toThrow();
 });
 
-it("should not allow a patchnote entry with a null description", async () => {
+it("Devrait refuser une entrée de patchnote sans description", async () => {
 	await expect(
 		PatchnoteEntry.create({
 			patchnote_id: 1,

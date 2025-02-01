@@ -1,3 +1,8 @@
+/**
+ * Routes d'authentification.
+ * Gère la connexion et la déconnexion des utilisateurs.
+ */
+
 import { Router } from "express";
 import authController from "../controllers/authController";
 import validationMiddleware from "../middlewares/validationMiddleware";

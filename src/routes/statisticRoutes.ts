@@ -1,3 +1,8 @@
+/**
+ * Routes des statistiques.
+ * Gère la récupération, la création, la mise à jour et la recherche des statistiques.
+ */
+
 import { Router } from "express";
 import statisticController from "../controllers/statisticController";
 import validationMiddleware from "../middlewares/validationMiddleware";

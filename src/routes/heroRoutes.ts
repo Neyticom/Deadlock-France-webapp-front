@@ -1,3 +1,8 @@
+/**
+ * Routes des héros.
+ * Gère la récupération, la création, la mise à jour et la suppression des héros.
+ */
+
 import { Router } from "express";
 import heroController from "../controllers/heroController";
 import validationMiddleware from "../middlewares/validationMiddleware";

@@ -16,7 +16,7 @@ beforeAll(async () => {
 		authToken = response.body.token;
 		console.log("✅ Token récupéré pour tests:", authToken);
 	} else {
-		console.error("❌ Login failed during tests:", response.body);
+		console.error("❌ Échec de la connexion lors des tests :", response.body);
 		throw new Error("🚨 Impossible d'obtenir un token d'authentification");
 	}
 
@@ -39,12 +39,12 @@ beforeAll(async () => {
 			"❌ Erreur lors de l'insertion du keyword:",
 			createKeywordResponse.body,
 		);
-		throw new Error("🚨 Impossible d'insérer un keyword de test");
+		throw new Error("🚨 Impossible d'insérer un keyword de test.");
 	}
 });
 
-describe("Keyword API", () => {
-	test("GET /api/keywords - should return all keywords (auth required)", async () => {
+describe("🔑 API des mots-clés.", () => {
+	test("✅ GET /api/keywords - Retourne tous les mots-clés (authentification requise).", async () => {
 		const response = await request(testApp)
 			.get("/api/keywords")
 			.set("Authorization", `Bearer ${authToken}`);
@@ -54,7 +54,7 @@ describe("Keyword API", () => {
 		expect(response.body.length).toBeGreaterThan(0);
 	});
 
-	test("GET /api/keywords/:id - should return a specific keyword (auth required)", async () => {
+	test("✅ GET /api/keywords/:id - Retourne un mot-clé spécifique (authentification requise).", async () => {
 		const response = await request(testApp)
 			.get(`/api/keywords/${testKeywordId}`)
 			.set("Authorization", `Bearer ${authToken}`);
@@ -65,7 +65,7 @@ describe("Keyword API", () => {
 		expect(response.body).toHaveProperty("value", "Legendary");
 	});
 
-	test("POST /api/keywords - should create a new keyword (auth required)", async () => {
+	test("✅ POST /api/keywords - Crée un nouveau mot-clé (authentification requise).", async () => {
 		const response = await request(testApp)
 			.post("/api/keywords")
 			.set("Authorization", `Bearer ${authToken}`)
@@ -81,7 +81,7 @@ describe("Keyword API", () => {
 		expect(response.body.value).toBe("Rare");
 	});
 
-	test("PATCH /api/keywords/:id - should update an existing keyword (auth required)", async () => {
+	test("✅ PATCH /api/keywords/:id - Met à jour un mot-clé existant (authentification requise).", async () => {
 		const response = await request(testApp)
 			.patch(`/api/keywords/${testKeywordId}`)
 			.set("Authorization", `Bearer ${authToken}`)
@@ -91,26 +91,26 @@ describe("Keyword API", () => {
 		expect(response.body).toHaveProperty("value", "Mythic");
 	});
 
-	test("DELETE /api/keywords/:id - should delete a keyword (auth required)", async () => {
+	test("✅ DELETE /api/keywords/:id - Supprime un mot-clé (authentification requise).", async () => {
 		const response = await request(testApp)
 			.delete(`/api/keywords/${testKeywordId}`)
 			.set("Authorization", `Bearer ${authToken}`);
 
 		expect(response.status).toBe(200);
-		expect(response.body).toHaveProperty("message", "Keyword deleted");
+		expect(response.body).toHaveProperty("message", "Mot-clé supprimé.");
 	});
 
-	test("GET /api/keywords - should return 401 if no token is provided", async () => {
+	test("❌ GET /api/keywords - Retourne 401 si aucun token n'est fourni.", async () => {
 		const response = await request(testApp).get("/api/keywords");
 
 		expect(response.status).toBe(401);
 		expect(response.body).toHaveProperty(
 			"error",
-			"Accès refusé, token manquant",
+			"Accès refusé, token manquant.",
 		);
 	});
 
-	test("DELETE /api/keywords/:id - should return 401 if no token is provided", async () => {
+	test("❌ DELETE /api/keywords/:id - Retourne 401 si aucun token n'est fourni.", async () => {
 		const response = await request(testApp).delete(
 			`/api/keywords/${testKeywordId}`,
 		);
@@ -118,16 +118,16 @@ describe("Keyword API", () => {
 		expect(response.status).toBe(401);
 		expect(response.body).toHaveProperty(
 			"error",
-			"Accès refusé, token manquant",
+			"Accès refusé, token manquant.",
 		);
 	});
 
-	test("GET /api/keywords/:id - should return 404 if keyword does not exist", async () => {
+	test("❌ GET /api/keywords/:id - Retourne 404 si le mot-clé n'existe pas.", async () => {
 		const response = await request(testApp)
 			.get("/api/keywords/999")
 			.set("Authorization", `Bearer ${authToken}`);
 
 		expect(response.status).toBe(404);
-		expect(response.body).toHaveProperty("error", "Keyword not found");
+		expect(response.body).toHaveProperty("error", "Mot-clé introuvable.");
 	});
 });

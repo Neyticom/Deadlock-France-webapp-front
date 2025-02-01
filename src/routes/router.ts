@@ -1,3 +1,8 @@
+/**
+ * Fichier principal des routes.
+ * Définit et regroupe toutes les routes de l'application.
+ */
+
 import { Router } from "express";
 import mainController from "../controllers/mainController";
 import heroRoutes from "./heroRoutes";

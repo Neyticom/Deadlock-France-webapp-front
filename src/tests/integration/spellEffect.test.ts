@@ -1,6 +1,6 @@
 import request from "supertest";
 import testApp from "../utils/setupTestServer";
-import "../utils/setupTestDB"; // Connexion à la base SQLite in-memory
+import "../utils/setupTestDB"; // Connexion à la base SQLite in-memory.
 
 let authToken: string | null = null;
 let heroId: number | null = null;
@@ -15,14 +15,14 @@ beforeAll(async () => {
 		.send({ login: "admin", password: "password_hash_1" });
 
 	if (response.status !== 200) {
-		console.error("❌ Login failed:", response.body);
-		throw new Error("🚨 Impossible d'obtenir le token d'authentification");
+		console.error("❌ Échec de connexion :", response.body);
+		throw new Error("🚨 Impossible d'obtenir le token d'authentification.");
 	}
 
 	authToken = response.body.token;
 	console.log("✅ Token récupéré pour tests:", authToken);
 
-	// 🛠 Insertion d'un héros de test
+	// 🛠 Insertion d'un héros de test.
 	console.log("🛠 Insertion d'un héros de test...");
 	const heroResponse = await request(testApp)
 		.post("/api/heroes")
@@ -76,8 +76,8 @@ beforeAll(async () => {
 	console.log("✅ Sort de test inséré avec ID:", spellId);
 });
 
-describe("SpellEffect API", () => {
-	test("POST /api/spells/:id/effects - should create a new spell effect", async () => {
+describe("📜 API des effets de sorts.", () => {
+	test("✅ POST /api/spells/:id/effects - Crée un nouvel effet de sort.", async () => {
 		console.log("🛠 Insertion d'un effet de test...");
 		const response = await request(testApp)
 			.post(`/api/spells/${spellId}/effects`)
@@ -97,7 +97,7 @@ describe("SpellEffect API", () => {
 		console.log("✅ Effet de test inséré avec ID:", spellEffectId);
 	});
 
-	test("GET /api/spells/:id/effects - should return all effects of a spell", async () => {
+	test("✅ GET /api/spells/:id/effects - Retourne tous les effets d'un sort.", async () => {
 		const response = await request(testApp)
 			.get(`/api/spells/${spellId}/effects`)
 			.set("Authorization", `Bearer ${authToken}`);
@@ -107,7 +107,7 @@ describe("SpellEffect API", () => {
 		expect(response.body.length).toBeGreaterThan(0);
 	});
 
-	test("GET /api/spells/:id/effects/:id - should return a specific spell effect", async () => {
+	test("✅ GET /api/spells/:id/effects/:id - Retourne un effet spécifique d'un sort.", async () => {
 		const response = await request(testApp)
 			.get(`/api/spells/${spellId}/effects/${spellEffectId}`)
 			.set("Authorization", `Bearer ${authToken}`);
@@ -120,22 +120,22 @@ describe("SpellEffect API", () => {
 		);
 	});
 
-	test("PATCH /api/spells/:id/effects/:id - should update an existing spell effect", async () => {
+	test("✅ PATCH /api/spells/:id/effects/:id - Met à jour un effet existant d'un sort.", async () => {
 		const response = await request(testApp)
 			.patch(`/api/spells/${spellId}/effects/${spellEffectId}`)
 			.set("Authorization", `Bearer ${authToken}`)
-			.send({ effect: "Updated effect description" });
+			.send({ effect: "Effet mis à jour." });
 
 		expect(response.status).toBe(200);
-		expect(response.body.effect).toBe("Updated effect description");
+		expect(response.body.effect).toBe("Effet mis à jour.");
 	});
 
-	test("DELETE /api/spells/:id/effects/:id - should delete a spell effect", async () => {
+	test("✅ DELETE /api/spells/:id/effects/:id - Supprime un effet de sort.", async () => {
 		const response = await request(testApp)
 			.delete(`/api/spells/${spellId}/effects/${spellEffectId}`)
 			.set("Authorization", `Bearer ${authToken}`);
 
 		expect(response.status).toBe(200);
-		expect(response.body).toHaveProperty("message", "Spell effect deleted");
+		expect(response.body).toHaveProperty("message", "Effet supprimé.");
 	});
 });

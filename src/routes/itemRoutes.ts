@@ -1,3 +1,8 @@
+/**
+ * Routes des objets.
+ * Gère la récupération, la création, la mise à jour et la suppression des objets.
+ */
+
 import { Router } from "express";
 import itemController from "../controllers/itemController";
 import validationMiddleware from "../middlewares/validationMiddleware";

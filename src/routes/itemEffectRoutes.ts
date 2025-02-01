@@ -1,3 +1,8 @@
+/**
+ * Routes des effets d'objets.
+ * Gère la récupération, la création, la mise à jour et la suppression des effets appliqués aux objets.
+ */
+
 import { Router } from "express";
 import itemEffectController from "../controllers/itemEffectController";
 import validationMiddleware from "../middlewares/validationMiddleware";
