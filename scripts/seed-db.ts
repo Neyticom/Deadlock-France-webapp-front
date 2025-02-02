@@ -24,9 +24,9 @@ import database from '../src/models/index';
         ], { transaction });
     
         await database.Patchnote.bulkCreate([
-            { version: '1.0.0', title: 'Initial Release', date: Date.now(), author: 'Admin123', content: 'First release notes content.', state: 'PUBLISHED' },
-            { version: '1.1.0', title: 'Update Patch', date: Date.now() - 86400000, author: 'Johnny', content: 'Bug fixes and performance improvements.', state: 'DRAFT' }
-        ], { transaction });
+            { version: '1.0.0', title: 'Initial Release', date: Date.now(), author: 'Admin123', content: 'First release notes content.', state: 'PUBLISHED', img_path: '/images/patchnote_1.png', video_path: '/videos/patchnote_1.mp4', source: "https://patchnotes.deadlock-france.com/1.0.0" },
+            { version: '1.1.0', title: 'Update Patch', date: Date.now() - 86400000, author: 'Johnny', content: 'Bug fixes and performance improvements.', state: 'DRAFT', img_path: '/images/patchnote_2.png', video_path: null, source: "https://patchnotes.deadlock-france.com/1.1.0" }
+        ], { transaction });        
     
         await database.Hero.bulkCreate([
             { name: 'Hero 1', resume: 'Hero 1 resume', description: 'Description of Hero 1.', img_path: '/images/hero1.png', video_path: '/videos/hero1.mp4' },
