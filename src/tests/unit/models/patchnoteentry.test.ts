@@ -19,6 +19,9 @@ describe("Modèle PatchnoteEntry", () => {
 			author: "Équipe d'équilibrage",
 			content: "Ajustements des capacités des héros et des objets.",
 			state: "PUBLISHED",
+			img_path: "/images/patchnote_1.png",
+			video_path: "/videos/patchnote_1.mp4",
+			source: "https://patchnotes.deadlock-france.com/1.2.0",
 		});
 
 		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -64,7 +67,7 @@ it("Devrait refuser une entrée de patchnote sans patchnote_id", async () => {
 });
 
 it("Devrait refuser une entrée de patchnote avec un type de ressource invalide", async () => {
-	const validTypes = ["HERO", "ITEM", "SPELL"];
+	const validTypes = ["HERO", "ITEM", "SPELL", "GLOBAL"];
 
 	const invalidEntry = {
 		patchnote_id: 1,

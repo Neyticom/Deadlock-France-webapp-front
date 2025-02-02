@@ -19,6 +19,9 @@ describe("Modèle Patchnote", () => {
 			content:
 				"Cette mise à jour introduit plusieurs nouvelles fonctionnalités.",
 			state: "PUBLISHED",
+			img_path: "/images/patchnote_4.png",
+			video_path: "/videos/patchnote_4.mp4",
+			source: "https://patchnotes.deadlock-france.com/2.0.0",
 		});
 
 		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -33,6 +36,9 @@ describe("Modèle Patchnote", () => {
 			"Cette mise à jour introduit plusieurs nouvelles fonctionnalités.",
 		);
 		expect(typedPatchnote.state).toBe("PUBLISHED");
+		expect(typedPatchnote.img_path).toBe("/images/patchnote_4.png");
+		expect(typedPatchnote.video_path).toBe("/videos/patchnote_4.mp4");
+		expect(typedPatchnote.source).toBe("https://patchnotes.deadlock-france.com/2.0.0");
 	});
 
 	it("Devrait refuser un patchnote sans version", async () => {
@@ -44,6 +50,9 @@ describe("Modèle Patchnote", () => {
 				author: "Inconnu",
 				content: "Ce patchnote n'a pas de version spécifiée.",
 				state: "DRAFT",
+				img_path: "/images/patchnote_4.png",
+				video_path: "/videos/patchnote_4.mp4",
+				source: "https://patchnotes.deadlock-france.com/1.0.0",
 			}),
 		).rejects.toThrow(/notNull Violation: Patchnote.version cannot be null/);
 	});
@@ -56,6 +65,9 @@ describe("Modèle Patchnote", () => {
 			author: "Équipe support",
 			content: "Correction de failles critiques de sécurité.",
 			state: "PUBLISHED",
+			img_path: "/images/patchnote_5.png",
+			video_path: "/videos/patchnote_5.mp4",
+			source: "https://patchnotes.deadlock-france.com/1.0.1",
 		});
 
 		await expect(
@@ -66,6 +78,9 @@ describe("Modèle Patchnote", () => {
 				author: "Équipe support",
 				content: "Tentative de création d'une version en double.",
 				state: "DRAFT",
+				img_path: "/images/patchnote_6.png",
+				video_path: "/videos/patchnote_6.mp4",
+				source: "https://patchnotes.deadlock-france.com/1.0.2",
 			}),
 		).rejects.toThrow();
 
@@ -78,6 +93,9 @@ describe("Modèle Patchnote", () => {
 				content:
 					"Tentative de création d'un patchnote avec une date en double.",
 				state: "DRAFT",
+				img_path: "/images/patchnote_7.png",
+				video_path: "/videos/patchnote_7.mp4",
+				source: "https://patchnotes.deadlock-france.com/1.0.3",
 			}),
 		).rejects.toThrow();
 	});
@@ -92,6 +110,9 @@ describe("Modèle Patchnote", () => {
 			author: "Laboratoire",
 			content: "Test d'un état de patchnote non valide.",
 			state: "EXPERIMENTAL", // 🔴 Doit être rejeté
+			img_path: "/images/patchnote_7.png",
+			video_path: "/videos/patchnote_7.mp4",
+			source: "https://patchnotes.deadlock-france.com/3.0.0",
 		};
 
 		// Vérification manuelle pour SQLite
@@ -113,6 +134,9 @@ describe("Modèle Patchnote", () => {
 			author: null,
 			content: "Aucun auteur spécifié pour ce patchnote.",
 			state: "DRAFT",
+			img_path: "/images/patchnote_8.png",
+			video_path: "/videos/patchnote_8.mp4",
+			source: "https://patchnotes.deadlock-france.com/2.1.0",
 		});
 
 		// biome-ignore lint/suspicious/noExplicitAny: <explanation>

@@ -5,7 +5,7 @@ import Patchnote from './Patchnote';
 interface PatchnoteEntryAttributes {
   patchnote_id: number;
   category: string;
-  ressource_type: 'HERO' | 'ITEM' | 'SPELL';
+  ressource_type: 'HERO' | 'ITEM' | 'SPELL' | 'GLOBAL';
   ressource_id: number;
   position: number;
   description: string;
@@ -25,12 +25,11 @@ PatchnoteEntry.init(
       onDelete: 'CASCADE'
     },
     ressource_type: {
-      type: DataTypes.ENUM('HERO', 'ITEM', 'SPELL'),
+      type: DataTypes.ENUM('HERO', 'ITEM', 'SPELL', 'GLOBAL'),
       allowNull: false
     },
     ressource_id: {
       type: DataTypes.INTEGER,
-      allowNull: false
     },
     category: {
       type: DataTypes.ENUM('BUFF', 'NERF', 'CHANGE', 'FIX'),
