@@ -4,7 +4,7 @@ import Patchnote from './Patchnote';
 
 interface PatchnoteEntryAttributes {
   patchnote_id: number;
-  category: string;
+  category: 'BUFF' | 'NERF' | 'CHANGE' | 'FIX';
   ressource_type: 'HERO' | 'ITEM' | 'SPELL' | 'GLOBAL';
   ressource_id: number;
   position: number;
