@@ -15,6 +15,8 @@
     "db-sync": "ts-node scripts/sync-db.ts",
     "db-seed": "ts-node scripts/seed-db.ts",
     "db-reset": "npm run db-sync && npm run db-seed",
+    "db-seed-undeadlock": "ts-node scripts/seed-undeadlock.ts",
+    "db-reset-undeadlock": "npm run db-sync && npm run db-seed-undeadlock",
     "test": "NODE_ENV=test jest"
   },
   "repository": {
