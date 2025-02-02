@@ -31,6 +31,9 @@ beforeAll(async () => {
 		author: "Admin",
 		content: "Premier patch du jeu.",
 		state: "PUBLISHED",
+		img_path: "/images/patchnote_1.png",
+		video_path: "/videos/patchnote_1.mp4",
+		source: "https://patchnotes.deadlock-france.com/1.0.0",
 	});
 
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>

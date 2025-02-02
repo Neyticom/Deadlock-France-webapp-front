@@ -32,8 +32,8 @@ beforeAll(async () => {
 			name: "TestHero",
 			resume: "Une courte description du héros.",
 			description: "Un héros pour les tests.",
-			img_path: "https://example.com/images/testhero.png", // 🟢 URL valide
-			video_path: "https://example.com/videos/testhero.mp4", // 🟢 URL valide
+			img_path: "https://example.com/images/testhero.png",
+			video_path: "https://example.com/videos/testhero.mp4",
 		});
 
 	if (createHeroResponse.status === 201) {
