@@ -1,0 +1,18 @@
+{
+	"name": "Deadlock France API",
+	"entryPoints": ["src"],
+	"out": "./docs/typedoc",
+	"exclude": [
+		"src/index.ts",
+		"src/models/**",
+		"src/schemas/**",
+		"src/tests/**"
+	],
+	"excludeExternals": true,
+	"excludePrivate": true,
+	"excludeProtected": true,
+	"readme": "none",
+	"entryPointStrategy": "expand",
+	"includeVersion": true,
+	"theme": "default"
+}

@@ -75,12 +75,23 @@ const patchnoteController = {
 		next: NextFunction,
 	): Promise<void> => {
 		try {
-			const { version, title, date, author, content, state } = req.body;
+			const {
+				version,
+				title,
+				date,
+				author,
+				content,
+				state,
+				img_path,
+				video_path,
+				source,
+			} = req.body;
 
 			// Vérification des champs obligatoires.
-			if (!version || !title || !date || !state) {
+			if (!version || !title || !date || !state || !img_path || !source) {
 				res.status(400).json({
-					error: "Champs obligatoires manquants : version, title, date, state.",
+					error:
+						"Champs obligatoires manquants : version, title, date, state, img_path, source.",
 				});
 				return;
 			}
@@ -92,6 +103,9 @@ const patchnoteController = {
 				author,
 				content,
 				state,
+				img_path,
+				video_path,
+				source,
 			});
 			res.status(201).json(newPatchnote);
 		} catch (error) {

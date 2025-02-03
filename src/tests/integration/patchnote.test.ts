@@ -26,12 +26,15 @@ beforeAll(async () => {
 		.post("/api/patchnotes")
 		.set("Authorization", `Bearer ${authToken}`)
 		.send({
-			version: "1.0.0",
+			version: "2.0.0",
 			title: "Mise à jour initiale",
 			date: "2024-01-01T00:00:00.000Z",
 			author: "Admin",
 			content: "Ajout de nouvelles fonctionnalités.",
 			state: "PUBLISHED",
+			img_path: "/images/patchnote_1.png",
+			video_path: "/videos/patchnote_1.mp4",
+			source: "https://patchnotes.deadlock-france.com/2.0.0",
 		});
 
 	if (createPatchnoteResponse.status === 201) {
@@ -76,6 +79,9 @@ describe("📜 API des patchnotes.", () => {
 				author: "Admin",
 				content: "Amélioration des performances.",
 				state: "PUBLISHED",
+				img_path: "/images/patchnote_2.png",
+				video_path: "/videos/patchnote_2.mp4",
+				source: "https://patchnotes.deadlock-france.com/1.1.0",
 			});
 
 		expect(response.status).toBe(201);
@@ -104,6 +110,9 @@ describe("📜 API des patchnotes.", () => {
 				author: "Admin",
 				content: "Correctifs divers.",
 				state: "DRAFT",
+				img_path: "/images/patchnote_3.png",
+				video_path: "/videos/patchnote_3.mp4",
+				source: "https://patchnotes.deadlock-france.com/1.0.1",
 			});
 
 		expect(response.status).toBe(200);
@@ -138,6 +147,9 @@ describe("📜 API des patchnotes.", () => {
 			author: "Admin",
 			content: "Nouveaux changements.",
 			state: "PUBLISHED",
+			img_path: "/images/patchnote_4.png",
+			video_path: "/videos/patchnote_4.mp4",
+			source: "https://patchnotes.deadlock-france.com/1.2.0",
 		});
 
 		expect(response.status).toBe(401);
