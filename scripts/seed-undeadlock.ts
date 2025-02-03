@@ -187,13 +187,13 @@ import database from "../src/models/index";
 		await database.SpellEffect.bulkCreate(
 			[
 				{
-					spell_id: 1, // Assurez-vous que l'ID correspond à 'Aerial Ace' dans la table Spell
+					spell_id: 1,
 					order: 1,
 					effect:
 						"Inflige 100 points de dégâts aux ennemis dans la zone ciblée.",
 				},
 				{
-					spell_id: 2, // Assurez-vous que l'ID correspond à 'Skyward Strike' dans la table Spell
+					spell_id: 2,
 					order: 1,
 					effect:
 						"Inflige 80 points de dégâts et étourdit les ennemis pendant 2 secondes.",

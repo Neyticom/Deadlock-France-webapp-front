@@ -9,7 +9,7 @@ import dotenv from "dotenv";
 import User from "../models/User";
 import Role from "../models/Role";
 import cryptoService from "../services/cryptoService";
-import { log } from "console";
+import { log } from "node:console";
 
 dotenv.config();
 

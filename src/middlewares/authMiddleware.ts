@@ -4,7 +4,8 @@
  */
 
 import type { Request, Response, NextFunction } from "express";
-import jwt, { JwtPayload, VerifyErrors } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
+import type { JwtPayload, VerifyErrors } from "jsonwebtoken";  
 import dotenv from "dotenv";
 
 dotenv.config();
