@@ -15,6 +15,8 @@
     "db-sync": "ts-node scripts/sync-db.ts",
     "db-seed": "ts-node scripts/seed-db.ts",
     "db-reset": "npm run db-sync && npm run db-seed",
+    "db-seed-undeadlock": "ts-node scripts/seed-undeadlock.ts",
+    "db-reset-undeadlock": "npm run db-sync && npm run db-seed-undeadlock",
     "test": "NODE_ENV=test jest"
   },
   "repository": {
@@ -65,6 +67,7 @@
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
+    "typedoc": "^0.27.6",
     "typescript": "^5.7.2"
   }
 }

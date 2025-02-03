@@ -91,8 +91,10 @@ describe("🛠️ Test End-to-End - Parcours utilisateur complet.", () => {
 				author: "admin",
 				content: "Correction de bugs.",
 				state: "PUBLISHED",
+				img_path: "/images/patchnote_1.png",
+				video_path: "/videos/patchnote_1.mp4",
+				source: "https://patchnotes.deadlock-france.com/1.0.1",
 			});
-
 		expect(response.status).toBe(201);
 		patchnoteId = response.body.id;
 		console.log(`✅ Patchnote créé avec ID: ${patchnoteId}`);
@@ -167,6 +169,8 @@ describe("🛠️ Test End-to-End - Parcours utilisateur complet.", () => {
 
 		console.log("📢 Réponse désactivation utilisateur:", response.body);
 		expect(response.status).toBe(200);
-		expect(response.body.message).toContain(`Rôle de l'utilisateur ${userId} supprimé avec succès (compte désactivé).`);
+		expect(response.body.message).toContain(
+			`Rôle de l'utilisateur ${userId} supprimé avec succès (compte désactivé).`,
+		);
 	});
 });

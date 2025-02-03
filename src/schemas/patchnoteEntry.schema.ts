@@ -13,14 +13,15 @@ const patchnoteEntrySchema = {
 				"any.only": "La catégorie doit être BUFF, NERF, CHANGE ou FIX.",
 			}),
 		ressource_type: Joi.string()
-			.valid("HERO", "ITEM", "SPELL")
+			.valid("HERO", "ITEM", "SPELL", "GLOBAL")
 			.required()
 			.messages({
 				"any.required": "Le type de ressource est requis.",
-				"any.only": "Le type de ressource doit être HERO, ITEM ou SPELL.",
+				"any.only":
+					"Le type de ressource doit être HERO, ITEM, SPELL ou GLOBAL.",
 			}),
-		ressource_id: Joi.number().integer().required().messages({
-			"any.required": "L'ID de la ressource est requis.",
+		ressource_id: Joi.number().integer().messages({
+			"number.integer": "La position doit être un entier.",
 		}),
 		position: Joi.number().integer().required().messages({
 			"number.integer": "La position doit être un entier.",
@@ -35,9 +36,12 @@ const patchnoteEntrySchema = {
 		category: Joi.string().valid("BUFF", "NERF", "CHANGE", "FIX").messages({
 			"any.only": "La catégorie doit être BUFF, NERF, CHANGE ou FIX.",
 		}),
-		ressource_type: Joi.string().valid("HERO", "ITEM", "SPELL").messages({
-			"any.only": "Le type de ressource doit être HERO, ITEM ou SPELL.",
-		}),
+		ressource_type: Joi.string()
+			.valid("HERO", "ITEM", "SPELL", "GLOBAL")
+			.messages({
+				"any.only":
+					"Le type de ressource doit être HERO, ITEM, SPELL ou GLOBAL.",
+			}),
 		ressource_id: Joi.number().integer(),
 		position: Joi.number().integer().messages({
 			"number.integer": "La position doit être un entier.",
