@@ -6,6 +6,8 @@
 import { Op } from "sequelize";
 import type { Request, Response, NextFunction } from "express";
 import Patchnote from "../models/Patchnote";
+import sequelize from "sequelize";
+import database from "../models";
 
 const patchnoteController = {
 	/**
@@ -20,7 +22,15 @@ const patchnoteController = {
 		next: NextFunction,
 	): Promise<void> => {
 		try {
-			const patchnotes = await Patchnote.findAll();
+			const patchnotes = await Patchnote.findAll({
+				include: [
+					{
+						model: database.PatchnoteEntry,
+						as: 'patchnote_entries'
+					}
+				],
+				order: [['date', 'ASC'], ['patchnote_entries', 'position', 'ASC']]
+			});
 			res.status(200).json(patchnotes);
 		} catch (error) {
 			next(error);

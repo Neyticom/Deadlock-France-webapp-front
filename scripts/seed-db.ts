@@ -17,8 +17,8 @@ import database from '../src/models/index';
         ], { transaction });
 
         await database.User.bulkCreate([
-            { login: 'admin', password: 'password_hash_1', firstname: 'Admin', lastname: 'User', nickname: 'Admin123', email: 'admin@example.com', "2fa": true },
-            { login: 'johndoe', password: 'password_hash_3', firstname: 'John', lastname: 'Doe', nickname: 'Johnny', email: 'john.doe@example.com', "2fa": false },
+            { login: 'admin', password: '$2b$12$J4YVRI/9hEV/rbHZUWxZi.VBY46SovpZ0elVkOxgNTHUqNtLKZNZK', firstname: 'Admin', lastname: 'User', nickname: 'Admin123', email: 'admin@example.com', "2fa": true }, // MonMotDePasse123
+            { login: 'johndoe', password: '$2b$12$s.BHo8IbK.WeDGPop6DHbu7jCjyUnOL38cF4SRXlg1k7RLVZHilfS', firstname: 'John', lastname: 'Doe', nickname: 'Johnny', email: 'john.doe@example.com', "2fa": false }, // MonMotDePasse321
             { login: 'shadow', password: 'password_hash_4', firstname: 'Lena', lastname: 'Smith', nickname: 'ShadowFox', email: 'lena.smith@example.com', "2fa": true },
             { login: 'necromancer', password: 'password_hash_5', firstname: 'Victor', lastname: 'Grave', nickname: 'NecroLord', email: 'victor.grave@example.com', "2fa": false },
             { login: 'spectator1', password: 'password_hash_6', firstname: 'Mark', lastname: 'Watcher', nickname: 'Overseer', email: 'mark.watcher@example.com', "2fa": false }
@@ -122,7 +122,7 @@ import database from '../src/models/index';
             { patchnote_id: 4, category: 'FIX', ressource_type: 'HERO', ressource_id: 1, position: 8, description: 'Fixed incorrect audio cue when using ultimate ability.' },
             { patchnote_id: 4, category: 'BUFF', ressource_type: 'HERO', ressource_id: 3, position: 9, description: 'Increased defense scaling by 7%.' },
             { patchnote_id: 4, category: 'NERF', ressource_type: 'GLOBAL', ressource_id: null, position: 10, description: 'New crafting system added for weapon upgrades.' }
-        ], { transaction });        
+        ], { transaction });
     
         await database.Keyword.bulkCreate([
             { ressource_type: 'HERO', ressource_id: 1, value: 'Tank' },
