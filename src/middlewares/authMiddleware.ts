@@ -4,7 +4,7 @@
  */
 
 import type { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload, VerifyErrors } from "jsonwebtoken";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -22,15 +22,15 @@ const authMiddleware = {
 		next: NextFunction,
 	): Promise<void> => {
 		try {
-			const token = req.headers.authorization?.split(" ")[1];
+			const token = req.cookies.authToken;
 
 			if (!token) {
 				res.status(401).json({ error: "Accès refusé, token manquant." });
 				return;
 			}
 			// Vérification du token JWT.
-			jwt.verify(token, process.env.JWT_SECRET as string, (err, decoded) => {
-				if (err) {
+			jwt.verify(token, process.env.JWT_SECRET as string, (error: VerifyErrors | null, decoded: JwtPayload | string | undefined) => {
+				if (error) {
 					res.status(401).json({ error: "Token invalide ou expiré." });
 					return;
 				}

@@ -18,7 +18,9 @@ authRoutes.post(
 	authController.login,
 );
 
+authRoutes.get("/validate", authController.checkAuth);
+
 // Déconnexion utilisateur
-authRoutes.get("/logout", authMiddleware.verifyToken, authController.logout);
+authRoutes.post("/logout", authMiddleware.verifyToken, authController.logout);
 
 export default authRoutes;

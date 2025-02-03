@@ -9,6 +9,7 @@ import dotenv from "dotenv";
 import User from "../models/User";
 import Role from "../models/Role";
 import cryptoService from "../services/cryptoService";
+import { log } from "console";
 
 dotenv.config();
 
@@ -41,6 +42,7 @@ const authController = {
 			});
 
 			if (!user) {
+				console.log('user doesnt exist');
 				res.status(401).json({ error: "Identifiants incorrects." });
 				return;
 			}
@@ -52,6 +54,7 @@ const authController = {
 			);
 
 			if (!isPasswordValid) {
+				console.log('invalid password');
 				res.status(401).json({ error: "Identifiants incorrects." });
 				return;
 			}
@@ -70,9 +73,31 @@ const authController = {
 				{ expiresIn: process.env.TOKEN_EXPIRATION || "1h" },
 			);
 
-			res.status(200).json({ token });
+			res.cookie("authToken", token, {
+				httpOnly: true,
+				secure: process.env.NODE_ENV === "production",
+				sameSite: "strict",
+				maxAge: 60 * 60 * 1000,
+			})
+
+			res.status(200).json({ message: "Connexion réussie !" });
 		} catch (error) {
 			next(error);
+		}
+	},
+
+	checkAuth: async (req: Request, res: Response): Promise<void> => {
+		const token = req.cookies.authToken;
+		if (!token) {
+			res.status(401).json({ error: "Non authentifié" });
+			return;
+		}
+
+		try {
+			const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
+			res.json({ authenticated: true, user: decoded });
+		} catch (error) {
+			res.status(403).json({ error: "Token invalide" });
 		}
 	},
 
@@ -83,6 +108,7 @@ const authController = {
 	 * @param res - Réponse Express.
 	 */
 	logout: async (req: Request, res: Response): Promise<void> => {
+		res.clearCookie("authToken");
 		res.status(200).json({ message: "Déconnexion réussie." });
 	},
 };

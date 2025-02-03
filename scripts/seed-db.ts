@@ -14,8 +14,8 @@ import database from '../src/models/index';
         ], { transaction });
 
         await database.User.bulkCreate([
-            { login: 'admin', password: 'password_hash_1', firstname: 'Admin', lastname: 'User', nickname: 'Admin123', email: 'admin@example.com', "2fa": true },
-            { login: 'johndoe', password: 'password_hash_3', firstname: 'John', lastname: 'Doe', nickname: 'Johnny', email: 'john.doe@example.com', "2fa": false }
+            { login: 'admin', password: '$2b$12$J4YVRI/9hEV/rbHZUWxZi.VBY46SovpZ0elVkOxgNTHUqNtLKZNZK', firstname: 'Admin', lastname: 'User', nickname: 'Admin123', email: 'admin@example.com', "2fa": true }, // MonMotDePasse123
+            { login: 'johndoe', password: '$2b$12$s.BHo8IbK.WeDGPop6DHbu7jCjyUnOL38cF4SRXlg1k7RLVZHilfS', firstname: 'John', lastname: 'Doe', nickname: 'Johnny', email: 'john.doe@example.com', "2fa": false } // MonMotDePasse321
         ], { transaction });
     
         await database.UserHasRole.bulkCreate([
@@ -54,7 +54,13 @@ import database from '../src/models/index';
     
         await database.PatchnoteEntry.bulkCreate([
             { patchnote_id: 1, category: 'BUFF', ressource_type: 'SPELL', ressource_id: 1, position: 1, description: 'Increased fireball damage by 10%.' },
-            { patchnote_id: 2, category: 'FIX', ressource_type: 'ITEM', ressource_id: 1, position: 1, description: 'Resolved texture clipping issue with Sword of Destiny.' }
+            { patchnote_id: 2, category: 'FIX', ressource_type: 'ITEM', ressource_id: 1, position: 1, description: 'Resolved texture clipping issue with Sword of Destiny.' },
+            { patchnote_id: 2, category: 'FIX', ressource_type: 'ITEM', ressource_id: 1, position: 2, description: 'Resolved texture clipping issue with Sword of Destiny.' },
+            { patchnote_id: 2, category: 'FIX', ressource_type: 'ITEM', ressource_id: 2, position: 3, description: 'Resolved texture clipping issue with Sword of Destiny.' },
+            { patchnote_id: 2, category: 'FIX', ressource_type: 'ITEM', ressource_id: 3, position: 4, description: 'Resolved texture clipping issue with Sword of Destiny.' },
+            { patchnote_id: 2, category: 'FIX', ressource_type: 'HERO', ressource_id: 3, position: 5, description: 'Herolerorololo.' },
+            { patchnote_id: 2, category: 'FIX', ressource_type: 'SPELL', ressource_id: 1, position: 6, description: 'Lesortilegelailestvraimenttréforre' },
+            { patchnote_id: 2, category: 'FIX', ressource_type: 'HERO', ressource_id: 1, position: 7, description: 'AAAHluiClehéroquitudefouuu' },
         ], { transaction });
     
         await database.Keyword.bulkCreate([
