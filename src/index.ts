@@ -5,16 +5,18 @@ import compression from "compression";
 import type { Request, Response } from "express";
 import router from "./routes/router";
 import database from "./models/index";
+import cookieParser from 'cookie-parser';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(helmet());
 app.use(cors({
-	origin: "http://localhost:5173",
+	origin: ["http://localhost:5173","http://localhost:5174"],
 	credentials: true
 }));
 app.use(express.json());
+app.use(cookieParser());
 app.use(compression());
 app.use("/api", router);
 
